@@ -1,0 +1,203 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('img/playa1.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background-color: rgba(255,255,255,0.5);
+  z-index:-1;
+}
+
+header {
+  background: linear-gradient(135deg, #ffd1dc, #a3d5ff, #fff0b3);
+  text-align: center;
+  padding: 15px;
+  color: #00264d;
+  font-weight: bold;
+  font-size: 20px;
+  max-width: calc(100% - 260px);
+  margin-right: 260px;
+}
+
+#contenido-principal {
+  max-width: calc(100% - 270px);
+  margin-left: auto;
+  margin-right: 270px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#buscador input {
+  padding:8px 12px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  width: 250px;
+}
+
+#carrusel {
+  position: relative;
+  overflow: hidden;
+  width: 90%;
+  max-width: 900px;
+  height: 180px;
+  margin: 10px auto;
+  border-radius: 10px;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#categorias {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:5px;
+  margin:10px 0;
+}
+
+.btn-categoria {
+  padding:6px 12px;
+  border:none;
+  border-radius:8px;
+  background: linear-gradient(135deg,#ffd1dc,#a3d5ff);
+  color:#00264d;
+  cursor:pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-categoria:hover {
+  transform: scale(1.05);
+  box-shadow:0 0 8px rgba(0,0,0,0.3);
+}
+
+#tarjetas-negocios {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
+  margin:10px;
+}
+
+.tarjeta {
+  background: rgba(255,255,255,0.8);
+  border-radius:10px;
+  width:180px;
+  text-align:center;
+  padding:5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tarjeta img {
+  width:100%;
+  height:120px;
+  object-fit:cover;
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.btn-whatsapp {
+  margin:5px 0;
+  padding:6px 12px;
+  border:none;
+  border-radius:8px;
+  background:#25d366;
+  color:#fff;
+  cursor:pointer;
+}
+
+.btn-whatsapp:hover {
+  background:#1ebe5d;
+}
+
+#barra-lateral {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 260px;
+  height: 100vh;
+  background: linear-gradient(135deg,#ffd1dc,#a3d5ff,#fff0b3);
+  border-left:2px solid #ffd700;
+  padding:10px;
+  overflow:hidden;
+  z-index:1000;
+}
+
+#contenedor-noticias, .nube {
+  position: relative;
+  width: 100%;
+  height: 100%; /* ocupa toda la barra lateral */
+  overflow: hidden;
+}
+
+/* Burbuja de noticias */
+.burbuja {
+  position: absolute;
+  padding: 10px 14px;
+  border-radius: 50px;
+  max-width: 220px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #00264d;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.8), rgba(255, 215, 0,0.6));
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+  line-height: 1.3;
+  z-index: 10;
+}
+
+/* Hover: más grande y sombra más intensa */
+.burbuja:hover {
+  transform: scale(1.15);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+  opacity: 1;
+}
+
+/* Diferentes tamaños según antigüedad */
+.burbuja.nueva {
+  font-size: 14px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.9), rgba(255, 215, 0,0.7));
+  z-index: 20;
+}
+
+.burbuja.media {
+  font-size: 13px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.8), rgba(255, 215, 0,0.6));
+  z-index: 15;
+}
+
+.burbuja.antigua {
+  font-size: 12px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.6), rgba(255, 215, 0,0.4));
+  z-index: 5;
+}
+
+@media(max-width:768px){
+  .burbuja {
+    font-size: 12px;
+    max-width: 150px;
+    padding: 8px 10px;
+  }
+}

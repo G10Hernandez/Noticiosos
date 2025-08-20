@@ -1,0 +1,24 @@
+[
+  {
+    "nombre": "Café Central",
+    "categoria": "alimentos",
+    "descripcion": "El mejor café de la ciudad",
+    "imagen": "img/cafe1.jpg",
+    "whatsapp": "521123456789"
+  },
+  {
+    "nombre": "Tienda Moda Chic",
+    "categoria": "tiendas",
+    "descripcion": "Ropa y accesorios de moda",
+    "imagen": "img/tienda1.jpg",
+    "whatsapp": "521987654321"
+  },
+  {
+    "nombre": "Servicio Express",
+    "categoria": "servicios",
+    "descripcion": "Limpieza y mantenimiento",
+    "imagen": "img/servicio1.jpg",
+    "whatsapp": "521112233445"
+  }
+]
+
