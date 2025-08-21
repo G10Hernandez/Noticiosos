@@ -68,7 +68,7 @@ document.getElementById('inputBusqueda').addEventListener('input', e => {
 // NOTICIAS EN TIEMPO REAL + BURBUJAS DESDE MITAD/ABAJO
 // ============================
 const nube = document.getElementById('contenedor-noticias');
-const API_KEY = "TU_API_KEY_DE_NEWSAPI"; // reemplaza con tu Key
+const API_KEY = "fbc9235a922348bd833eaf0e8f0aa106"; // reemplaza con tu Key
 const URL_NEWS = `https://newsapi.org/v2/top-headlines?country=mx&category=general&apiKey=${API_KEY}`;
 
 function mostrarNoticias(articulos) {
@@ -153,3 +153,4 @@ async function cargarNoticias() {
 // Cargar al iniciar y refrescar cada 30 segundos
 cargarNoticias();
 setInterval(cargarNoticias, 30000);
+
