@@ -65,49 +65,69 @@ const URL_NEWS = enGitHubPages
   ? "noticias.json" 
   : "proxy.php"; // XAMPP o servidor con PHP
 
-// Cargar noticias
-async function cargarNoticias() {
-  try {
-    const response = await fetch(URL_NEWS);
-    if (!response.ok) throw new Error("Error al cargar noticias");
+// ======================
+// Cargar Noticias
+// ======================
+function cargarNoticias() {
+  const apiKey = "TU_API_KEY"; // <-- pon aquí tu API Key de NewsAPI
+  const url = `https://newsapi.org/v2/top-headlines?country=mx&apiKey=${apiKey}`;
 
-    const data = await response.json();
-    mostrarNoticias(data.articles || data); // NewsAPI usa "articles", JSON local es array
-  } catch (error) {
-    console.error("Error cargando noticias:", error);
-  }
+  // Intentar primero con NewsAPI
+  fetch(url)
+    .then(res => {
+      if (!res.ok) throw new Error("NewsAPI falló");
+      return res.json();
+    })
+    .then(data => {
+      if (data.articles && Array.isArray(data.articles)) {
+        mostrarNoticias(data.articles);
+      } else {
+        throw new Error("Formato inesperado de NewsAPI");
+      }
+    })
+    .catch(err => {
+      console.warn("⚠️ No se pudo cargar NewsAPI, usando noticias.json:", err);
+
+      // Fallback: usar noticias locales
+      fetch("noticias.json")
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            mostrarNoticias(data);
+          } else {
+            console.error("noticias.json no es un array válido");
+            mostrarNoticias([]); // mostrar vacío
+          }
+        })
+        .catch(err2 => {
+          console.error("Error cargando noticias.json:", err2);
+          mostrarNoticias([]); // mostrar vacío
+        });
+    });
 }
 
-// Mostrar noticias en burbujas
+// ======================
+// Mostrar Noticias
+// ======================
 function mostrarNoticias(noticias) {
-  const contenedor = document.querySelector(".nube");
-  if (!contenedor) return;
-  contenedor.innerHTML = "";
+  const contenedor = document.getElementById("contenedor-noticias");
+  if (!contenedor) {
+    console.error("❌ No existe el contenedor-noticias en el HTML");
+    return;
+  }
 
-  noticias.forEach((noticia, i) => {
-    const burbuja = document.createElement("div");
-    burbuja.className = "burbuja";
+  contenedor.innerHTML = ""; // limpiar
 
-    const titulo = noticia.title || noticia.titulo || "Sin título";
-    const descripcion = noticia.description || noticia.descripcion || "Sin descripción";
-    const fuente = noticia.source?.name || "Fuente desconocida";
+  noticias.forEach(noticia => {
+    const card = document.createElement("div");
+    card.classList.add("tarjeta-noticia");
 
-    burbuja.innerHTML = `
-      <strong>${titulo}</strong>
-      <small>${descripcion}</small>
-      <em>${fuente}</em>
+    card.innerHTML = `
+      <img src="${noticia.imagen || noticia.urlToImage || 'img/default.jpg'}" alt="noticia">
+      <h3>${noticia.titulo || noticia.title || "Sin título"}</h3>
+      <p>${noticia.descripcion || noticia.description || "Sin descripción"}</p>
     `;
 
-    // Posición inicial (abajo, ancho variable)
-    burbuja.style.left = `${Math.random() * 80}%`;
-
-    // Retraso y duración distintos para cada burbuja
-    burbuja.style.setProperty("--delay", Math.random() * 5);
-
-    contenedor.appendChild(burbuja);
+    contenedor.appendChild(card);
   });
 }
-
-
-// Ejecutar
-cargarNoticias();
