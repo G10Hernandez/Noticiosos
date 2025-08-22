@@ -145,59 +145,81 @@ header {
   z-index:1000;
 }
 
-#contenedor-noticias, .nube {
-  position: relative;
-  width: 100%;
-  height: 100%; /* ocupa toda la barra lateral */
-  overflow: hidden;
-}
-
-/* Burbuja de noticias */
-.burbuja {
-  position: absolute;
-  padding: 10px 14px;
-  border-radius: 50px;
-  max-width: 220px;
-  font-size: 13px;
-  cursor: pointer;
-  color: #00264d;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.8), rgba(255, 215, 0,0.6));
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
-  line-height: 1.3;
-  z-index: 10;
-}
-
-/* Hover: más grande y sombra más intensa */
+/*
 .burbuja:hover {
-  transform: scale(1.15);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-  opacity: 1;
-}
-
-/* Diferentes tamaños según antigüedad */
-.burbuja.nueva {
-  font-size: 14px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.9), rgba(255, 215, 0,0.7));
-  z-index: 20;
-}
-
-.burbuja.media {
-  font-size: 13px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.8), rgba(255, 215, 0,0.6));
-  z-index: 15;
-}
-
-.burbuja.antigua {
-  font-size: 12px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 223, 0,0.6), rgba(255, 215, 0,0.4));
-  z-index: 5;
+  transform: scale(1.1);
+  box-shadow:0 0 15px rgba(255,215,0,0.9);
 }
 
 @media(max-width:768px){
-  .burbuja {
-    font-size: 12px;
-    max-width: 150px;
-    padding: 8px 10px;
+  #barra-lateral { width:200px;}
+  .burbuja { font-size:12px; max-width:150px;}
+}*/
+/* === CONTENEDOR DE NOTICIAS === */
+.nube {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Una página completa */
+  overflow: hidden;
+  background: linear-gradient(to bottom, #e6f0ff, #f9f9f9);
+  border-radius: 10px;
+}
+
+/* === BURBUJAS === */
+.burbuja {
+  position: absolute;
+  min-width: 220px;
+  max-width: 280px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 2px solid #4a90e2;
+  border-radius: 20px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+
+  /* Animación */
+  animation: subirBurbuja linear forwards;
+  animation-duration: calc(20s + (5s * var(--delay))); /* entre 20-45s */
+  animation-delay: calc(2s * var(--delay));
+  opacity: 0;
+}
+
+/* === ANIMACIÓN SUBIR === */
+@keyframes subirBurbuja {
+  0% {
+    transform: translateY(100%); /* Comienza desde abajo */
+    opacity: 0;
   }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120%); /* Se va hacia arriba */
+    opacity: 0;
+  }
+}
+
+/* Texto dentro de las burbujas */
+.burbuja strong {
+  display: block;
+  font-size: 16px;
+  color: #004080;
+  margin-bottom: 6px;
+}
+
+.burbuja small {
+  display: block;
+  font-size: 13px;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.burbuja em {
+  font-size: 12px;
+  color: #888;
 }
