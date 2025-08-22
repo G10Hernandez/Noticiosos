@@ -1,26 +1,32 @@
 [
   {
     "titulo": "Nueva apertura en la ciudad",
-    "descripcion": "Un nuevo centro comercial abrió sus puertas ofreciendo grandes descuentos."
+    "descripcion": "Un nuevo centro comercial abrió sus puertas ofreciendo grandes descuentos.",
+	"imagen": "img/belleza.jpg"
   },
   {
     "titulo": "Evento deportivo",
-    "descripcion": "Este fin de semana se llevará a cabo un torneo local de fútbol."
+    "descripcion": "Este fin de semana se llevará a cabo un torneo local de fútbol.",
+	"imagen": "img/belleza.jpg"
   },
   {
     "titulo": "Concierto gratuito",
-    "descripcion": "La plaza principal ofrecerá un concierto gratuito este sábado."
+    "descripcion": "La plaza principal ofrecerá un concierto gratuito este sábado.",
+	"imagen": "img/belleza.jpg"	
   },
   {
     "titulo": "Modas Chic",
-    "descripcion": "Ofertas de Verano"
+    "descripcion": "Ofertas de Verano",
+	"imagen": "img/belleza.jpg"	
   },
   {
     "titulo": "Itali Pizzas",
-    "descripcion": "2 Pizzas Grandez Hawaianas por $350"
+    "descripcion": "2 Pizzas Grandez Hawaianas por $350",
+	"imagen": "img/belleza.jpg"	
   },
   {
     "titulo": "Alternativa Ferretera",
-    "descripcion": "Simplifica tu Hogar con Nuestras Soluciones Completas"
+    "descripcion": "Simplifica tu Hogar con Nuestras Soluciones Completas",
+	"imagen": "img/belleza.jpg"	
   }
 ]

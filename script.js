@@ -84,7 +84,7 @@ function mostrarNoticias(noticias) {
   if (!contenedor) return;
   contenedor.innerHTML = "";
 
-  noticias.forEach((noticia) => {
+  noticias.forEach((noticia, i) => {
     const burbuja = document.createElement("div");
     burbuja.className = "burbuja";
 
@@ -93,18 +93,21 @@ function mostrarNoticias(noticias) {
     const fuente = noticia.source?.name || "Fuente desconocida";
 
     burbuja.innerHTML = `
-      <strong>${titulo}</strong><br>
-      <small>${descripcion}</small><br>
+      <strong>${titulo}</strong>
+      <small>${descripcion}</small>
       <em>${fuente}</em>
     `;
 
-    // Posición inicial (parte baja o media del contenedor)
+    // Posición inicial (abajo, ancho variable)
     burbuja.style.left = `${Math.random() * 80}%`;
-    burbuja.style.top = `${50 + Math.random() * 40}%`; // entre 50% y 90% de altura
+
+    // Retraso y duración distintos para cada burbuja
+    burbuja.style.setProperty("--delay", Math.random() * 5);
 
     contenedor.appendChild(burbuja);
   });
 }
+
 
 // Ejecutar
 cargarNoticias();
