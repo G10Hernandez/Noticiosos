@@ -58,40 +58,46 @@ h2 {
 }
 
 /* ===== Burbujas de noticias ===== */
+/* ======================
+   Estilo para burbujas de noticias
+====================== */
 #noticias-burbujas {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  margin: 20px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
 }
 
 .burbuja-noticia {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: #ffffff;
   border-radius: 12px;
   padding: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  width: 320px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.burbuja-noticia:hover {
+  transform: scale(1.02);
 }
 
 .burbuja-noticia img {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;   /* 🔹 la hace redonda */
   object-fit: cover;
-  border-radius: 50%;
   margin-right: 12px;
 }
 
 .burbuja-noticia h4 {
   margin: 0;
   font-size: 16px;
-  color: #003366;
+  color: #1a3d6d;
 }
 
 .burbuja-noticia p {
-  margin: 0;
+  margin: 2px 0 0;
   font-size: 14px;
   color: #444;
 }
