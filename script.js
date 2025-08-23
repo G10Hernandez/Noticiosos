@@ -66,68 +66,47 @@ const URL_NEWS = enGitHubPages
   : "proxy.php"; // XAMPP o servidor con PHP
 
 // ======================
-// Cargar Noticias
+// Cargar Negocios
 // ======================
-function cargarNoticias() {
-  const apiKey = "TU_API_KEY"; // <-- pon aquí tu API Key de NewsAPI
-  const url = `https://newsapi.org/v2/top-headlines?country=mx&apiKey=${apiKey}`;
-
-  // Intentar primero con NewsAPI
-  fetch(url)
-    .then(res => {
-      if (!res.ok) throw new Error("NewsAPI falló");
-      return res.json();
-    })
+function cargarNegocios() {
+  fetch("negocios.json")
+    .then(res => res.json())
     .then(data => {
-      if (data.articles && Array.isArray(data.articles)) {
-        mostrarNoticias(data.articles);
-      } else {
-        throw new Error("Formato inesperado de NewsAPI");
+      // Si el JSON es un objeto con clave "negocios"
+      let negocios = Array.isArray(data) ? data : data.negocios;
+
+      if (!Array.isArray(negocios)) {
+        console.error("❌ negocios.json no tiene un array válido");
+        negocios = []; // evitar error
       }
+
+      const contenedor = document.getElementById("tarjetas-negocios");
+      if (!contenedor) {
+        console.error("❌ No existe el contenedor tarjetas-negocios en el HTML");
+        return;
+      }
+
+      contenedor.innerHTML = ""; // limpiar
+
+      negocios.forEach(n => {
+        const card = document.createElement("div");
+        card.classList.add("tarjeta-negocio");
+
+        card.innerHTML = `
+          <img src="${n.imagen || 'img/default.jpg'}" alt="${n.nombre || 'Negocio'}">
+          <h3>${n.nombre || "Sin nombre"}</h3>
+          <p>${n.descripcion || "Sin descripción"}</p>
+        `;
+
+        contenedor.appendChild(card);
+      });
     })
-    .catch(err => {
-      console.warn("⚠️ No se pudo cargar NewsAPI, usando noticias.json:", err);
-
-      // Fallback: usar noticias locales
-      fetch("noticias.json")
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data)) {
-            mostrarNoticias(data);
-          } else {
-            console.error("noticias.json no es un array válido");
-            mostrarNoticias([]); // mostrar vacío
-          }
-        })
-        .catch(err2 => {
-          console.error("Error cargando noticias.json:", err2);
-          mostrarNoticias([]); // mostrar vacío
-        });
-    });
+    .catch(err => console.error("⚠️ Error cargando negocios.json:", err));
 }
-
 // ======================
-// Mostrar Noticias
+// Inicializar portal
 // ======================
-function mostrarNoticias(noticias) {
-  const contenedor = document.getElementById("contenedor-noticias");
-  if (!contenedor) {
-    console.error("❌ No existe el contenedor-noticias en el HTML");
-    return;
-  }
-
-  contenedor.innerHTML = ""; // limpiar
-
-  noticias.forEach(noticia => {
-    const card = document.createElement("div");
-    card.classList.add("tarjeta-noticia");
-
-    card.innerHTML = `
-      <img src="${noticia.imagen || noticia.urlToImage || 'img/default.jpg'}" alt="noticia">
-      <h3>${noticia.titulo || noticia.title || "Sin título"}</h3>
-      <p>${noticia.descripcion || noticia.description || "Sin descripción"}</p>
-    `;
-
-    contenedor.appendChild(card);
-  });
-}
+document.addEventListener("DOMContentLoaded", () => {
+  cargarNoticias();
+  cargarNegocios();
+});
