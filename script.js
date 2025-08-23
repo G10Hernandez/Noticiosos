@@ -134,18 +134,51 @@ function mostrarNoticias(noticias) {
 }
 
 // ======================
+// Cargar Noticias (burbujas)
+// ======================
+function cargarNoticias() {
+  fetch("noticias.json")
+    .then(res => res.json())
+    .then(noticias => {
+      if (!Array.isArray(noticias)) {
+        console.error("❌ noticias.json no es un array válido");
+        return;
+      }
+
+      const contenedor = document.getElementById("noticias-burbujas");
+      if (!contenedor) {
+        console.error("❌ No existe el contenedor noticias-burbujas en el HTML");
+        return;
+      }
+
+      contenedor.innerHTML = ""; // limpiar
+
+      noticias.forEach(n => {
+        const burbuja = document.createElement("div");
+        burbuja.classList.add("burbuja-noticia");
+        burbuja.innerHTML = `
+          <img src="${n.imagen || 'img/default.jpg'}" alt="noticia">
+          <div>
+            <h4>${n.titulo}</h4>
+            <p>${n.descripcion}</p>
+          </div>
+        `;
+        contenedor.appendChild(burbuja);
+      });
+    })
+    .catch(err => console.error("⚠️ Error cargando noticias.json:", err));
+}
+
+// ======================
 // Cargar Negocios
 // ======================
 function cargarNegocios() {
   fetch("negocios.json")
     .then(res => res.json())
-    .then(data => {
-      // Si el JSON es un objeto con clave "negocios"
-      let negocios = Array.isArray(data) ? data : data.negocios;
-
+    .then(negocios => {
       if (!Array.isArray(negocios)) {
-        console.error("❌ negocios.json no tiene un array válido");
-        negocios = []; // evitar error
+        console.error("❌ negocios.json no es un array válido");
+        return;
       }
 
       const contenedor = document.getElementById("tarjetas-negocios");
@@ -161,9 +194,9 @@ function cargarNegocios() {
         card.classList.add("tarjeta-negocio");
 
         card.innerHTML = `
-          <img src="${n.imagen || 'img/default.jpg'}" alt="${n.nombre || 'Negocio'}">
-          <h3>${n.nombre || "Sin nombre"}</h3>
-          <p>${n.descripcion || "Sin descripción"}</p>
+          <img src="${n.imagen || 'img/default.jpg'}" alt="${n.nombre}">
+          <h3>${n.nombre}</h3>
+          <p>${n.descripcion}</p>
         `;
 
         contenedor.appendChild(card);
