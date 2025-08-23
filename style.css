@@ -27,10 +27,14 @@ h2 {
   box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
 
+/* Carrusel reducido */
 #carrusel img {
-  width: 100%;
-  display: block;
+  width: 100%;         /* Mantener el ancho completo */
+  height: 25vh;        /* Solo 1/4 de la altura de la ventana */
+  object-fit: cover;   /* Recorta y ajusta sin deformar */
+  border-radius: 12px; /* Opcional: esquinas redondeadas */
 }
+
 
 /* ===== Tarjetas de negocios ===== */
 #tarjetas-negocios {
