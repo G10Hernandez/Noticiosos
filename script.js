@@ -56,14 +56,82 @@ document.getElementById('inputBusqueda').addEventListener('input', e=>{
   });
 });
 
-// Nube de noticias
-// Detectar si estamos en GitHub Pages
+// ======================
+// Detectar entorno
+// ======================
 const enGitHubPages = window.location.hostname.includes("github.io");
 
 // Seleccionar origen de noticias
 const URL_NEWS = enGitHubPages 
   ? "noticias.json" 
   : "proxy.php"; // XAMPP o servidor con PHP
+
+// ======================
+// Cargar Noticias
+// ======================
+function cargarNoticias() {
+  const apiKey = "TU_API_KEY"; // <-- pon aquí tu API Key de NewsAPI
+  const url = `https://newsapi.org/v2/top-headlines?country=mx&apiKey=${apiKey}`;
+
+  // Intentar primero con NewsAPI
+  fetch(url)
+    .then(res => {
+      if (!res.ok) throw new Error("NewsAPI falló");
+      return res.json();
+    })
+    .then(data => {
+      if (data.articles && Array.isArray(data.articles)) {
+        mostrarNoticias(data.articles);
+      } else {
+        throw new Error("Formato inesperado de NewsAPI");
+      }
+    })
+    .catch(err => {
+      console.warn("⚠️ No se pudo cargar NewsAPI, usando noticias.json:", err);
+
+      // Fallback: usar noticias locales
+      fetch("noticias.json")
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            mostrarNoticias(data);
+          } else {
+            console.error("❌ noticias.json no es un array válido");
+            mostrarNoticias([]);
+          }
+        })
+        .catch(err2 => {
+          console.error("Error cargando noticias.json:", err2);
+          mostrarNoticias([]);
+        });
+    });
+}
+
+// ======================
+// Mostrar Noticias
+// ======================
+function mostrarNoticias(noticias) {
+  const contenedor = document.getElementById("contenedor-noticias");
+  if (!contenedor) {
+    console.error("❌ No existe el contenedor-noticias en el HTML");
+    return;
+  }
+
+  contenedor.innerHTML = ""; // limpiar
+
+  noticias.forEach(noticia => {
+    const card = document.createElement("div");
+    card.classList.add("tarjeta-noticia");
+
+    card.innerHTML = `
+      <img src="${noticia.imagen || noticia.urlToImage || 'img/default.jpg'}" alt="noticia">
+      <h3>${noticia.titulo || noticia.title || "Sin título"}</h3>
+      <p>${noticia.descripcion || noticia.description || "Sin descripción"}</p>
+    `;
+
+    contenedor.appendChild(card);
+  });
+}
 
 // ======================
 // Cargar Negocios
@@ -103,6 +171,7 @@ function cargarNegocios() {
     })
     .catch(err => console.error("⚠️ Error cargando negocios.json:", err));
 }
+
 // ======================
 // Inicializar portal
 // ======================
