@@ -1,21 +1,27 @@
+/* Fondo general tipo playa */
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  background: linear-gradient(to bottom, #dce6f7, #f9f9f9);
-  color: #222;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #fdfbfb, #d0e9f5); /* cielo a arena */
+  color: #333;
 }
 
+/* Encabezado */
 header {
-  background: linear-gradient(to right, #003366, #b8860b);
-  color: #fff;
-  padding: 15px;
+  background: linear-gradient(90deg, #a8edea, #fed6e3); /* turquesa pastel + coral */
+  color: #004d40;
   text-align: center;
+  padding: 15px;
+  border-bottom: 4px solid #fff8e1; /* línea clara simulando arena */
 }
 
-h2 {
-  margin-top: 20px;
-  color: #003366;
+/* Logo o título en el encabezado */
+header h1, header h2 {
+  margin: 0;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
 }
+
 
 /* ===== Carrusel ===== */
 #carrusel {
@@ -30,7 +36,7 @@ h2 {
 /* Carrusel reducido */
 #carrusel img {
   width: 100%;         /* Mantener el ancho completo */
-  height: 25vh;        /* Solo 1/4 de la altura de la ventana */
+  height: 10%;        /* Solo 1/4 de la altura de la ventana */
   object-fit: cover;   /* Recorta y ajusta sin deformar */
   border-radius: 12px; /* Opcional: esquinas redondeadas */
 }
@@ -45,13 +51,14 @@ h2 {
   margin: 20px;
 }
 
-.tarjeta-negocio {
-  background: #fff;
+
+/* Opcional: efecto suave en tarjetas */
+.tarjeta-negocio, .tarjeta-noticia {
+  background: rgba(255,255,255,0.85);
   border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  width: 220px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 10px;
   padding: 10px;
-  text-align: center;
 }
 
 .tarjeta-negocio img {
