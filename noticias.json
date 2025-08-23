@@ -13,20 +13,5 @@
     "titulo": "Concierto gratuito",
     "descripcion": "La plaza principal ofrecerá un concierto gratuito este sábado.",
 	"imagen": "img/belleza.jpg"	
-  },
-  {
-    "titulo": "Modas Chic",
-    "descripcion": "Ofertas de Verano",
-	"imagen": "img/belleza.jpg"	
-  },
-  {
-    "titulo": "Itali Pizzas",
-    "descripcion": "2 Pizzas Grandez Hawaianas por $350",
-	"imagen": "img/belleza.jpg"	
-  },
-  {
-    "titulo": "Alternativa Ferretera",
-    "descripcion": "Simplifica tu Hogar con Nuestras Soluciones Completas",
-	"imagen": "img/belleza.jpg"	
   }
 ]
