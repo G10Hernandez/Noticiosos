@@ -1,225 +1,97 @@
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: url('img/playa1.jpg') no-repeat center center fixed;
-  background-size: cover;
-  position: relative;
-}
-
-body::before {
-  content: "";
-  position: absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  background-color: rgba(255,255,255,0.5);
-  z-index:-1;
+  margin: 0;
+  background: linear-gradient(to bottom, #dce6f7, #f9f9f9);
+  color: #222;
 }
 
 header {
-  background: linear-gradient(135deg, #ffd1dc, #a3d5ff, #fff0b3);
-  text-align: center;
+  background: linear-gradient(to right, #003366, #b8860b);
+  color: #fff;
   padding: 15px;
-  color: #00264d;
-  font-weight: bold;
-  font-size: 20px;
-  max-width: calc(100% - 260px);
-  margin-right: 260px;
+  text-align: center;
 }
 
-#contenido-principal {
-  max-width: calc(100% - 270px);
-  margin-left: auto;
-  margin-right: 270px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+h2 {
+  margin-top: 20px;
+  color: #003366;
 }
 
-#buscador input {
-  padding:8px 12px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  width: 250px;
-}
-
+/* ===== Carrusel ===== */
 #carrusel {
-  position: relative;
-  overflow: hidden;
   width: 90%;
-  max-width: 900px;
-  height: 180px;
-  margin: 10px auto;
-  border-radius: 10px;
-}
-
-.slide {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-#categorias {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:5px;
-  margin:10px 0;
-}
-
-.btn-categoria {
-  padding:6px 12px;
-  border:none;
-  border-radius:8px;
-  background: linear-gradient(135deg,#ffd1dc,#a3d5ff);
-  color:#00264d;
-  cursor:pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-categoria:hover {
-  transform: scale(1.05);
-  box-shadow:0 0 8px rgba(0,0,0,0.3);
-}
-
-#tarjetas-negocios {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:15px;
-  margin:10px;
-}
-
-.tarjeta {
-  background: rgba(255,255,255,0.8);
-  border-radius:10px;
-  width:180px;
-  text-align:center;
-  padding:5px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.tarjeta img {
-  width:100%;
-  height:120px;
-  object-fit:cover;
-}
-
-.tarjeta:hover {
-  transform: translateY(-5px);
-  box-shadow:0 5px 15px rgba(0,0,0,0.3);
-}
-
-.btn-whatsapp {
-  margin:5px 0;
-  padding:6px 12px;
-  border:none;
-  border-radius:8px;
-  background:#25d366;
-  color:#fff;
-  cursor:pointer;
-}
-
-.btn-whatsapp:hover {
-  background:#1ebe5d;
-}
-
-#barra-lateral {
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 260px;
-  height: 100vh;
-  background: linear-gradient(135deg,#ffd1dc,#a3d5ff,#fff0b3);
-  border-left:2px solid #ffd700;
-  padding:10px;
-  overflow:hidden;
-  z-index:1000;
-}
-
-/*
-.burbuja:hover {
-  transform: scale(1.1);
-  box-shadow:0 0 15px rgba(255,215,0,0.9);
-}
-
-@media(max-width:768px){
-  #barra-lateral { width:200px;}
-  .burbuja { font-size:12px; max-width:150px;}
-}*/
-/* === CONTENEDOR DE NOTICIAS === */
-.nube {
-  position: relative;
-  width: 100%;
-  height: 100vh; /* Una página completa */
+  max-width: 800px;
+  margin: 20px auto;
   overflow: hidden;
-  background: linear-gradient(to bottom, #e6f0ff, #f9f9f9);
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+#carrusel img {
+  width: 100%;
+  display: block;
+}
+
+/* ===== Tarjetas de negocios ===== */
+#tarjetas-negocios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px;
+}
+
+.tarjeta-negocio {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  width: 220px;
+  padding: 10px;
+  text-align: center;
+}
+
+.tarjeta-negocio img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
   border-radius: 10px;
 }
 
-/* === BURBUJAS === */
-.burbuja {
-  position: absolute;
-  min-width: 220px;
-  max-width: 280px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 2px solid #4a90e2;
-  border-radius: 20px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-  text-align: center;
-  font-size: 14px;
-  color: #333;
-
-  /* Animación */
-  animation: subirBurbuja linear forwards;
-  animation-duration: calc(20s + (5s * var(--delay))); /* entre 20-45s */
-  animation-delay: calc(2s * var(--delay));
-  opacity: 0;
+/* ===== Burbujas de noticias ===== */
+#noticias-burbujas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px;
 }
 
-/* === ANIMACIÓN SUBIR === */
-@keyframes subirBurbuja {
-  0% {
-    transform: translateY(100%); /* Comienza desde abajo */
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-120%); /* Se va hacia arriba */
-    opacity: 0;
-  }
+.burbuja-noticia {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  width: 320px;
 }
 
-/* Texto dentro de las burbujas */
-.burbuja strong {
-  display: block;
+.burbuja-noticia img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.burbuja-noticia h4 {
+  margin: 0;
   font-size: 16px;
-  color: #004080;
-  margin-bottom: 6px;
+  color: #003366;
 }
 
-.burbuja small {
-  display: block;
-  font-size: 13px;
+.burbuja-noticia p {
+  margin: 0;
+  font-size: 14px;
   color: #444;
-  margin-bottom: 4px;
-}
-
-.burbuja em {
-  font-size: 12px;
-  color: #888;
 }

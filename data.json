@@ -1,20 +1,5 @@
-{
-	"banners": [
-        {
-            "image": "img/banner1.png",
-            "business": "Café Central"
-        },
-        {
-            "image": "img/banner2.jpg",
-            "business": "Tienda Moda Chic"
-        },
-        {
-            "image": "img/banner3.jpg",
-            "business": "Servicio Técnico Rápido"
-        },
-		{
-            "image": "img/banner4.jpg",
-            "business": "Servicio Médico General"
-        }
-    ]
-}
+[
+  { "titulo": "Promo Verano", "imagen": "img/banner1.jpg" },
+  { "titulo": "Novedades", "imagen": "img/banner2.jpg" },
+  { "titulo": "Descuentos", "imagen": "img/banner3.jpg" }
+]

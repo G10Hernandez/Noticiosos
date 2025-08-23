@@ -1,55 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal de Negocios</title>
+  <title>Portal de Noticias</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- ENCABEZADO -->
   <header>
-    <h1>Mi Portal de Negocios</h1>
+    <h1>🌐 Portal de Noticias</h1>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL EN 2 COLUMNAS -->
-  <div id="layout">
-
-    <!-- COLUMNA IZQUIERDA -->
-    <main id="contenido-principal">
-
-      <!-- Buscador -->
-      <div id="buscador">
-        <input type="text" placeholder="Buscar negocio..." id="inputBusqueda">
-      </div>
-
-      <!-- Carrusel -->
-      <section id="carrusel">
-        <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
-        <div class="slide"><img src="img/banner2.jpg" alt="Banner 2"></div>
-        <div class="slide"><img src="img/banner3.jpg" alt="Banner 3"></div>
-        <div class="slide"><img src="img/banner4.jpg" alt="Banner 4"></div>
-      </section>
-
-      <!-- Categorías -->
-      <div id="categorias">
-        <button class="btn-categoria" data-categoria="todos">Todos</button>
-        <button class="btn-categoria" data-categoria="alimentos">Alimentos</button>
-        <button class="btn-categoria" data-categoria="tiendas">Tiendas</button>
-        <button class="btn-categoria" data-categoria="servicios">Servicios</button>
-      </div>
+  <main>
+    <!-- Carrusel -->
+    <section id="carrusel"></section>
 
     <!-- Tarjetas de negocios -->
-	<section id="tarjetas-negocios"></section>
+    <section id="tarjetas-negocios">
+      <h2>Negocios</h2>
+    </section>
 
-	<!-- Noticias -->
-	<aside id="barra-lateral">
-		<h2>Últimas Noticias</h2>
-		<div id="contenedor-noticias" class="nubes"></div>
-	</aside>
-
-  </div> <!-- cierre layout -->
+    <!-- Noticias -->
+    <aside id="barra-lateral">
+      <h2>Últimas Noticias</h2>
+      <div id="noticias-burbujas"></div>
+    </aside>
+  </main>
 
   <script src="script.js"></script>
 </body>
