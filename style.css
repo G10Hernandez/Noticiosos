@@ -1,4 +1,22 @@
-/* Layout general en dos columnas */
+/* Fondo general tipo playa */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #b2f0f5, #fdf6e3); /* azul pastel → arena */
+  color: #333;
+}
+
+/* Encabezado */
+header {
+  background: linear-gradient(to right, #7ec8e3, #f6d6a8); /* azul pastel → beige pastel */
+  text-align: center;
+  padding: 20px;
+  font-size: 1.8em;
+  font-weight: bold;
+  border-bottom: 3px solid #e2c49c;
+}
+
+/* Grid layout */
 .layout {
   display: grid;
   grid-template-columns: 3fr 1fr; /* izquierda 3/4, derecha 1/4 */
@@ -6,49 +24,77 @@
   padding: 20px;
 }
 
-/* Columna izquierda */
-main {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Carrusel reducido */
+/* Carrusel */
 #carrusel {
-  max-height: 250px; /* 1/4 de pantalla aprox */
+  max-height: 250px;
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  background: #fff;
 }
 
-/* Columna derecha (noticias) */
-#barra-lateral {
-  background: rgba(255,255,255,0.85);
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  padding: 15px;
+/* Categorías */
+#categorias {
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  max-height: calc(100vh - 100px); /* ocupa hasta el borde inferior */
-  overflow-y: auto; /* scroll si hay muchas noticias */
 }
 
-/* Tarjetas de noticia dentro del aside */
-#contenedor-noticias .tarjeta-noticia {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background: #f9f9f9;
+#categorias button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #7ec8e3;
+  color: white;
+  cursor: pointer;
+}
+
+#categorias button:hover {
+  background: #55a8c4;
+}
+
+/* Negocios */
+#tarjetas-negocios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.tarjeta-negocio {
+  background: white;
   border-radius: 10px;
-  margin-bottom: 10px;
   padding: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.tarjeta-negocio img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Noticias a la derecha */
+#barra-lateral {
+  background: rgba(255,255,255,0.9);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+#contenedor-noticias .tarjeta-noticia {
+  margin-bottom: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
 }
 
 #contenedor-noticias .tarjeta-noticia img {
   max-width: 100%;
-  height: 120px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 6px;
 }

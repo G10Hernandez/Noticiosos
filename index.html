@@ -1,8 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Noticias y Negocios</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
+  <!-- ENCABEZADO -->
   <header>
-    <h1>Portal Noticias y Negocios</h1>
+    <h1>🌴 Portal Noticias y Negocios</h1>
   </header>
 
+  <!-- LAYOUT EN DOS COLUMNAS -->
   <div class="layout">
     <!-- COLUMNA IZQUIERDA -->
     <main>
@@ -10,16 +20,22 @@
       <section id="carrusel"></section>
 
       <!-- Botones de categorías -->
-      <section id="categorias"></section>
+      <section id="categorias">
+        <button>Categoría 1</button>
+        <button>Categoría 2</button>
+      </section>
 
       <!-- Tarjetas de negocios -->
       <section id="tarjetas-negocios"></section>
     </main>
 
-    <!-- COLUMNA DERECHA -->
+    <!-- COLUMNA DERECHA (NOTICIAS) -->
     <aside id="barra-lateral">
-      <h2>Últimas Noticias</h2>
+      <h2>📰 Últimas Noticias</h2>
       <div id="contenedor-noticias" class="nubes"></div>
     </aside>
   </div>
+
+  <script src="script.js"></script>
 </body>
+</html>
