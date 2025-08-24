@@ -1,56 +1,25 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal de Negocios</title>
-  <link rel="stylesheet" href="style.css">
-</head>
 <body>
-
-  <!-- ENCABEZADO -->
   <header>
-    <h1>Mi Portal de Negocios</h1>
+    <h1>Portal Noticias y Negocios</h1>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL EN 2 COLUMNAS -->
-  <div id="layout">
-
+  <div class="layout">
     <!-- COLUMNA IZQUIERDA -->
-    <main id="contenido-principal">
-
-      <!-- Buscador -->
-      <div id="buscador">
-        <input type="text" placeholder="Buscar negocio..." id="inputBusqueda">
-      </div>
-
+    <main>
       <!-- Carrusel -->
-      <section id="carrusel">
-        <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
-        <div class="slide"><img src="img/banner2.jpg" alt="Banner 2"></div>
-        <div class="slide"><img src="img/banner3.jpg" alt="Banner 3"></div>
-        <div class="slide"><img src="img/banner4.jpg" alt="Banner 4"></div>
-      </section>
+      <section id="carrusel"></section>
 
-      <!-- Categorías -->
-      <div id="categorias">
-        <button class="btn-categoria" data-categoria="todos">Todos</button>
-        <button class="btn-categoria" data-categoria="alimentos">Alimentos</button>
-        <button class="btn-categoria" data-categoria="tiendas">Tiendas</button>
-        <button class="btn-categoria" data-categoria="servicios">Servicios</button>
-      </div>
+      <!-- Botones de categorías -->
+      <section id="categorias"></section>
 
-    <!-- Tarjetas de negocios -->
-	<section id="tarjetas-negocios"></section>
+      <!-- Tarjetas de negocios -->
+      <section id="tarjetas-negocios"></section>
+    </main>
 
-	<!-- Noticias -->
-	<aside id="barra-lateral">
-		<h2>Últimas Noticias</h2>
-		<div id="noticias-burbujas"></div>
-	</aside>
-
-  </div> <!-- cierre layout -->
-
-  <script src="script.js"></script>
+    <!-- COLUMNA DERECHA -->
+    <aside id="barra-lateral">
+      <h2>Últimas Noticias</h2>
+      <div id="contenedor-noticias" class="nubes"></div>
+    </aside>
+  </div>
 </body>
-</html>

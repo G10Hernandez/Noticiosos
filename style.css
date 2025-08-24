@@ -1,114 +1,54 @@
-/* Fondo general tipo playa */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #fdfbfb, #d0e9f5); /* cielo a arena */
-  color: #333;
+/* Layout general en dos columnas */
+.layout {
+  display: grid;
+  grid-template-columns: 3fr 1fr; /* izquierda 3/4, derecha 1/4 */
+  gap: 20px;
+  padding: 20px;
 }
 
-/* Encabezado */
-header {
-  background: linear-gradient(90deg, #a8edea, #fed6e3); /* turquesa pastel + coral */
-  color: #004d40;
-  text-align: center;
-  padding: 15px;
-  border-bottom: 4px solid #fff8e1; /* línea clara simulando arena */
-}
-
-/* Logo o título en el encabezado */
-header h1, header h2 {
-  margin: 0;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
-}
-
-
-/* ===== Carrusel ===== */
-#carrusel {
-  width: 90%;
-  max-width: 800px;
-  margin: 20px auto;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+/* Columna izquierda */
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* Carrusel reducido */
-#carrusel img {
-  width: 100%;         /* Mantener el ancho completo */
-  height: 10%;        /* Solo 1/4 de la altura de la ventana */
-  object-fit: cover;   /* Recorta y ajusta sin deformar */
-  border-radius: 12px; /* Opcional: esquinas redondeadas */
+#carrusel {
+  max-height: 250px; /* 1/4 de pantalla aprox */
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-
-/* ===== Tarjetas de negocios ===== */
-#tarjetas-negocios {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin: 20px;
-}
-
-
-/* Opcional: efecto suave en tarjetas */
-.tarjeta-negocio, .tarjeta-noticia {
+/* Columna derecha (noticias) */
+#barra-lateral {
   background: rgba(255,255,255,0.85);
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 10px;
-  padding: 10px;
-}
-
-.tarjeta-negocio img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-/* ===== Burbujas de noticias ===== */
-/* ======================
-   Estilo para burbujas de noticias
-====================== */
-#noticias-burbujas {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 10px;
+  gap: 10px;
+  max-height: calc(100vh - 100px); /* ocupa hasta el borde inferior */
+  overflow-y: auto; /* scroll si hay muchas noticias */
 }
 
-.burbuja-noticia {
+/* Tarjetas de noticia dentro del aside */
+#contenedor-noticias .tarjeta-noticia {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  background: #ffffff;
-  border-radius: 12px;
+  text-align: center;
+  background: #f9f9f9;
+  border-radius: 10px;
+  margin-bottom: 10px;
   padding: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
 }
 
-.burbuja-noticia:hover {
-  transform: scale(1.02);
-}
-
-.burbuja-noticia img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;   /* 🔹 la hace redonda */
+#contenedor-noticias .tarjeta-noticia img {
+  max-width: 100%;
+  height: 120px;
   object-fit: cover;
-  margin-right: 12px;
-}
-
-.burbuja-noticia h4 {
-  margin: 0;
-  font-size: 16px;
-  color: #1a3d6d;
-}
-
-.burbuja-noticia p {
-  margin: 2px 0 0;
-  font-size: 14px;
-  color: #444;
+  border-radius: 8px;
 }
