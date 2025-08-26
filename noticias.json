@@ -1,32 +1,22 @@
 [
   {
-    "titulo": "Nueva apertura en la ciudad",
-    "descripcion": "Un nuevo centro comercial abrió sus puertas ofreciendo grandes descuentos.",
-    "imagen": "img/belleza.jpg"
+    "titulo": "Nueva apertura en el centro",
+    "descripcion": "Se inauguró una nueva tienda de ropa con descuentos de temporada.",
+    "imagen": "img/noticia1.jpg"
   },
   {
-    "titulo": "Evento deportivo",
-    "descripcion": "Este fin de semana se llevará a cabo un torneo local de fútbol.",
-    "imagen": "img/belleza.jpg"
+    "titulo": "Festival gastronómico",
+    "descripcion": "Restaurantes locales participan en el festival con platillos típicos.",
+    "imagen": "img/noticia2.jpg"
   },
   {
-    "titulo": "Concierto gratuito",
-    "descripcion": "La plaza principal ofrecerá un concierto gratuito este sábado.",
-    "imagen": "img/belleza.jpg"
+    "titulo": "Promoción especial en gimnasios",
+    "descripcion": "El gimnasio FitPlus ofrece un 2x1 en membresías este mes.",
+    "imagen": "img/noticia3.jpg"
   },
   {
-    "titulo": "Modas Chic",
-    "descripcion": "Ofertas de Verano",
-    "imagen": "img/belleza.jpg"
-  },
-  {
-    "titulo": "Itali Pizzas",
-    "descripcion": "2 Pizzas Grandes Hawaianas por $350",
-    "imagen": "img/belleza.jpg"
-  },
-  {
-    "titulo": "Alternativa Ferretera",
-    "descripcion": "Simplifica tu Hogar con Nuestras Soluciones Completas",
-    "imagen": "img/belleza.jpg"
+    "titulo": "Concierto en la plaza",
+    "descripcion": "Este sábado habrá un concierto gratuito en la plaza principal.",
+    "imagen": "img/noticia4.jpg"
   }
 ]

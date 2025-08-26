@@ -1,79 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Noticias y Negocios</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portal Noticias y Negocios</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- ENCABEZADO -->
-  <header>
-    <h1>🌴 Portal Noticias y Negocios</h1>
-  </header>
+<!-- ENCABEZADO -->
+<header>
+<h1>🌴 Portal Noticias y Negocios</h1>
+</header>
 
-  <!-- LAYOUT EN DOS COLUMNAS -->
-  <div class="layout">
-    <!-- COLUMNA IZQUIERDA -->
-    <main>
-      <!-- Carrusel -->
-      <section id="carrusel"></section>
 
-      <!-- Botones de categorías -->
-      <section id="categorias">
-        <button>Categoría 1</button>
-        <button>Categoría 2</button>
-      </section>
+<!-- LAYOUT EN DOS COLUMNAS -->
+<div class="layout">
+<!-- COLUMNA IZQUIERDA -->
+<main>
+<!-- Carrusel -->
+<section id="carrusel" aria-label="Banners de negocios"></section>
 
-      <!-- Tarjetas de negocios -->
-      <section id="tarjetas-negocios"></section>
-    </main>
 
-    <!-- COLUMNA DERECHA (NOTICIAS) -->
-    <aside id="barra-lateral">
-      <h2>📰 Últimas Noticias</h2>
-      <div id="contenedor-noticias" class="nubes"></div>
-    </aside>
-  </div>
+<!-- Barra de acciones (categorías + búsqueda) -->
+<section id="acciones">
+<div id="categorias" aria-label="Filtros por categoría"></div>
+<input id="inputBusqueda" type="search" placeholder="Buscar negocio…" aria-label="Buscar negocio" />
+</section>
 
-<div class="tarjeta">
-    <h3>Restaurante La Playa</h3>
-    <p>Comida veraniega</p>
-    <!-- Botón directo -->
-    <a href="https://wa.me/5215555555555" target="_blank" class="btn-whatsapp">WhatsApp</a>
-  </div>
 
-  <div class="tarjeta">
-    <h3>Tienda de Ropa Playa</h3>
-    <p>Artículos de verano</p>
-    <!-- Botón especial -->
-    <button class="btn-compra" onclick="abrirVenta('ropaPlaya')">
-      Comprar
-    </button>
-  </div>
+<!-- Tarjetas de negocios -->
+<section id="tarjetas-negocios" aria-live="polite"></section>
+</main>
 
-  <!-- Popup -->
-  <div id="popup" class="modal">
-    <div class="modal-contenido">
-      <span class="cerrar" onclick="cerrarVenta()">&times;</span>
-      <h2 id="tituloNegocio"></h2>
 
-      <label>Artículo:<br>
-        <select id="articulo" onchange="actualizarPrecio()"></select>
-      </label><br><br>
-      
-      <label>Precio (MXN):<br>
-        <input type="number" id="costo" readonly>
-      </label><br><br>
+<!-- COLUMNA DERECHA (NOTICIAS) -->
+<aside id="barra-lateral">
+<h2>📰 Últimas Noticias</h2>
+<div id="contenedor-noticias"></div>
+</aside>
+</div>
 
-      <label>Cantidad:<br>
-        <input type="number" id="cantidad" value="1" min="1">
-      </label><br><br>
 
-      <button onclick="enviarPedido()">Enviar por WhatsApp</button>
-    </div>
-  </div>
+<!-- Popup de compras -->
+<div id="popup" class="modal" role="dialog" aria-modal="true" aria-labelledby="tituloNegocio">
+<div class="modal-contenido">
+<button class="cerrar" aria-label="Cerrar" onclick="cerrarVenta()">×</button>
+<h2 id="tituloNegocio"></h2>
 
-  <script src="script.js"></script>
+
+<label>Artículo:<br />
+<select id="articulo" onchange="actualizarPrecio()"></select>
+</label><br /><br />
+
+
+<label>Precio (MXN):<br />
+<input type="number" id="costo" readonly />
+</label><br /><br />
+
+
+<label>Cantidad:<br />
+<input type="number" id="cantidad" value="1" min="1" />
+</label><br /><br />
+
+
+<button class="btn-primario" onclick="enviarPedido()">Enviar por WhatsApp</button>
+</div>
+</div>
+
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,180 +1,77 @@
 // ======================
-// Carrusel (manual por ahora)
-// ======================
-let indexSlide = 0;
-const slides = document.querySelectorAll('#carrusel .slide');
-function mostrarSlide(i) {
-  slides.forEach((s, idx) => s.style.opacity = idx === i ? 1 : 0);
-}
-mostrarSlide(indexSlide);
-setInterval(() => {
-  indexSlide = (indexSlide + 1) % slides.length;
-  mostrarSlide(indexSlide);
-}, 3000);
-
-// ======================
-// Cargar Negocios
-// ======================
-async function cargarNegocios() {
-  try {
-    const res = await fetch("negocios.json");
-    if (!res.ok) throw new Error("No se pudo cargar negocios.json");
-    const data = await res.json();
-
-    // Validar estructura
-    const negocios = data[0]?.businesses || [];
-    if (!Array.isArray(negocios)) {
-      console.error("❌ negocios.json no tiene un array válido en businesses");
-      return;
-    }
-
-    const cont = document.getElementById("tarjetas-negocios");
-    cont.innerHTML = "";
-
-    negocios.forEach(n => {
-      const card = document.createElement("div");
-      card.className = "tarjeta-negocio";
-      card.dataset.categoria = n.category;
-
-      card.innerHTML = `
-        <img src="${n.images?.[0] || 'img/default.jpg'}" alt="${n.name}">
-        <h3>${n.name}</h3>
-        <p>${n.description}</p>
-        <button class="btn-whatsapp" onclick="window.open('https://wa.me/${n.phone}','_blank')">WhatsApp</button>
-      `;
-      cont.appendChild(card);
-    });
-
-    filtrarTarjetas();
-  } catch (err) {
-    console.error("⚠️ Error cargando negocios:", err);
-  }
+filtrarPorCategoria(btn.dataset.categoria);
+});
 }
 
-// ======================
-// Filtrado por categoría
-// ======================
-const botones = document.querySelectorAll(".btn-categoria");
-function filtrarTarjetas() {
-  botones.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const cat = btn.dataset.categoria;
-      document.querySelectorAll(".tarjeta-negocio").forEach(t => {
-        t.style.display = (cat === "todos" || t.dataset.categoria === cat) ? "block" : "none";
-      });
-    });
-  });
-}
 
-// ======================
-// Buscador de negocios
-// ======================
-document.getElementById("inputBusqueda").addEventListener("input", e => {
-  const text = e.target.value.toLowerCase();
-  document.querySelectorAll(".tarjeta-negocio").forEach(t => {
-    t.style.display = t.querySelector("h3").textContent.toLowerCase().includes(text) ? "block" : "none";
-  });
+function cargarNegocios(negocios) {
+const cont = document.getElementById('tarjetas-negocios');
+cont.innerHTML = '';
+
+
+negocios.forEach(n => {
+const card = document.createElement('div');
+card.className = 'tarjeta-negocio';
+card.dataset.categoria = n.category;
+
+
+// Detectar si este negocio tiene catálogo en data.json (usamos un id opcional)
+const tieneId = Boolean(n.id);
+const tieneCatalogo = tieneId && DATA?.negocios?.[n.id];
+
+
+card.innerHTML = `
+<img src="${(n.images && n.images[0]) || 'img/default.jpg'}" alt="${n.name}">
+<h3>${n.name}</h3>
+<p>${n.description || ''}</p>
+<div>
+<a class="btn-whatsapp" href="https://wa.me/${n.phone}" target="_blank" rel="noopener">WhatsApp</a>
+${tieneCatalogo ? `<button class="btn-compra" data-id="${n.id}">Comprar</button>` : ''}
+</div>
+`;
+
+
+cont.appendChild(card);
 });
 
-// ======================
-// Noticias (NewsAPI con fallback a noticias.json)
-// ======================
-async function cargarNoticias() {
-  const API_KEY = "TU_API_KEY"; // pon tu API key aquí
-  const urlNewsAPI = `https://newsapi.org/v2/top-headlines?country=mx&apiKey=${API_KEY}`;
 
-  try {
-    let noticias = [];
-
-    // 1. Intentar cargar de NewsAPI
-    const res = await fetch(urlNewsAPI);
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data.articles)) {
-        noticias = data.articles.map(n => ({
-          titulo: n.title,
-          descripcion: n.description || "",
-          imagen: n.urlToImage || "img/default.jpg"
-        }));
-      }
-    } else {
-      throw new Error("NewsAPI no respondió");
-    }
-
-    // Si NewsAPI no trajo nada, forzar fallback
-    if (!noticias.length) throw new Error("NewsAPI vacío");
-
-    mostrarNoticias(noticias);
-  } catch (err) {
-    console.warn("⚠️ No se pudo cargar NewsAPI, usando noticias.json:", err);
-
-    try {
-      // 2. Cargar de noticias.json como respaldo
-      const resLocal = await fetch("noticias.json");
-      if (!resLocal.ok) throw new Error("No se pudo cargar noticias.json");
-      const noticiasLocal = await resLocal.json();
-
-      if (Array.isArray(noticiasLocal)) {
-        mostrarNoticias(noticiasLocal);
-      }
-    } catch (err2) {
-      console.error("❌ Error cargando noticias.json:", err2);
-    }
-  }
+// Delegación de eventos para botones Comprar
+cont.addEventListener('click', (e) => {
+const btn = e.target.closest('.btn-compra');
+if (!btn) return;
+const id = btn.getAttribute('data-id');
+abrirVenta(id);
+});
 }
 
-// ======================
-// Renderizar burbujas de noticias
-// ======================
-function mostrarNoticias(noticias) {
-  const contenedor = document.getElementById("noticias-burbujas");
-  contenedor.innerHTML = "";
 
-  noticias.forEach(n => {
-    const burbuja = document.createElement("div");
-    burbuja.classList.add("burbuja-noticia");
-    burbuja.innerHTML = `
-      <img src="${n.imagen || 'img/default.jpg'}" alt="noticia">
-      <div>
-        <h4>${n.titulo}</h4>
-        <p>${n.descripcion}</p>
-      </div>
-    `;
-    contenedor.appendChild(burbuja);
-  });
+function filtrarPorCategoria(cat) {
+document.querySelectorAll('.tarjeta-negocio').forEach(card => {
+const ok = (cat === 'todos') || (card.dataset.categoria === cat);
+card.style.display = ok ? '' : 'none';
+});
 }
 
-let catalogo = {};
-let negocioActivo = null;
 
-async function cargarCatalogo() {
-  const response = await fetch("data.json");
-  const data = await response.json();
-  catalogo = data.negocios;  // 👈 ahora usamos la sección "negocios"
+function filtrarPorTexto(texto) {
+const t = (texto || '').toLowerCase();
+document.querySelectorAll('.tarjeta-negocio').forEach(card => {
+const nombre = card.querySelector('h3')?.textContent.toLowerCase() || '';
+card.style.display = nombre.includes(t) ? '' : 'none';
+});
 }
 
+
+// ======================
+// Popup de compra (WhatsApp)
+// ======================
 function abrirVenta(idNegocio) {
-  negocioActivo = catalogo[idNegocio];
-
-  if (!negocioActivo) {
-    alert("Catálogo no encontrado");
-    return;
-  }
-
-  // Mostrar popup
-  document.getElementById("popup").style.display = "block";
-  document.getElementById("tituloNegocio").textContent = negocioActivo.nombre;
-
-  // Llenar select con artículos
-  let select = document.getElementById("articulo");
-  select.innerHTML = "";
-  negocioActivo.articulos.forEach((item, index) => {
-    let option = document.createElement("option");
-    option.value = index;
-    option.textContent = item.nombre;
-    select.appendChild(option);
-  });
-
-  // Set precio inicial
-  actualizarPrecio();
+const negocio = DATA?.negocios?.[idNegocio];
+if (!negocio) {
+alert('Catálogo no encontrado');
+return;
 }
+negocioActivo = negocio;
+
+
+const modal = document.getEleme

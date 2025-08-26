@@ -1,148 +1,59 @@
 /* Fondo general tipo playa */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #b2f0f5, #fdf6e3); /* azul pastel → arena */
-  color: #333;
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+text-align: center;
 }
-
-/* Encabezado */
-header {
-  background: linear-gradient(to right, #7ec8e3, #f6d6a8); /* azul pastel → beige pastel */
-  text-align: center;
-  padding: 20px;
-  font-size: 1.8em;
-  font-weight: bold;
-  border-bottom: 3px solid #e2c49c;
-}
-
-/* Grid layout */
-.layout {
-  display: grid;
-  grid-template-columns: 3fr 1fr; /* izquierda 3/4, derecha 1/4 */
-  gap: 20px;
-  padding: 20px;
-}
-
-/* Carrusel */
-#carrusel {
-  max-height: 250px;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  background: #fff;
-}
-
-/* Categorías */
-#categorias {
-  display: flex;
-  gap: 10px;
-}
-
-#categorias button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  background: #7ec8e3;
-  color: white;
-  cursor: pointer;
-}
-
-#categorias button:hover {
-  background: #55a8c4;
-}
-
-/* Negocios */
-#tarjetas-negocios {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 15px;
-}
-
-.tarjeta {
-  background: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  margin: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  display: inline-block;
-  width: 200px;
-  text-align: center;
-}
-
-.btn-whatsapp, .btn-compra {
-  background: #25D366;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.btn-compra {
-  background: #007bff;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-}
-
-.modal-contenido {
-  background: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  text-align: center;
-}
-
-.cerrar {
-  float: right;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.tarjeta-negocio {
-  background: white;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
 .tarjeta-negocio img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
+width: 100%;
+height: 130px;
+object-fit: cover;
+border-radius: 8px;
 }
+.tarjeta-negocio h3 { margin: 10px 0 6px; font-size: 1rem; }
+.tarjeta-negocio p { margin: 0 0 10px; font-size: .9rem; color: #555; min-height: 38px; }
+
+
+.btn-whatsapp, .btn-compra, .btn-primario {
+display: inline-block;
+background: var(--verde-wa);
+color: white;
+padding: 8px 12px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+text-decoration: none;
+}
+.btn-compra { background: #007bff; margin-left: 6px; }
+
 
 /* Noticias a la derecha */
 #barra-lateral {
-  background: rgba(255,255,255,0.9);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
+background: rgba(255,255,255,0.9);
+border-radius: 12px;
+padding: 15px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+max-height: calc(100vh - 100px);
+overflow-y: auto;
 }
-
 #contenedor-noticias .tarjeta-noticia {
-  margin-bottom: 10px;
-  background: #f9f9f9;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
+margin-bottom: 12px;
+background: #f9f9f9;
+padding: 10px;
+border-radius: 8px;
 }
+#contenedor-noticias img {
+width: 100%; height: 110px; object-fit: cover; border-radius: 6px; display: block;
+}
+#contenedor-noticias h4 { margin: 6px 0 4px; font-size: .98rem; }
+#contenedor-noticias p { margin: 0; font-size: .9rem; color: #555; }
 
-#contenedor-noticias .tarjeta-noticia img {
-  max-width: 100%;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 6px;
+
+/* Modal */
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; }
+.modal-contenido { background: #fff; margin: 8% auto; padding: 20px; border-radius: 12px; width: min(420px, 92%); text-align: center; position: relative; }
+.cerrar { position: absolute; right: 10px; top: 8px; font-size: 22px; border: none; background: transparent; cursor: pointer; }
+
+
+@media (max-width: 980px) {
+.layout { grid-template-columns: 1fr; }
+#barra-lateral { max-height: none; }
 }

@@ -1,153 +1,62 @@
 [
   {
-     "categories": [
-		"Alimentos y Comidas",
-		"Tiendas",
-		"Servicios",
-		"Salud",
-		"Belleza",
-		"Tecnología",
-		"Educación",
-		"Automotriz"
-	],
-    "businesses": [
-        {
-            "name": "Café Central",
-            "category": "Alimentos y Comidas",
-            "description": "El mejor café de la ciudad, abierto todos los días.",
-            "address": "Av. Principal 123",
-            "phone": "5215555555555",
-            "images": ["img/cafe1.jpg"]
-        },
-		{
-            "name": "Pollos **Hugo**",
-            "category": "Alimentos y Comidas",
-            "description": "El Pollo más Gallo de mi Tierra.",
-            "address": "Jardines de las Delicias Mza.25 Lt. 27 Casa 46",
-            "phone": "5215555555555",
-            "images": ["img/pollo1.jpg"]
-        },
-        {
-            "name": "Tienda Moda Chic",
-            "category": "Tiendas",
-            "description": "Ropa y accesorios de moda para toda la familia.",
-            "address": "Calle Comercio 45",
-            "phone": "5215556667777",
-            "images": ["img/moda1.jpg"]
-        },
-		{
-            "name": "Milano",
-            "category": "Tiendas",
-            "description": "Ropa y Calzado de Moda.",
-            "address": "Calle Puente Grande 27",
-            "phone": "5215556667777",
-            "images": ["img/moda2.jpg"]
-        },
-       	{
-            "name": "Servicio Mecánico Tuercas",
-            "category": "Servicios",
-            "description": "Reparación de Automotores y Electricos.",
-            "address": "Calle Zoquipa 210",
-            "phone": "5215558889999",
-            "images": ["img/mecanic.png"]
-        },
-      	{
-            "name": "Mantenimiento y Accesorios Tecnológicos",
-            "category": "Tecnología",
-            "description": "Todo para Celulares, Moviles y PC.",
-            "address": "Av. San Juan 1578",
-            "phone": "5215558889999",
-            "images": ["img/tecno1.jpg"]
-        },
-       	{
-            "name": "Servicio Médico General",
-            "category": "Salud",
-            "description": "Atención las 24 HRS.",
-            "address": "Av. Guerrero  3258",
-            "phone": "5215558889999",
-            "images": ["img/medic1.jpg"]
-        },
-      	{
-            "name": "Consultorio Dental Diente Sano",
-            "category": "Salud",
-            "description": "Una Sonrisa es Salud.",
-            "address": "Calzada Vallejo 1987",
-            "phone": "5215558889999",
-            "images": ["img/medic2.jpg"]
-        },
-		{
-			"name": "Farmacia Central",
-			"category": "Salud",
-			"description": "Medicamentos y productos de cuidado personal.",
-			"address": "Av. Hidalgo #456",
-			"phone": "5215587654321",
-			"images": ["img/farm1.jpg"]
-		},
-       	{
-            "name": "Colegio Nuevo Vallarta",
-            "category": "Educación",
-            "description": "El Futuro está en tus manos.",
-            "address": "Av. Reforma  4129",
-            "phone": "5215558889999",
-            "images": ["img/clases.jpg"]
-        },
-		{
-			"name": "Academia de Inglés ABC",
-			"category": "Educación",
-			"description": "Cursos de inglés para todas las edades.",
-			"address": "Av. Universidad #321",
-			"phone": "5215599988776",
-			"images": ["img/academ1.jpg"]
-		},
-		{
-			"name": "Salon de Belleza",
-			"category": "Belleza",
-			"description": "El Mejor Outfit de México",
-			"address": "Av. Centenario #679",
-			"phone": "5215599988776",
-			"images": ["img/salon1.jpg"]
-		},
-		{
-			"name": "Laboratorio Automotríz",
-			"category": "Automotriz",
-			"description": "La mejor Tecnología",
-			"address": "Calle Saturnino #1048",
-			"phone": "5215599988776",
-			"images": ["img/auto1.jpg"]
-		},	
-		{
-			"name": "Alternativa Ferretera",
-			"category": "Servicios",
-			"description": "Soluciones Prácticas para el Hogar",
-			"address": "Av. Mexiquense Lt. 10 Local 3 y 4",
-			"phone": "525539965439",
-			"images": ["img/AlternFerre.png"]
-		},	
-		{
-			"name": "Carnitas El Puerco",
-			"category": "Alimentos y Comidas",
-			"description": "Sabor Oiknico",
-			"address": "Av. Manuel Otero Lt. 10 Local 27",
-			"phone": "525539965439",
-			"images": ["img/carnita1.jpg"]
-		},	
-		{
-			"name": "Itali Pizzas",
-			"category": "Alimentos y Comidas",
-			"description": "Armala como tu quieras",
-			"address": "Blvd. Ojo de Agua entre Amaro y Av. Martínez",
-			"phone": "525591319801",
-			"images": ["img/pizza1.jpg"]
-		},	
-		{
-			"name": "Carparvi",
-			"category": "Servicios",
-			"description": "Mantenimiento, Decoraciones y Acabados",
-			"address": "Av. Jardin #84-4 Col. José Pino Suárez",
-			"phone": "525518406693",
-			"images": ["img/carparvi.jpg"]
-		}			
-    ]
+    "nombre": "Café Central",
+    "categoria": "Cafeterías",
+    "descripcion": "El mejor café del centro con repostería artesanal.",
+    "telefono": "5215553333333",
+    "imagen": "img/cafe.jpg",
+    "id": "cafeteriaCentro"
+  },
+  {
+    "nombre": "Tienda Moda Chic",
+    "categoria": "Tiendas de Ropa",
+    "descripcion": "Moda de temporada con estilo juvenil.",
+    "telefono": "5215554444444",
+    "imagen": "img/moda.jpg",
+    "id": "modaChic"
+  },
+  {
+    "nombre": "Servicio Técnico Rápido",
+    "categoria": "Servicios",
+    "descripcion": "Reparación de computadoras y celulares.",
+    "telefono": "5215555555555",
+    "imagen": "img/tecnico.jpg"
+  },
+  {
+    "nombre": "Restaurante La Playa",
+    "categoria": "Restaurantes",
+    "descripcion": "Mariscos frescos frente al mar.",
+    "telefono": "5215552222222",
+    "imagen": "img/restaurante.jpg",
+    "id": "restaurantePlaya"
+  },
+  {
+    "nombre": "Farmacia Vida",
+    "categoria": "Salud",
+    "descripcion": "Medicamentos y productos de cuidado personal.",
+    "telefono": "5215556666666",
+    "imagen": "img/farmacia.jpg"
+  },
+  {
+    "nombre": "Gimnasio FitPlus",
+    "categoria": "Deportes",
+    "descripcion": "Entrenamientos personalizados y clases grupales.",
+    "telefono": "5215557777777",
+    "imagen": "img/gimnasio.jpg"
+  },
+  {
+    "nombre": "Panadería Delicias",
+    "categoria": "Alimentos",
+    "descripcion": "Pan recién horneado y pasteles deliciosos.",
+    "telefono": "5215558888888",
+    "imagen": "img/panaderia.jpg"
+  },
+  {
+    "nombre": "Estética Bella",
+    "categoria": "Belleza",
+    "descripcion": "Cortes, tintes y tratamientos para tu cabello.",
+    "telefono": "5215559999999",
+    "imagen": "img/estetica.jpg"
   }
 ]
 

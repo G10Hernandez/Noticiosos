@@ -1,7 +1,7 @@
 {
   "banners": [
     {
-      "image": "img/banner1.png",
+      "image": "img/banner1.jpg",
       "business": "Café Central"
     },
     {
@@ -14,26 +14,44 @@
     },
     {
       "image": "img/banner4.jpg",
-      "business": "Servicio Médico General"
+      "business": "Restaurante La Playa"
     }
   ],
-
   "negocios": {
     "ropaPlaya": {
       "nombre": "Tienda de Ropa Playa",
-      "telefono": "5215555555555",
+      "telefono": "5215551111111",
       "articulos": [
-        { "nombre": "Playera", "precio": 150 },
-        { "nombre": "Sombrero", "precio": 200 },
-        { "nombre": "Lentes", "precio": 100 }
+        { "nombre": "Playera estampada", "precio": 150 },
+        { "nombre": "Sombrero de palma", "precio": 200 },
+        { "nombre": "Sandalias", "precio": 180 }
       ]
     },
     "restaurantePlaya": {
       "nombre": "Restaurante La Playa",
-      "telefono": "5215555550000",
+      "telefono": "5215552222222",
       "articulos": [
         { "nombre": "Ceviche", "precio": 120 },
-        { "nombre": "Camarones", "precio": 180 }
+        { "nombre": "Camarones al coco", "precio": 180 },
+        { "nombre": "Filete de pescado", "precio": 150 }
+      ]
+    },
+    "cafeteriaCentro": {
+      "nombre": "Café Central",
+      "telefono": "5215553333333",
+      "articulos": [
+        { "nombre": "Capuchino", "precio": 50 },
+        { "nombre": "Latte", "precio": 55 },
+        { "nombre": "Rebanada de pastel", "precio": 65 }
+      ]
+    },
+    "modaChic": {
+      "nombre": "Tienda Moda Chic",
+      "telefono": "5215554444444",
+      "articulos": [
+        { "nombre": "Vestido de verano", "precio": 350 },
+        { "nombre": "Bolso de playa", "precio": 220 },
+        { "nombre": "Lentes de sol", "precio": 180 }
       ]
     }
   }
