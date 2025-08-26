@@ -24,7 +24,6 @@
     #lista-noticias { background: rgba(255,255,255,0.9); border-radius: 12px; padding: 10px; max-height: calc(100vh - 100px); overflow-y: auto; }
     .noticia { margin-bottom: 10px; background: #f9f9f9; padding: 10px; border-radius: 8px; text-align: center; }
     .noticia img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; }
-    /* POPUP */
     #popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
     #popup-content { background: #fff; border-radius: 10px; width: 300px; padding: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
     #popup-content h2 { margin-top: 0; }
@@ -60,12 +59,12 @@
     <label>Precio (MXN):<input type="number" id="popup-precio" readonly></label>
     <label>Cantidad:<input type="number" id="popup-cantidad" value="1" min="1"></label>
     <button id="popup-enviar">Enviar por WhatsApp</button>
+    <button id="popup-regresar" style="margin-top:10px; background:#555; color:white;">Regresar al portal</button>
   </div>
 </div>
 
 <script src="script.js"></script>
 <script>
-// Popup funcionalidad
 const overlay = document.getElementById('popup-overlay');
 const popupTitulo = document.getElementById('popup-titulo');
 const popupArticulo = document.getElementById('popup-articulo');
@@ -73,6 +72,7 @@ const popupPrecio = document.getElementById('popup-precio');
 const popupCantidad = document.getElementById('popup-cantidad');
 const btnCerrar = document.getElementById('cerrar-popup');
 const btnEnviar = document.getElementById('popup-enviar');
+const btnRegresar = document.getElementById('popup-regresar');
 let negocioActivo = null;
 
 function abrirPopup(negocio){
@@ -95,6 +95,7 @@ popupArticulo.addEventListener('change', ()=>{
 });
 
 btnCerrar.addEventListener('click', ()=>{ overlay.style.display='none'; });
+btnRegresar.addEventListener('click', ()=>{ overlay.style.display='none'; });
 
 btnEnviar.addEventListener('click', ()=>{
     let art = negocioActivo.articulos[popupArticulo.value];
@@ -103,6 +104,25 @@ btnEnviar.addEventListener('click', ()=>{
     window.open(`https://wa.me/${negocioActivo.telefono}?text=${encodeURIComponent(mensaje)}`,'_blank');
     overlay.style.display='none';
 });
+
+// Actualizar noticias dinámicamente
+async function cargarNoticias(){
+    try{
+        const res = await fetch('noticias.json');
+        if(!res.ok) throw new Error('No se pudo cargar noticias.json');
+        const noticias = await res.json();
+        const cont = document.getElementById('lista-noticias');
+        cont.innerHTML = '';
+        noticias.forEach(n => {
+            const div = document.createElement('div');
+            div.className = 'noticia';
+            div.innerHTML = `<img src='${n.imagen}' alt='noticia'><h4>${n.titulo}</h4><p>${n.descripcion}</p>`;
+            cont.appendChild(div);
+        });
+    }catch(e){ console.error(e); }
+}
+cargarNoticias();
+setInterval(cargarNoticias, 300000); // Actualiza cada 5 minutos
 </script>
 </body>
 </html>
