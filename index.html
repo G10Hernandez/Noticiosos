@@ -11,14 +11,14 @@
     .layout { display:grid; grid-template-columns:3fr 1fr; gap:20px; padding:20px; }
     #carousel { height:20vh; overflow:hidden; border-radius:12px; position:relative; }
     #carousel img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition: opacity 1s ease-in-out; }
-    #categorias { display:flex; gap:10px; padding:10px; }
+    #categorias { display:flex; gap:10px; padding:10px; flex-wrap:wrap; }
     #categorias button { padding:6px 10px; border:none; border-radius:8px; background:#7ec8e3; color:white; cursor:pointer; font-size:0.9em; }
     #categorias button:hover { background:#55a8c4; }
     #busqueda { width:100%; padding:6px; border-radius:6px; border:1px solid #ccc; margin-bottom:15px; font-size:0.9em; }
-    #lista-negocios { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:15px; }
-    .tarjeta-negocio { background:#fff; border-radius:8px; padding:8px; text-align:center; box-shadow:0 3px 6px rgba(0,0,0,0.1); font-size:0.9em; display:flex; flex-direction:column; align-items:center; }
-    .tarjeta-negocio img { width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:5px; }
-    .btn-whatsapp, .btn-compra { padding:4px 8px; border:none; border-radius:5px; cursor:pointer; text-decoration:none; color:white; margin-top:4px; font-size:0.8em; display:inline-block; }
+    #lista-negocios { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:20px; }
+    .tarjeta-negocio { background:#fff; border-radius:8px; padding:10px; text-align:center; box-shadow:0 3px 6px rgba(0,0,0,0.1); font-size:0.9em; display:flex; flex-direction:column; align-items:center; margin:0; }
+    .tarjeta-negocio img { width:100%; height:100px; object-fit:cover; border-radius:6px; margin-bottom:8px; }
+    .btn-whatsapp, .btn-compra { padding:4px 6px; border:none; border-radius:5px; cursor:pointer; text-decoration:none; color:white; margin-top:4px; font-size:0.8em; display:inline-block; }
     .btn-whatsapp { background:#25D366; }
     .btn-compra { background:#007bff; }
     #lista-noticias { background:rgba(255,255,255,0.9); border-radius:12px; padding:10px; max-height:calc(100vh - 100px); overflow-y:auto; }
