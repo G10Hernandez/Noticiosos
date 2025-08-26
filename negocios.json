@@ -4,7 +4,7 @@
     "categoria": "Cafeterías",
     "descripcion": "El mejor café del centro con repostería artesanal.",
     "telefono": "5215553333333",
-    "imagen": "img/cafe.jpg",
+    "imagen": "img/cafe1.jpg",
     "id": "cafeteriaCentro"
   },
   {
@@ -12,7 +12,7 @@
     "categoria": "Tiendas de Ropa",
     "descripcion": "Moda de temporada con estilo juvenil.",
     "telefono": "5215554444444",
-    "imagen": "img/moda.jpg",
+    "imagen": "img/moda2.jpg",
     "id": "modaChic"
   },
   {
@@ -20,14 +20,14 @@
     "categoria": "Servicios",
     "descripcion": "Reparación de computadoras y celulares.",
     "telefono": "5215555555555",
-    "imagen": "img/tecnico.jpg"
+    "imagen": "img/tecno1.jpg"
   },
   {
     "nombre": "Restaurante La Playa",
     "categoria": "Restaurantes",
     "descripcion": "Mariscos frescos frente al mar.",
     "telefono": "5215552222222",
-    "imagen": "img/restaurante.jpg",
+    "imagen": "img/restaurante1.jpg",
     "id": "restaurantePlaya"
   },
   {
@@ -35,28 +35,28 @@
     "categoria": "Salud",
     "descripcion": "Medicamentos y productos de cuidado personal.",
     "telefono": "5215556666666",
-    "imagen": "img/farmacia.jpg"
+    "imagen": "img/farm1.jpg"
   },
   {
     "nombre": "Gimnasio FitPlus",
     "categoria": "Deportes",
     "descripcion": "Entrenamientos personalizados y clases grupales.",
     "telefono": "5215557777777",
-    "imagen": "img/gimnasio.jpg"
+    "imagen": "img/gym1.jpg"
   },
   {
     "nombre": "Panadería Delicias",
     "categoria": "Alimentos",
     "descripcion": "Pan recién horneado y pasteles deliciosos.",
     "telefono": "5215558888888",
-    "imagen": "img/panaderia.jpg"
+    "imagen": "img/panaderia1.jpg"
   },
   {
     "nombre": "Estética Bella",
     "categoria": "Belleza",
     "descripcion": "Cortes, tintes y tratamientos para tu cabello.",
     "telefono": "5215559999999",
-    "imagen": "img/estetica.jpg"
+    "imagen": "img/belleza1.jpg"
   }
 ]
 
