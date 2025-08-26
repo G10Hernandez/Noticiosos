@@ -1,92 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Portal Noticias y Negocios</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Noticias y Negocios</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- ENCABEZADO -->
-<header>
-<h1>🌴 Portal Noticias y Negocios</h1>
-</header>
 
+  <!-- ENCABEZADO -->
+  <header>
+    <h1>🌴 Portal Noticias y Negocios</h1>
+  </header>
 
-<!-- LAYOUT EN DOS COLUMNAS -->
-<div class="layout">
-<!-- COLUMNA IZQUIERDA -->
-<main>
-<!-- Carrusel -->
-<section id="carrusel" aria-label="Banners de negocios"></section>
+  <!-- CARRUSEL DE BANNERS -->
+  <div class="carousel">
+    <div id="carousel-inner"></div>
+  </div>
 
+  <!-- BOTONES DE CATEGORÍAS -->
+  <div id="categorias"></div>
 
-<!-- Barra de acciones (categorías + búsqueda) -->
-<section id="acciones">
-<div id="categorias" aria-label="Filtros por categoría"></div>
-<input id="inputBusqueda" type="search" placeholder="Buscar negocio…" aria-label="Buscar negocio" />
-</section>
+  <!-- BUSCADOR -->
+  <input type="text" id="busqueda" placeholder="Buscar negocio…">
 
+  <!-- LISTA DE NEGOCIOS -->
+  <div id="lista-negocios"></div>
 
-<!-- Tarjetas de negocios -->
-<section id="tarjetas-negocios" aria-live="polite"></section>
-</main>
+  <!-- NOTICIAS -->
+  <aside>
+    <h2>📰 Últimas Noticias</h2>
+    <div id="lista-noticias"></div>
+  </aside>
 
+  <!-- POPUP DE COMPRAS -->
+  <div id="popup"></div>
 
-<!-- COLUMNA DERECHA (NOTICIAS) -->
-<aside id="barra-lateral">
-<h2>📰 Últimas Noticias</h2>
-<div id="contenedor-noticias"></div>
-</aside>
-</div>
-
-
-<!-- Popup de compras -->
-<div id="popup" class="modal" role="dialog" aria-modal="true" aria-labelledby="tituloNegocio">
-<div class="modal-contenido">
-<button class="cerrar" aria-label="Cerrar" onclick="cerrarVenta()">×</button>
-<h2 id="tituloNegocio"></h2>
-
-
-<label>Artículo:<br />
-<select id="articulo" onchange="actualizarPrecio()"></select>
-</label><br /><br />
-
-
-<label>Precio (MXN):<br />
-<input type="number" id="costo" readonly />
-</label><br /><br />
-
-
-<label>Cantidad:<br />
-<input type="number" id="cantidad" value="1" min="1" />
-</label><br /><br />
-
-
-<button class="btn-primario" onclick="enviarPedido()">Enviar por WhatsApp</button>
-</div>
-</div>
-
-<!-- Carrusel -->
-<div id="carouselExample" class="carousel slide">
-  <div id="carousel-inner" class="carousel-inner"></div>
-</div>
-
-<!-- Categorías -->
-<div id="categorias"></div>
-
-<!-- Negocios -->
-<div id="lista-negocios" class="row"></div>
-
-<!-- Noticias -->
-<div id="lista-noticias"></div>
-
-<!-- Popup -->
-<div id="popup" class="popup"></div>
-
-<script src="script.js"></script>
-
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
