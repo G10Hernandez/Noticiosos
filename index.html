@@ -6,36 +6,34 @@
   <title>Portal Noticias y Negocios</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(to bottom, #b2f0f5, #fdf6e3); color: #333; }
-    header { background: linear-gradient(to right, #7ec8e3, #f6d6a8); text-align: center; padding: 20px; font-size: 1.8em; font-weight: bold; border-bottom: 3px solid #e2c49c; }
-    .layout { display: grid; grid-template-columns: 3fr 1fr; gap: 20px; padding: 20px; }
-    #carousel { height: 20vh; overflow: hidden; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; }
-    #carousel img { height: 100%; object-fit: contain; }
-    #categorias { display: flex; gap: 10px; padding: 10px; }
-    #categorias button { padding: 6px 10px; border: none; border-radius: 8px; background: #7ec8e3; color: white; cursor: pointer; font-size:0.9em; }
-    #categorias button:hover { background: #55a8c4; }
-    #busqueda { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 0.9em; }
-    #lista-negocios { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-    .tarjeta-negocio { background: #fff; border-radius: 8px; padding: 10px; text-align: center; box-shadow: 0 3px 6px rgba(0,0,0,0.1); font-size:0.9em; }
-    .tarjeta-negocio img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; }
-    .btn-whatsapp, .btn-compra { padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; color: white; margin-top: 4px; font-size: 0.85em; display: inline-block; }
-    .btn-whatsapp { background: #25D366; }
-    .btn-compra { background: #007bff; }
-    #lista-noticias { background: rgba(255,255,255,0.9); border-radius: 12px; padding: 10px; max-height: calc(100vh - 100px); overflow-y: auto; }
-    .noticia { margin-bottom: 10px; background: #f9f9f9; padding: 8px; border-radius: 8px; text-align: center; }
-    .noticia img { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; }
-    #popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; }
-    #popup-content { background: #fff; border-radius: 10px; width: 300px; padding: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    #popup-content h2 { margin-top: 0; font-size: 1.1em; }
-    #popup-content label { display: block; margin-bottom: 8px; font-size:0.9em; }
-    #popup-content input, #popup-content select { width: 100%; padding: 4px; margin-top: 3px; font-size:0.9em; }
-    #popup-content button { margin-top: 8px; padding: 6px 10px; border: none; border-radius: 5px; cursor: pointer; font-size:0.9em; }
+    body { margin:0; font-family:Arial,sans-serif; background:linear-gradient(to bottom,#b2f0f5,#fdf6e3); color:#333; }
+    header { background:linear-gradient(to right,#7ec8e3,#f6d6a8); text-align:center; padding:20px; font-size:1.8em; font-weight:bold; border-bottom:3px solid #e2c49c; }
+    .layout { display:grid; grid-template-columns:3fr 1fr; gap:20px; padding:20px; }
+    #carousel { height:20vh; overflow:hidden; border-radius:12px; position:relative; }
+    #carousel img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition: opacity 1s ease-in-out; }
+    #categorias { display:flex; gap:10px; padding:10px; }
+    #categorias button { padding:6px 10px; border:none; border-radius:8px; background:#7ec8e3; color:white; cursor:pointer; font-size:0.9em; }
+    #categorias button:hover { background:#55a8c4; }
+    #busqueda { width:100%; padding:6px; border-radius:6px; border:1px solid #ccc; margin-bottom:15px; font-size:0.9em; }
+    #lista-negocios { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:15px; }
+    .tarjeta-negocio { background:#fff; border-radius:8px; padding:8px; text-align:center; box-shadow:0 3px 6px rgba(0,0,0,0.1); font-size:0.9em; display:flex; flex-direction:column; align-items:center; }
+    .tarjeta-negocio img { width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:5px; }
+    .btn-whatsapp, .btn-compra { padding:4px 8px; border:none; border-radius:5px; cursor:pointer; text-decoration:none; color:white; margin-top:4px; font-size:0.8em; display:inline-block; }
+    .btn-whatsapp { background:#25D366; }
+    .btn-compra { background:#007bff; }
+    #lista-noticias { background:rgba(255,255,255,0.9); border-radius:12px; padding:10px; max-height:calc(100vh - 100px); overflow-y:auto; }
+    .noticia { margin-bottom:10px; background:#f9f9f9; padding:8px; border-radius:8px; text-align:center; }
+    .noticia img { width:100%; height:80px; object-fit:cover; border-radius:6px; }
+    #popup-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; pointer-events:none; }
+    #popup-content { background:#fff; border-radius:10px; width:300px; padding:20px; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); box-shadow:0 5px 15px rgba(0,0,0,0.3); pointer-events:auto; }
+    #popup-content h2 { margin-top:0; font-size:1.1em; }
+    #popup-content label { display:block; margin-bottom:8px; font-size:0.9em; }
+    #popup-content input, #popup-content select { width:100%; padding:4px; margin-top:3px; font-size:0.9em; }
+    #popup-content button { margin-top:8px; padding:6px 10px; border:none; border-radius:5px; cursor:pointer; font-size:0.9em; }
   </style>
 </head>
 <body>
-
 <header>🌴 Portal Noticias y Negocios</header>
-
 <div class="layout">
   <main>
     <div id="carousel"></div>
@@ -43,13 +41,11 @@
     <input type="text" id="busqueda" placeholder="Buscar negocio…">
     <div id="lista-negocios"></div>
   </main>
-
   <aside>
     <h2>📰 Últimas Noticias</h2>
     <div id="lista-noticias"></div>
   </aside>
 </div>
-
 <div id="popup-overlay">
   <div id="popup-content">
     <span id="cerrar-popup" style="float:right; cursor:pointer; font-size:20px;">&times;</span>
@@ -61,66 +57,30 @@
     <button id="popup-regresar" style="margin-top:10px; background:#555; color:white;">Cerrar ventana</button>
   </div>
 </div>
-
 <script src="script.js"></script>
 <script>
-const overlay = document.getElementById('popup-overlay');
-const popupTitulo = document.getElementById('popup-titulo');
-const popupArticulo = document.getElementById('popup-articulo');
-const popupPrecio = document.getElementById('popup-precio');
-const popupCantidad = document.getElementById('popup-cantidad');
-const btnCerrar = document.getElementById('cerrar-popup');
-const btnEnviar = document.getElementById('popup-enviar');
-const btnRegresar = document.getElementById('popup-regresar');
-let negocioActivo = null;
-
-function abrirPopup(negocio){
-    negocioActivo = negocio;
-    popupTitulo.textContent = negocio.nombre;
-    popupArticulo.innerHTML = '';
-    negocio.articulos.forEach((art,i)=>{
-        let option = document.createElement('option');
-        option.value=i; option.textContent=art.nombre;
-        popupArticulo.appendChild(option);
+let carouselIndex=0;
+async function cargarCarousel(){
+  try{
+    const res=await fetch('data.json');
+    const data=await res.json();
+    const cont=document.getElementById('carousel');
+    cont.innerHTML='';
+    data.banners.forEach((b,i)=>{
+      const img=document.createElement('img');
+      img.src=b.image;
+      img.alt=b.business;
+      img.style.opacity=i===0?'1':'0';
+      cont.appendChild(img);
     });
-    popupPrecio.value = negocio.articulos[0].precio;
-    popupCantidad.value = 1;
-    overlay.style.display='block';
+    setInterval(()=>{
+      const imgs=cont.querySelectorAll('img');
+      imgs.forEach((img,i)=>img.style.opacity=i===carouselIndex?'1':'0');
+      carouselIndex=(carouselIndex+1)%imgs.length;
+    },3000);
+  }catch(e){console.error(e);}
 }
-
-popupArticulo.addEventListener('change',()=>{
-    let idx = popupArticulo.value;
-    popupPrecio.value = negocioActivo.articulos[idx].precio;
-});
-
-btnCerrar.addEventListener('click',()=>{ overlay.style.display='none'; });
-btnRegresar.addEventListener('click',()=>{ overlay.style.display='none'; });
-
-btnEnviar.addEventListener('click',()=>{
-    let art = negocioActivo.articulos[popupArticulo.value];
-    let cantidad = popupCantidad.value;
-    let mensaje = `Hola, quiero pedir:\n${art.nombre} x ${cantidad} = $${art.precio*cantidad} MXN`;
-    window.open(`https://wa.me/${negocioActivo.telefono}?text=${encodeURIComponent(mensaje)}`,'_blank');
-    overlay.style.display='none';
-});
-
-async function cargarNoticias(){
-    try{
-        const res = await fetch('noticias.json');
-        if(!res.ok) throw new Error('No se pudo cargar noticias.json');
-        const noticias = await res.json();
-        const cont = document.getElementById('lista-noticias');
-        cont.innerHTML = '';
-        noticias.forEach(n=>{
-            const div = document.createElement('div');
-            div.className='noticia';
-            div.innerHTML=`<img src='${n.imagen}' alt='noticia'><h4>${n.titulo}</h4><p>${n.descripcion}</p>`;
-            cont.appendChild(div);
-        });
-    }catch(e){ console.error(e); }
-}
-cargarNoticias();
-setInterval(cargarNoticias,300000);
+cargarCarousel();
 </script>
 </body>
 </html>
