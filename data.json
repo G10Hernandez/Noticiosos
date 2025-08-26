@@ -18,3 +18,23 @@
         }
     ]
 }
+
+{
+  "ropaPlaya": {
+    "nombre": "Tienda de Ropa Playa",
+    "telefono": "5215555555555",
+    "articulos": [
+      { "nombre": "Playera", "precio": 150 },
+      { "nombre": "Sombrero", "precio": 200 },
+      { "nombre": "Lentes", "precio": 100 }
+    ]
+  },
+  "restaurantePlaya": {
+    "nombre": "Restaurante La Playa",
+    "telefono": "5215555550000",
+    "articulos": [
+      { "nombre": "Ceviche", "precio": 120 },
+      { "nombre": "Camarones", "precio": 180 }
+    ]
+  }
+}

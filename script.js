@@ -77,44 +77,129 @@ document.getElementById("inputBusqueda").addEventListener("input", e => {
 });
 
 // ======================
-// Noticias
+// Noticias (NewsAPI con fallback a noticias.json)
 // ======================
 async function cargarNoticias() {
-  try {
-    const res = await fetch("noticias.json");
-    if (!res.ok) throw new Error("No se pudo cargar noticias.json");
-    const noticias = await res.json();
+  const API_KEY = "TU_API_KEY"; // pon tu API key aquí
+  const urlNewsAPI = `https://newsapi.org/v2/top-headlines?country=mx&apiKey=${API_KEY}`;
 
-    if (!Array.isArray(noticias)) {
-      console.error("❌ noticias.json no es un array válido");
-      return;
+  try {
+    let noticias = [];
+
+    // 1. Intentar cargar de NewsAPI
+    const res = await fetch(urlNewsAPI);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.articles)) {
+        noticias = data.articles.map(n => ({
+          titulo: n.title,
+          descripcion: n.description || "",
+          imagen: n.urlToImage || "img/default.jpg"
+        }));
+      }
+    } else {
+      throw new Error("NewsAPI no respondió");
     }
 
-    const contenedor = document.getElementById("noticias-burbujas");
-    contenedor.innerHTML = "";
+    // Si NewsAPI no trajo nada, forzar fallback
+    if (!noticias.length) throw new Error("NewsAPI vacío");
 
-    noticias.forEach(n => {
-      const burbuja = document.createElement("div");
-      burbuja.classList.add("burbuja-noticia");
-      burbuja.innerHTML = `
-        <img src="${n.imagen || 'img/default.jpg'}" alt="noticia">
-        <div>
-          <h4>${n.titulo}</h4>
-          <p>${n.descripcion}</p>
-        </div>
-      `;
-      contenedor.appendChild(burbuja);
-    });
-
+    mostrarNoticias(noticias);
   } catch (err) {
-    console.error("⚠️ Error cargando noticias:", err);
+    console.warn("⚠️ No se pudo cargar NewsAPI, usando noticias.json:", err);
+
+    try {
+      // 2. Cargar de noticias.json como respaldo
+      const resLocal = await fetch("noticias.json");
+      if (!resLocal.ok) throw new Error("No se pudo cargar noticias.json");
+      const noticiasLocal = await resLocal.json();
+
+      if (Array.isArray(noticiasLocal)) {
+        mostrarNoticias(noticiasLocal);
+      }
+    } catch (err2) {
+      console.error("❌ Error cargando noticias.json:", err2);
+    }
   }
 }
 
 // ======================
-// Inicializar portal
+// Renderizar burbujas de noticias
 // ======================
-document.addEventListener("DOMContentLoaded", () => {
-  cargarNegocios();
-  cargarNoticias();
-});
+function mostrarNoticias(noticias) {
+  const contenedor = document.getElementById("noticias-burbujas");
+  contenedor.innerHTML = "";
+
+  noticias.forEach(n => {
+    const burbuja = document.createElement("div");
+    burbuja.classList.add("burbuja-noticia");
+    burbuja.innerHTML = `
+      <img src="${n.imagen || 'img/default.jpg'}" alt="noticia">
+      <div>
+        <h4>${n.titulo}</h4>
+        <p>${n.descripcion}</p>
+      </div>
+    `;
+    contenedor.appendChild(burbuja);
+  });
+}
+
+let catalogo = {};
+let negocioActivo = null;
+
+async function cargarCatalogo() {
+  const response = await fetch("data.json");
+  catalogo = await response.json();
+}
+
+function abrirVenta(idNegocio) {
+  negocioActivo = catalogo[idNegocio];
+
+  if (!negocioActivo) {
+    alert("Catálogo no encontrado");
+    return;
+  }
+
+  // Mostrar popup
+  document.getElementById("popup").style.display = "block";
+  document.getElementById("tituloNegocio").textContent = negocioActivo.nombre;
+
+  // Llenar select con artículos
+  let select = document.getElementById("articulo");
+  select.innerHTML = "";
+  negocioActivo.articulos.forEach((item, index) => {
+    let option = document.createElement("option");
+    option.value = index;
+    option.textContent = item.nombre;
+    select.appendChild(option);
+  });
+
+  // Set precio inicial
+  actualizarPrecio();
+}
+
+function cerrarVenta() {
+  document.getElementById("popup").style.display = "none";
+}
+
+function actualizarPrecio() {
+  let index = document.getElementById("articulo").value;
+  let costo = negocioActivo.articulos[index].precio;
+  document.getElementById("costo").value = costo;
+}
+
+function enviarPedido() {
+  let index = document.getElementById("articulo").value;
+  let articulo = negocioActivo.articulos[index].nombre;
+  let costo = negocioActivo.articulos[index].precio;
+  let cantidad = document.getElementById("cantidad").value;
+  let total = costo * cantidad;
+
+  let mensaje = `Hola, quiero comprar en *${negocioActivo.nombre}*:\n- ${cantidad} x ${articulo}\n- Costo unitario: $${costo}\n- Total: $${total}`;
+
+  let url = "https://wa.me/" + negocioActivo.telefono + "?text=" + encodeURIComponent(mensaje);
+  window.open(url, "_blank");
+}
+
+// Cargar catálogo al inicio
+cargarCatalogo();

@@ -36,6 +36,44 @@
     </aside>
   </div>
 
+<div class="tarjeta">
+    <h3>Restaurante La Playa</h3>
+    <p>Comida veraniega</p>
+    <!-- Botón directo -->
+    <a href="https://wa.me/5215555555555" target="_blank" class="btn-whatsapp">WhatsApp</a>
+  </div>
+
+  <div class="tarjeta">
+    <h3>Tienda de Ropa Playa</h3>
+    <p>Artículos de verano</p>
+    <!-- Botón especial -->
+    <button class="btn-compra" onclick="abrirVenta('ropaPlaya')">
+      Comprar
+    </button>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar" onclick="cerrarVenta()">&times;</span>
+      <h2 id="tituloNegocio"></h2>
+
+      <label>Artículo:<br>
+        <select id="articulo" onchange="actualizarPrecio()"></select>
+      </label><br><br>
+      
+      <label>Precio (MXN):<br>
+        <input type="number" id="costo" readonly>
+      </label><br><br>
+
+      <label>Cantidad:<br>
+        <input type="number" id="cantidad" value="1" min="1">
+      </label><br><br>
+
+      <button onclick="enviarPedido()">Enviar por WhatsApp</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

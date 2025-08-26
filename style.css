@@ -59,6 +59,54 @@ header {
   gap: 15px;
 }
 
+.tarjeta {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+}
+
+.btn-whatsapp, .btn-compra {
+  background: #25D366;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-compra {
+  background: #007bff;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.modal-contenido {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.cerrar {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .tarjeta-negocio {
   background: white;
   border-radius: 10px;
