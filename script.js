@@ -149,7 +149,8 @@ let negocioActivo = null;
 
 async function cargarCatalogo() {
   const response = await fetch("data.json");
-  catalogo = await response.json();
+  const data = await response.json();
+  catalogo = data.negocios;  // 👈 ahora usamos la sección "negocios"
 }
 
 function abrirVenta(idNegocio) {
@@ -177,29 +178,3 @@ function abrirVenta(idNegocio) {
   // Set precio inicial
   actualizarPrecio();
 }
-
-function cerrarVenta() {
-  document.getElementById("popup").style.display = "none";
-}
-
-function actualizarPrecio() {
-  let index = document.getElementById("articulo").value;
-  let costo = negocioActivo.articulos[index].precio;
-  document.getElementById("costo").value = costo;
-}
-
-function enviarPedido() {
-  let index = document.getElementById("articulo").value;
-  let articulo = negocioActivo.articulos[index].nombre;
-  let costo = negocioActivo.articulos[index].precio;
-  let cantidad = document.getElementById("cantidad").value;
-  let total = costo * cantidad;
-
-  let mensaje = `Hola, quiero comprar en *${negocioActivo.nombre}*:\n- ${cantidad} x ${articulo}\n- Costo unitario: $${costo}\n- Total: $${total}`;
-
-  let url = "https://wa.me/" + negocioActivo.telefono + "?text=" + encodeURIComponent(mensaje);
-  window.open(url, "_blank");
-}
-
-// Cargar catálogo al inicio
-cargarCatalogo();
