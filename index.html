@@ -5,39 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Noticias y Negocios</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(to bottom, #b2f0f5, #fdf6e3); color: #333; }
+    header { background: linear-gradient(to right, #7ec8e3, #f6d6a8); text-align: center; padding: 20px; font-size: 1.8em; font-weight: bold; border-bottom: 3px solid #e2c49c; }
+    .layout { display: grid; grid-template-columns: 3fr 1fr; gap: 20px; padding: 20px; }
+    #carousel { height: 20vh; overflow: hidden; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; }
+    #carousel img { height: 100%; object-fit: contain; }
+    #categorias { display: flex; gap: 10px; padding: 10px; }
+    #categorias button { padding: 10px 15px; border: none; border-radius: 8px; background: #7ec8e3; color: white; cursor: pointer; }
+    #categorias button:hover { background: #55a8c4; }
+    #busqueda { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; }
+    #lista-negocios { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+    .tarjeta-negocio { background: #fff; border-radius: 10px; padding: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .tarjeta-negocio img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; }
+    .btn-whatsapp, .btn-compra { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; color: white; margin-top: 5px; display: inline-block; }
+    .btn-whatsapp { background: #25D366; }
+    .btn-compra { background: #007bff; }
+    #lista-noticias { background: rgba(255,255,255,0.9); border-radius: 12px; padding: 10px; max-height: calc(100vh - 100px); overflow-y: auto; }
+    .noticia { margin-bottom: 10px; background: #f9f9f9; padding: 10px; border-radius: 8px; text-align: center; }
+    .noticia img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; }
+    /* POPUP */
+    #popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+    #popup-content { background: #fff; border-radius: 10px; width: 300px; padding: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    #popup-content h2 { margin-top: 0; }
+    #popup-content label { display: block; margin-bottom: 10px; }
+    #popup-content input, #popup-content select { width: 100%; padding: 5px; margin-top: 5px; }
+    #popup-content button { margin-top: 10px; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; }
+  </style>
 </head>
 <body>
 
-  <!-- ENCABEZADO -->
-  <header>
-    <h1>🌴 Portal Noticias y Negocios</h1>
-  </header>
+<header>🌴 Portal Noticias y Negocios</header>
 
-  <!-- CARRUSEL DE BANNERS -->
-  <div class="carousel">
-    <div id="carousel-inner"></div>
-  </div>
+<div class="layout">
+  <main>
+    <div id="carousel"></div>
+    <div id="categorias"></div>
+    <input type="text" id="busqueda" placeholder="Buscar negocio…">
+    <div id="lista-negocios"></div>
+  </main>
 
-  <!-- BOTONES DE CATEGORÍAS -->
-  <div id="categorias"></div>
-
-  <!-- BUSCADOR -->
-  <div style="padding:10px;">
-    <input type="text" id="busqueda" placeholder="Buscar negocio…" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
-  </div>
-
-  <!-- LISTA DE NEGOCIOS -->
-  <div id="lista-negocios" class="cards-container"></div>
-
-  <!-- NOTICIAS -->
   <aside>
     <h2>📰 Últimas Noticias</h2>
     <div id="lista-noticias"></div>
   </aside>
+</div>
 
-  <!-- POPUP DE COMPRAS -->
-  <div id="popup"></div>
+<!-- POPUP DE COMPRAS -->
+<div id="popup-overlay">
+  <div id="popup-content">
+    <span id="cerrar-popup" style="float:right; cursor:pointer; font-size:20px;">&times;</span>
+    <h2 id="popup-titulo"></h2>
+    <label>Artículo:<select id="popup-articulo"></select></label>
+    <label>Precio (MXN):<input type="number" id="popup-precio" readonly></label>
+    <label>Cantidad:<input type="number" id="popup-cantidad" value="1" min="1"></label>
+    <button id="popup-enviar">Enviar por WhatsApp</button>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+<script>
+// Popup funcionalidad
+const overlay = document.getElementById('popup-overlay');
+const popupTitulo = document.getElementById('popup-titulo');
+const popupArticulo = document.getElementById('popup-articulo');
+const popupPrecio = document.getElementById('popup-precio');
+const popupCantidad = document.getElementById('popup-cantidad');
+const btnCerrar = document.getElementById('cerrar-popup');
+const btnEnviar = document.getElementById('popup-enviar');
+let negocioActivo = null;
+
+function abrirPopup(negocio){
+    negocioActivo = negocio;
+    popupTitulo.textContent = negocio.nombre;
+    popupArticulo.innerHTML = '';
+    negocio.articulos.forEach((art, i)=>{
+        let option = document.createElement('option');
+        option.value = i; option.textContent = art.nombre;
+        popupArticulo.appendChild(option);
+    });
+    popupPrecio.value = negocio.articulos[0].precio;
+    popupCantidad.value = 1;
+    overlay.style.display = 'block';
+}
+
+popupArticulo.addEventListener('change', ()=>{
+    let idx = popupArticulo.value;
+    popupPrecio.value = negocioActivo.articulos[idx].precio;
+});
+
+btnCerrar.addEventListener('click', ()=>{ overlay.style.display='none'; });
+
+btnEnviar.addEventListener('click', ()=>{
+    let art = negocioActivo.articulos[popupArticulo.value];
+    let cantidad = popupCantidad.value;
+    let mensaje = `Hola, quiero pedir:\n${art.nombre} x ${cantidad} = $${art.precio*cantidad} MXN`;
+    window.open(`https://wa.me/${negocioActivo.telefono}?text=${encodeURIComponent(mensaje)}`,'_blank');
+    overlay.style.display='none';
+});
+</script>
 </body>
 </html>
