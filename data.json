@@ -1,24 +1,26 @@
-[
-  {
-    "nombre": "Café Central",
-    "categoria": "alimentos",
-    "descripcion": "El mejor café de la ciudad",
-    "imagen": "img/cafe1.jpg",
-    "whatsapp": "521123456789"
-  },
-  {
-    "nombre": "Tienda Moda Chic",
-    "categoria": "tiendas",
-    "descripcion": "Ropa y accesorios de moda",
-    "imagen": "img/tienda1.jpg",
-    "whatsapp": "521987654321"
-  },
-  {
-    "nombre": "Servicio Express",
-    "categoria": "servicios",
-    "descripcion": "Limpieza y mantenimiento",
-    "imagen": "img/servicio1.jpg",
-    "whatsapp": "521112233445"
-  }
-]
-
+{
+  "noticias": [
+    {"titulo": "Nueva apertura en la ciudad", "contenido": "Un nuevo centro comercial abre sus puertas."},
+    {"titulo": "Promoción especial", "contenido": "Grandes descuentos en temporada."}
+  ],
+  "negocios": [
+    {
+      "nombre": "Tienda A",
+      "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+A",
+      "telefono": "5215512345678",
+      "articulos": [
+        {"nombre": "Producto A1", "precio": 100},
+        {"nombre": "Producto A2", "precio": 150}
+      ]
+    },
+    {
+      "nombre": "Tienda B",
+      "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+B",
+      "telefono": "5215523456789",
+      "articulos": [
+        {"nombre": "Producto B1", "precio": 200},
+        {"nombre": "Producto B2", "precio": 250}
+      ]
+    }
+  ]
+}

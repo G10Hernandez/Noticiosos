@@ -1,57 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal de Negocios</title>
+  <title>Portal Publicitario</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- ENCABEZADO -->
   <header>
-    <h1>Mi Portal de Negocios</h1>
+    <h1>Portal de Publicidad</h1>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL EN 2 COLUMNAS -->
-  <div id="layout">
+  <!-- Carrusel -->
+  <section id="carrusel"></section>
 
-    <!-- COLUMNA IZQUIERDA -->
-    <main id="contenido-principal">
+  <!-- Noticias -->
+  <section id="noticias">
+    <h2>Noticias</h2>
+    <div id="lista-noticias"></div>
+  </section>
 
-      <!-- Buscador -->
-      <div id="buscador">
-        <input type="text" placeholder="Buscar negocio..." id="inputBusqueda">
-      </div>
+  <!-- Negocios -->
+  <section id="negocios">
+    <h2>Negocios</h2>
+    <div id="lista-negocios"></div>
+  </section>
 
-      <!-- Carrusel -->
-      <section id="carrusel">
-        <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
-        <div class="slide"><img src="img/banner2.jpg" alt="Banner 2"></div>
-        <div class="slide"><img src="img/banner3.jpg" alt="Banner 3"></div>
-        <div class="slide"><img src="img/banner4.jpg" alt="Banner 4"></div>
-      </section>
-
-      <!-- Categorías -->
-      <div id="categorias">
-        <button class="btn-categoria" data-categoria="todos">Todos</button>
-        <button class="btn-categoria" data-categoria="alimentos">Alimentos</button>
-        <button class="btn-categoria" data-categoria="tiendas">Tiendas</button>
-        <button class="btn-categoria" data-categoria="servicios">Servicios</button>
-      </div>
-
-      <!-- Tarjetas de negocios -->
-      <section id="tarjetas-negocios"></section>
-    </main>
-
-    <!-- COLUMNA DERECHA (NOTICIAS) -->
-    <aside id="barra-lateral">
-      <h2>Últimas Noticias</h2>
-      <div id="contenedor-noticias" class="nubes"></div>
-    </aside>
-
-  </div> <!-- cierre layout -->
+  <!-- Popup -->
+  <div id="popup-overlay">
+    <div id="popup-content">
+      <span id="popup-cerrar">&times;</span>
+      <h2 id="popup-titulo"></h2>
+      <label for="popup-articulo">Artículo:</label>
+      <select id="popup-articulo"></select>
+      <label for="popup-cantidad">Cantidad:</label>
+      <input type="number" id="popup-cantidad" value="1" min="1">
+      <label for="popup-precio">Precio:</label>
+      <input type="text" id="popup-precio" readonly>
+      <button id="popup-enviar">Enviar por WhatsApp</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
