@@ -2,40 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Noticias y Negocios</title>
+  <title>Portal de Negocios</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>🌴 Portal Noticias y Negocios</header>
+  <header>
+    <h1>Portal de Negocios</h1>
+  </header>
 
-<div class="layout">
-  <main>
-    <div id="carousel"></div>
-    <div id="categorias"></div>
-    <input type="text" id="busqueda" placeholder="Buscar negocio…">
-    <div id="lista-negocios"></div>
-  </main>
+  <!-- Carrusel -->
+  <section id="carrusel"></section>
 
-  <aside>
-    <h2>📰 Últimas Noticias</h2>
+  <!-- Noticias -->
+  <section id="noticias">
+    <h2>Últimas Noticias</h2>
     <div id="lista-noticias"></div>
-  </aside>
-</div>
+  </section>
 
-<!-- POPUP -->
-<div id="popup-overlay">
-  <div id="popup-content">
-    <span id="cerrar-popup" style="float:right; cursor:pointer; font-size:20px;">&times;</span>
-    <h2 id="popup-titulo"></h2>
-    <label>Artículo:<select id="popup-articulo"></select></label>
-    <label>Precio (MXN):<input type="number" id="popup-precio" readonly></label>
-    <label>Cantidad:<input type="number" id="popup-cantidad" value="1" min="1"></label>
-    <button id="popup-enviar">Enviar por WhatsApp</button>
-    <button id="popup-regresar" style="margin-top:10px; background:#555; color:white;">Cerrar ventana</button>
+  <!-- Negocios -->
+  <section id="negocios">
+    <h2>Negocios</h2>
+    <div id="lista-negocios"></div>
+  </section>
+
+  <!-- Popup -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span id="cerrar-popup" class="cerrar">&times;</span>
+      <h2 id="popup-nombre"></h2>
+      <p id="popup-descripcion"></p>
+      <ul id="popup-articulos"></ul>
+      <a id="popup-comprar" target="_blank" class="boton">Comprar por WhatsApp</a>
+    </div>
   </div>
-</div>
 
-<script src="script.js"></script>
+  <script src="carrusel.js"></script>
 </body>
 </html>

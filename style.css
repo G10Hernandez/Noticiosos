@@ -1,163 +1,83 @@
 body {
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(to bottom,#b2f0f5,#fdf6e3);
-  color:#333;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #87cefa, #ffe4b5);
+  margin: 0;
+  padding: 0;
 }
 
 header {
-  background:linear-gradient(to right,#7ec8e3,#f6d6a8);
-  text-align:center;
-  padding:20px;
-  font-size:1.8em;
-  font-weight:bold;
-  border-bottom:3px solid #e2c49c;
+  text-align: center;
+  padding: 20px;
+  background: #4682b4;
+  color: white;
 }
 
-.layout {
-  display:grid;
-  grid-template-columns:3fr 1fr;
-  gap:20px;
-  padding:20px;
+#carrusel img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
 }
 
-#carousel {
-  height:20vh;
-  overflow:hidden;
-  border-radius:12px;
-  position:relative;
+#noticias, #negocios {
+  padding: 20px;
 }
 
-#carousel img {
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  opacity:0;
-  transition: opacity 1s ease-in-out;
+#lista-noticias, #lista-negocios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-#categorias {
-  display:flex;
-  gap:10px;
-  padding:10px;
-  flex-wrap:wrap;
+.tarjeta {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: 15px;
+  width: 220px;
+  text-align: center;
 }
 
-#categorias button {
-  padding:6px 10px;
-  border:none;
-  border-radius:8px;
-  background:#7ec8e3;
-  color:white;
-  cursor:pointer;
-  font-size:0.9em;
-}
-#categorias button:hover { background:#55a8c4; }
-#categorias button.active { background:#f6d6a8; color:#333; }
-
-#busqueda {
-  width:100%;
-  padding:6px;
-  border-radius:6px;
-  border:1px solid #ccc;
-  margin-bottom:15px;
-  font-size:0.9em;
+.tarjeta img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-#lista-negocios {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:15px;
+.boton {
+  display: inline-block;
+  padding: 10px 15px;
+  margin-top: 10px;
+  background: #ff7f50;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
 }
 
-.tarjeta-negocio {
-  background:#fff;
-  border-radius:8px;
-  padding:8px;
-  text-align:center;
-  box-shadow:0 3px 6px rgba(0,0,0,0.1);
-  font-size:0.9em;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-.tarjeta-negocio img {
-  width:100%;
-  height:100px;
-  object-fit:cover;
-  border-radius:6px;
-  margin-bottom:6px;
+.boton:hover {
+  background: #ff6347;
 }
 
-.btn-whatsapp, .btn-compra {
-  padding:4px 6px;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-  text-decoration:none;
-  color:white;
-  margin-top:4px;
-  font-size:0.75em;
-  display:inline-block;
-}
-.btn-whatsapp { background:#25D366; }
-.btn-compra { background:#007bff; }
-
-#lista-noticias {
-  background:rgba(255,255,255,0.9);
-  border-radius:12px;
-  padding:10px;
-  max-height:calc(100vh - 100px);
-  overflow-y:auto;
-}
-.noticia {
-  margin-bottom:10px;
-  background:#f9f9f9;
-  padding:8px;
-  border-radius:8px;
-  text-align:center;
-}
-.noticia img {
-  width:100%;
-  height:80px;
-  object-fit:cover;
-  border-radius:6px;
+/* Popup */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center; align-items: center;
 }
 
-#popup-overlay {
-  display:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  z-index:1000;
-  background:rgba(0,0,0,0.2);
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
-#popup-content {
-  background:#fff;
-  border-radius:10px;
-  width:300px;
-  padding:20px;
-  position:absolute;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  box-shadow:0 5px 15px rgba(0,0,0,0.3);
-}
-#popup-content h2 { margin-top:0; font-size:1.1em; }
-#popup-content label { display:block; margin-bottom:8px; font-size:0.9em; }
-#popup-content input, #popup-content select {
-  width:100%;
-  padding:4px;
-  margin-top:3px;
-  font-size:0.9em;
-}
-#popup-content button {
-  margin-top:8px;
-  padding:6px 10px;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-  font-size:0.9em;
+
+.cerrar {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
 }
