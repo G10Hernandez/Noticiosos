@@ -1,7 +1,13 @@
 {
   "noticias": [
-    {"titulo": "Nueva apertura en la ciudad", "contenido": "Un nuevo centro comercial abre sus puertas."},
-    {"titulo": "Promoción especial", "contenido": "Grandes descuentos en temporada."}
+    {
+      "titulo": "Nueva apertura en la ciudad",
+      "contenido": "Un nuevo centro comercial abre sus puertas."
+    },
+    {
+      "titulo": "Promoción especial",
+      "contenido": "Grandes descuentos en temporada."
+    }
   ],
   "negocios": [
     {
@@ -10,7 +16,9 @@
       "telefono": "5215512345678",
       "articulos": [
         {"nombre": "Producto A1", "precio": 100},
-        {"nombre": "Producto A2", "precio": 150}
+        {"nombre": "Producto A2", "precio": 150},
+        {"nombre": "Producto A3", "precio": 200},
+        {"nombre": "Producto A4", "precio": 250}
       ]
     },
     {
