@@ -5,35 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Noticias y Negocios</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    body { margin:0; font-family:Arial,sans-serif; background:linear-gradient(to bottom,#b2f0f5,#fdf6e3); color:#333; }
-    header { background:linear-gradient(to right,#7ec8e3,#f6d6a8); text-align:center; padding:20px; font-size:1.8em; font-weight:bold; border-bottom:3px solid #e2c49c; }
-    .layout { display:grid; grid-template-columns:3fr 1fr; gap:20px; padding:20px; }
-    #carousel { height:20vh; overflow:hidden; border-radius:12px; position:relative; }
-    #carousel img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition: opacity 1s ease-in-out; }
-    #categorias { display:flex; gap:10px; padding:10px; flex-wrap:wrap; }
-    #categorias button { padding:6px 10px; border:none; border-radius:8px; background:#7ec8e3; color:white; cursor:pointer; font-size:0.9em; }
-    #categorias button:hover { background:#55a8c4; }
-    #busqueda { width:100%; padding:6px; border-radius:6px; border:1px solid #ccc; margin-bottom:15px; font-size:0.9em; }
-    #lista-negocios { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px; }
-    .tarjeta-negocio { background:#fff; border-radius:8px; padding:8px; text-align:center; box-shadow:0 3px 6px rgba(0,0,0,0.1); font-size:0.9em; display:flex; flex-direction:column; align-items:center; }
-    .tarjeta-negocio img { width:100%; height:100px; object-fit:cover; border-radius:6px; margin-bottom:6px; }
-    .btn-whatsapp, .btn-compra { padding:4px 6px; border:none; border-radius:5px; cursor:pointer; text-decoration:none; color:white; margin-top:4px; font-size:0.75em; display:inline-block; }
-    .btn-whatsapp { background:#25D366; }
-    .btn-compra { background:#007bff; }
-    #lista-noticias { background:rgba(255,255,255,0.9); border-radius:12px; padding:10px; max-height:calc(100vh - 100px); overflow-y:auto; }
-    .noticia { margin-bottom:10px; background:#f9f9f9; padding:8px; border-radius:8px; text-align:center; }
-    .noticia img { width:100%; height:80px; object-fit:cover; border-radius:6px; }
-    #popup-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; background:rgba(0,0,0,0.2); }
-    #popup-content { background:#fff; border-radius:10px; width:300px; padding:20px; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); box-shadow:0 5px 15px rgba(0,0,0,0.3); }
-    #popup-content h2 { margin-top:0; font-size:1.1em; }
-    #popup-content label { display:block; margin-bottom:8px; font-size:0.9em; }
-    #popup-content input, #popup-content select { width:100%; padding:4px; margin-top:3px; font-size:0.9em; }
-    #popup-content button { margin-top:8px; padding:6px 10px; border:none; border-radius:5px; cursor:pointer; font-size:0.9em; }
-  </style>
 </head>
 <body>
 <header>🌴 Portal Noticias y Negocios</header>
+
 <div class="layout">
   <main>
     <div id="carousel"></div>
@@ -41,11 +16,14 @@
     <input type="text" id="busqueda" placeholder="Buscar negocio…">
     <div id="lista-negocios"></div>
   </main>
+
   <aside>
     <h2>📰 Últimas Noticias</h2>
     <div id="lista-noticias"></div>
   </aside>
 </div>
+
+<!-- POPUP -->
 <div id="popup-overlay">
   <div id="popup-content">
     <span id="cerrar-popup" style="float:right; cursor:pointer; font-size:20px;">&times;</span>
@@ -57,54 +35,7 @@
     <button id="popup-regresar" style="margin-top:10px; background:#555; color:white;">Cerrar ventana</button>
   </div>
 </div>
-<script src="script.js"></script>
-<script>
-let carouselIndex=0;
-async function cargarCarousel(){
-  try{
-    const res=await fetch('data.json');
-    const data=await res.json();
-    const cont=document.getElementById('carousel');
-    cont.innerHTML='';
-    data.banners.forEach((b,i)=>{
-      const img=document.createElement('img');
-      img.src=b.image;
-      img.alt=b.business;
-      img.style.opacity=i===0?'1':'0';
-      cont.appendChild(img);
-    });
-    setInterval(()=>{
-      const imgs=cont.querySelectorAll('img');
-      imgs.forEach((img,i)=>img.style.opacity=i===carouselIndex?'1':'0');
-      carouselIndex=(carouselIndex+1)%imgs.length;
-    },3000);
-  }catch(e){console.error(e);}
-}
-cargarCarousel();
 
-// Popup handlers
-const popupOverlay=document.getElementById('popup-overlay');
-const cerrarPopup=document.getElementById('cerrar-popup');
-const popupRegresar=document.getElementById('popup-regresar');
-cerrarPopup.onclick=()=>popupOverlay.style.display='none';
-popupRegresar.onclick=()=>popupOverlay.style.display='none';
-function abrirPopup(nombre,articulos){
-  popupOverlay.style.display='block';
-  document.getElementById('popup-titulo').textContent=nombre;
-  const select=document.getElementById('popup-articulo');
-  select.innerHTML='';
-  articulos.forEach((a,i)=>{
-    const option=document.createElement('option');
-    option.value=i; option.textContent=a.nombre;
-    select.appendChild(option);
-  });
-  actualizarPrecio();
-}
-function actualizarPrecio(){
-  const idx=document.getElementById('popup-articulo').value;
-  const articulos=[{nombre:'Producto A',precio:50},{nombre:'Producto B',precio:75}];
-  document.getElementById('popup-precio').value=articulos[idx].precio;
-}
-</script>
+<script src="script.js"></script>
 </body>
 </html>
