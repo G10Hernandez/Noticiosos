@@ -39,6 +39,31 @@ async function cargarNegocios() {
 }
 
 
+// Noticias
+function mostrarNoticias(noticias) {
+  const cont = document.getElementById("lista-noticias");
+  noticias.forEach(n => {
+    const div = document.createElement("div");
+    div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
+    cont.appendChild(div);
+  });
+}
+
+// Negocios
+function mostrarNegocios(negocios) {
+  const cont = document.getElementById("lista-negocios");
+  negocios.forEach(n => {
+    const card = document.createElement("div");
+    card.className = "negocio-card";
+    card.innerHTML = `
+      <img src="${n.imagen}" alt="${n.nombre}">
+      <h3>${n.nombre}</h3>
+      <button onclick="abrirPopup('${n.nombre}')">Comprar</button>
+    `;
+    cont.appendChild(card);
+  });
+}
+
 // Abrir popup
 function abrirPopup(nombre) {
   const negocio = dataJson.negocios.find(n => n.nombre === nombre);
