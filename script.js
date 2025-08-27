@@ -12,7 +12,7 @@ fetch("data.json")
     });
   });
 
-// Cargar negocios desde negocios.json
+// Cargar negocios y artículos
 Promise.all([
   fetch("negocios.json").then(res => res.json()),
   fetch("data.json").then(res => res.json())
@@ -27,21 +27,41 @@ Promise.all([
     categoriasDiv.innerHTML += `<button data-cat='${cat}'>${cat}</button>`;
   });
 
+  // Mostrar negocios
   function mostrar(cat, filtro = "") {
     lista.innerHTML = "";
-    negociosData.forEach((n, index) => {
+    negociosData.forEach((n) => {
       if ((cat === "Todos" || n.categoria === cat) &&
           (n.nombre.toLowerCase().includes(filtro) || n.descripcion.toLowerCase().includes(filtro))) {
 
         const card = document.createElement("div");
         card.className = "card";
-        card.innerHTML = `
-          <img src='${n.imagen}' alt='${n.nombre}'>
-          <h5>${n.nombre}</h5>
-          <p>${n.descripcion}</p>
-          <a href='https://wa.me/${n.telefono}' target='_blank'>WhatsApp</a>
-          <button onclick='abrirPopup("${n.nombre}")'>Comprar</button>
-        `;
+
+        const img = document.createElement("img");
+        img.src = n.imagen;
+        img.alt = n.nombre;
+
+        const h5 = document.createElement("h5");
+        h5.textContent = n.nombre;
+
+        const p = document.createElement("p");
+        p.textContent = n.descripcion;
+
+        const link = document.createElement("a");
+        link.href = `https://wa.me/${n.telefono}`;
+        link.target = "_blank";
+        link.textContent = "WhatsApp";
+
+        const btn = document.createElement("button");
+        btn.textContent = "Comprar";
+        btn.addEventListener("click", () => abrirPopup(n.nombre)); // Aquí ya no usamos onclick en HTML
+
+        card.appendChild(img);
+        card.appendChild(h5);
+        card.appendChild(p);
+        card.appendChild(link);
+        card.appendChild(btn);
+
         lista.appendChild(card);
       }
     });
@@ -65,12 +85,12 @@ Promise.all([
     mostrar(activo, texto);
   });
 
-  // Popup
-  window.abrirPopup = function(nombreNegocio) {
+  // Popup para comprar
+  function abrirPopup(nombreNegocio) {
     const negocioArticulos = Object.values(dataJson.negocios).find(n => n.nombre === nombreNegocio);
     if (!negocioArticulos) return alert("Catálogo no disponible");
 
-    let html = `<div><h3>${negocioArticulos.nombre}</h3>`;
+    let html = `<div class='popup-content'><h3>${negocioArticulos.nombre}</h3>`;
     negocioArticulos.articulos.forEach(a => {
       html += `<label><input type='checkbox' data-nombre='${a.nombre}' data-precio='${a.precio}'> ${a.nombre} - $${a.precio}</label><br>`;
     });
@@ -93,8 +113,9 @@ Promise.all([
       mensaje += `Total: $${total}`;
       window.open(`https://wa.me/${negocioArticulos.telefono}?text=${mensaje}`, "_blank");
     };
-  };
+  }
 });
+
 
 // Noticias
 fetch("noticias.json")
