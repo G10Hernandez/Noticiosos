@@ -1,29 +1,18 @@
-let carouselIndex = 0;
-
-// ================== Cargar carrusel ==================
-async function cargarCarousel() {
-  try {
-    const res = await fetch("data.json");
-    const data = await res.json();
-    const cont = document.getElementById("carousel");
-    cont.innerHTML = "";
-    data.banners.forEach((b, i) => {
-      const img = document.createElement("img");
-      img.src = b.image;
-      img.alt = b.business;
-      img.style.opacity = i === 0 ? "1" : "0";
-      cont.appendChild(img);
+// Cargar banners
+fetch("data.json")
+  .then(res => res.json())
+  .then(data => {
+    const carouselInner = document.getElementById("carousel-inner");
+    carouselInner.innerHTML = "";
+    data.banners.forEach((banner, i) => {
+      const div = document.createElement("div");
+      div.className = "carousel-item";
+      div.innerHTML = `<img src="${banner.image}" alt="${banner.business}">`;
+      carouselInner.appendChild(div);
     });
-    setInterval(() => {
-      const imgs = cont.querySelectorAll("img");
-      imgs.forEach((img, i) => img.style.opacity = i === carouselIndex ? "1" : "0");
-      carouselIndex = (carouselIndex + 1) % imgs.length;
-    }, 3000);
-  } catch (e) { console.error(e); }
-}
-cargarCarousel();
+  });
 
-// ================== Cargar negocios ==================
+// Cargar negocios y artículos
 Promise.all([
   fetch("negocios.json").then(res => res.json()),
   fetch("data.json").then(res => res.json())
@@ -46,7 +35,7 @@ Promise.all([
           (n.nombre.toLowerCase().includes(filtro) || n.descripcion.toLowerCase().includes(filtro))) {
 
         const card = document.createElement("div");
-        card.className = "tarjeta-negocio";
+        card.className = "card";
 
         const img = document.createElement("img");
         img.src = n.imagen;
@@ -62,12 +51,10 @@ Promise.all([
         link.href = `https://wa.me/${n.telefono}`;
         link.target = "_blank";
         link.textContent = "WhatsApp";
-        link.className = "btn-whatsapp";
 
         const btn = document.createElement("button");
         btn.textContent = "Comprar";
-        btn.className = "btn-compra";
-        btn.addEventListener("click", () => abrirPopup(n.nombre, dataJson));
+        btn.addEventListener("click", () => abrirPopup(n.nombre)); // Aquí ya no usamos onclick en HTML
 
         card.appendChild(img);
         card.appendChild(h5);
@@ -97,48 +84,52 @@ Promise.all([
     const activo = document.querySelector("#categorias button.active").dataset.cat;
     mostrar(activo, texto);
   });
+
+  // Popup para comprar
+  function abrirPopup(nombreNegocio) {
+    const negocioArticulos = Object.values(dataJson.negocios).find(n => n.nombre === nombreNegocio);
+    if (!negocioArticulos) return alert("Catálogo no disponible");
+
+    let html = `<div class='popup-content'><h3>${negocioArticulos.nombre}</h3>`;
+    negocioArticulos.articulos.forEach(a => {
+      html += `<label><input type='checkbox' data-nombre='${a.nombre}' data-precio='${a.precio}'> ${a.nombre} - $${a.precio}</label><br>`;
+    });
+    html += `<button id='btn-enviar-ws'>Enviar por WhatsApp</button></div>`;
+
+    const modal = document.getElementById("popup");
+    modal.innerHTML = html;
+    modal.style.display = "flex";
+
+    document.getElementById("btn-enviar-ws").onclick = () => {
+      const seleccionados = [...modal.querySelectorAll("input:checked")];
+      if (seleccionados.length === 0) return alert("Selecciona al menos un artículo");
+
+      let total = 0;
+      let mensaje = `Hola, quiero comprar en *${negocioArticulos.nombre}*:%0A`;
+      seleccionados.forEach(s => {
+        mensaje += `- ${s.dataset.nombre}: $${s.dataset.precio}%0A`;
+        total += parseFloat(s.dataset.precio);
+      });
+      mensaje += `Total: $${total}`;
+      window.open(`https://wa.me/${negocioArticulos.telefono}?text=${mensaje}`, "_blank");
+    };
+  }
 });
 
-// ================== POPUP ==================
-const popupOverlay = document.getElementById("popup-overlay");
-const cerrarPopup = document.getElementById("cerrar-popup");
-const popupRegresar = document.getElementById("popup-regresar");
 
-cerrarPopup.onclick = () => popupOverlay.style.display = "none";
-popupRegresar.onclick = () => popupOverlay.style.display = "none";
-
-function abrirPopup(nombreNegocio, dataJson) {
-  const negocioArticulos = Object.values(dataJson.negocios).find(n => n.nombre === nombreNegocio);
-  if (!negocioArticulos) return alert("Catálogo no disponible");
-
-  popupOverlay.style.display = "block";
-  document.getElementById("popup-titulo").textContent = negocioArticulos.nombre;
-
-  const select = document.getElementById("popup-articulo");
-  select.innerHTML = "";
-  negocioArticulos.articulos.forEach((a) => {
-    const option = document.createElement("option");
-    option.value = a.precio;
-    option.textContent = `${a.nombre} - $${a.precio}`;
-    select.appendChild(option);
+// Noticias
+fetch("noticias.json")
+  .then(res => res.json())
+  .then(noticias => {
+    const contenedor = document.getElementById("lista-noticias");
+    noticias.forEach(n => {
+      const div = document.createElement("div");
+      div.className = "noticia";
+      div.innerHTML = `
+        <img src='${n.imagen}' alt='${n.nombre}'>
+        <h4>${n.nombre}</h4>
+        <p>${n.descripcion}</p>
+      `;
+      contenedor.appendChild(div);
+    });
   });
-
-  document.getElementById("popup-precio").value = negocioArticulos.articulos[0].precio;
-
-  select.onchange = () => {
-    document.getElementById("popup-precio").value = select.value;
-  };
-
-  document.getElementById("popup-enviar").onclick = () => {
-    const articulo = select.options[select.selectedIndex].text;
-    const cantidad = document.getElementById("popup-cantidad").value;
-    const precio = document.getElementById("popup-precio").value;
-    const total = precio * cantidad;
-
-    const mensaje = `Hola, quiero comprar en *${negocioArticulos.nombre}*:%0A` +
-                    `- ${articulo} x${cantidad} = $${total}%0A` +
-                    `Total: $${total}`;
-
-    window.open(`https://wa.me/${negocioArticulos.telefono}?text=${mensaje}`, "_blank");
-  };
-}
