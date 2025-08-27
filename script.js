@@ -85,36 +85,47 @@ Promise.all([
     mostrar(activo, texto);
   });
 
-  // Popup para comprar
-  function abrirPopup(nombreNegocio) {
-    const negocioArticulos = Object.values(dataJson.negocios).find(n => n.nombre === nombreNegocio);
-    if (!negocioArticulos) return alert("Catálogo no disponible");
+ // Popup para comprar
+function abrirPopup(nombreNegocio) {
+  const negocioArticulos = Object.values(dataJson.negocios).find(n => n.nombre === nombreNegocio);
+  if (!negocioArticulos) return alert("Catálogo no disponible");
 
-    let html = `<div class='popup-content'><h3>${negocioArticulos.nombre}</h3>`;
-    negocioArticulos.articulos.forEach(a => {
-      html += `<label><input type='checkbox' data-nombre='${a.nombre}' data-precio='${a.precio}'> ${a.nombre} - $${a.precio}</label><br>`;
-    });
-    html += `<button id='btn-enviar-ws'>Enviar por WhatsApp</button></div>`;
+  // Mostrar popup
+  popupOverlay.style.display = "block";
+  document.getElementById("popup-titulo").textContent = negocioArticulos.nombre;
 
-    const modal = document.getElementById("popup");
-    modal.innerHTML = html;
-    modal.style.display = "flex";
+  // Llenar select de artículos
+  const select = document.getElementById("popup-articulo");
+  select.innerHTML = "";
+  negocioArticulos.articulos.forEach((a, i) => {
+    const option = document.createElement("option");
+    option.value = a.precio;
+    option.textContent = `${a.nombre} - $${a.precio}`;
+    select.appendChild(option);
+  });
 
-    document.getElementById("btn-enviar-ws").onclick = () => {
-      const seleccionados = [...modal.querySelectorAll("input:checked")];
-      if (seleccionados.length === 0) return alert("Selecciona al menos un artículo");
+  // Mostrar precio del primer artículo
+  document.getElementById("popup-precio").value = negocioArticulos.articulos[0].precio;
 
-      let total = 0;
-      let mensaje = `Hola, quiero comprar en *${negocioArticulos.nombre}*:%0A`;
-      seleccionados.forEach(s => {
-        mensaje += `- ${s.dataset.nombre}: $${s.dataset.precio}%0A`;
-        total += parseFloat(s.dataset.precio);
-      });
-      mensaje += `Total: $${total}`;
-      window.open(`https://wa.me/${negocioArticulos.telefono}?text=${mensaje}`, "_blank");
-    };
-  }
-});
+  // Cambiar precio cuando cambie el select
+  select.onchange = () => {
+    document.getElementById("popup-precio").value = select.value;
+  };
+
+  // Enviar por WhatsApp
+  document.getElementById("popup-enviar").onclick = () => {
+    const articulo = select.options[select.selectedIndex].text;
+    const cantidad = document.getElementById("popup-cantidad").value;
+    const precio = document.getElementById("popup-precio").value;
+    const total = precio * cantidad;
+
+    const mensaje = `Hola, quiero comprar en *${negocioArticulos.nombre}*:%0A` +
+                    `- ${articulo} x${cantidad} = $${total}%0A` +
+                    `Total: $${total}`;
+
+    window.open(`https://wa.me/${negocioArticulos.telefono}?text=${mensaje}`, "_blank");
+  };
+}
 
 
 // Noticias
