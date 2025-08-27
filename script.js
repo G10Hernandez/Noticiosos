@@ -8,13 +8,11 @@ fetch("data.json")
     dataJson = data;
     mostrarNoticias(data.noticias);
     mostrarNegocios(data.negocios);
-  })
-  .catch(err => console.error("Error cargando data.json:", err));
+  });
 
 // Noticias
 function mostrarNoticias(noticias) {
   const cont = document.getElementById("lista-noticias");
-  cont.innerHTML = ""; // limpiar
   noticias.forEach(n => {
     const div = document.createElement("div");
     div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
@@ -25,26 +23,14 @@ function mostrarNoticias(noticias) {
 // Negocios
 function mostrarNegocios(negocios) {
   const cont = document.getElementById("lista-negocios");
-  cont.innerHTML = ""; // limpiar
   negocios.forEach(n => {
     const card = document.createElement("div");
     card.className = "negocio-card";
-
-    const img = document.createElement("img");
-    img.src = n.imagen;
-    img.alt = n.nombre;
-
-    const h3 = document.createElement("h3");
-    h3.textContent = n.nombre;
-
-    const btn = document.createElement("button");
-    btn.textContent = "Comprar";
-    btn.onclick = () => abrirPopup(n.nombre);
-
-    card.appendChild(img);
-    card.appendChild(h3);
-    card.appendChild(btn);
-
+    card.innerHTML = `
+      <img src="${n.imagen}" alt="${n.nombre}">
+      <h3>${n.nombre}</h3>
+      <button onclick="abrirPopup('${n.nombre}')">Comprar</button>
+    `;
     cont.appendChild(card);
   });
 }
