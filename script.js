@@ -21,7 +21,7 @@ fetch("data.json")
     const categoriasDiv = document.getElementById("categorias");
 
     // Categorías
-    const categorias = [...new Set(Object.values(negocios).map(n => n.nombre))];
+    const categorias = [...new Set(Object.values(negocios).map(n => n.categoria))];
     categoriasDiv.innerHTML = `<button class='active' data-cat='Todos'>Todos</button>`;
     categorias.forEach(cat => {
       categoriasDiv.innerHTML += `<button data-cat='${cat}'>${cat}</button>`;
@@ -30,7 +30,7 @@ fetch("data.json")
     function mostrar(cat) {
       lista.innerHTML = "";
       Object.entries(negocios).forEach(([id, n]) => {
-        if(cat === "Todos" || n.nombre === cat) {
+        if(cat === "Todos" || n.categoria === cat) {
           const card = document.createElement("div");
           card.className = "card";
           card.innerHTML = `
@@ -107,3 +107,24 @@ function abrirPopup(id) {
       };
     });
 }
+
+// Búsqueda
+const inputBusqueda = document.getElementById("busqueda");
+inputBusqueda.addEventListener("input", () => {
+  const texto = inputBusqueda.value.toLowerCase();
+  lista.innerHTML = "";
+  Object.entries(negocios).forEach(([id, n]) => {
+    if (n.nombre.toLowerCase().includes(texto) || n.descripcion.toLowerCase().includes(texto)) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src='img/default.jpg' alt='${n.nombre}'>
+        <h5>${n.nombre}</h5>
+        <p>${n.descripcion || ""}</p>
+        <a href='https://wa.me/${n.telefono}' target='_blank'>WhatsApp</a>
+        ${n.articulos ? `<button onclick='abrirPopup(${id})'>Comprar</button>` : ""}
+      `;
+      lista.appendChild(card);
+    }
+  });
+});
