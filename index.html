@@ -2,40 +2,56 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal de Negocios</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- ENCABEZADO -->
   <header>
-    <h1>Portal de Negocios</h1>
+    <h1>Mi Portal de Negocios</h1>
   </header>
 
-  <!-- Carrusel -->
-  <section id="carrusel"></section>
+  <!-- CONTENEDOR PRINCIPAL EN 2 COLUMNAS -->
+  <div id="layout">
 
-  <!-- Noticias -->
-  <section id="noticias">
-    <h2>Últimas Noticias</h2>
-    <div id="lista-noticias"></div>
-  </section>
+    <!-- COLUMNA IZQUIERDA -->
+    <main id="contenido-principal">
 
-  <!-- Negocios -->
-  <section id="negocios">
-    <h2>Negocios</h2>
-    <div id="lista-negocios"></div>
-  </section>
+      <!-- Buscador -->
+      <div id="buscador">
+        <input type="text" placeholder="Buscar negocio..." id="inputBusqueda">
+      </div>
 
-  <!-- Popup -->
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <span id="cerrar-popup" class="cerrar">&times;</span>
-      <h2 id="popup-nombre"></h2>
-      <p id="popup-descripcion"></p>
-      <ul id="popup-articulos"></ul>
-      <a id="popup-comprar" target="_blank" class="boton">Comprar por WhatsApp</a>
-    </div>
-  </div>
+      <!-- Carrusel -->
+      <section id="carrusel">
+        <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
+        <div class="slide"><img src="img/banner2.jpg" alt="Banner 2"></div>
+        <div class="slide"><img src="img/banner3.jpg" alt="Banner 3"></div>
+        <div class="slide"><img src="img/banner4.jpg" alt="Banner 4"></div>
+      </section>
 
-  <script src="carrusel.js"></script>
+      <!-- Categorías -->
+      <div id="categorias">
+        <button class="btn-categoria" data-categoria="todos">Todos</button>
+        <button class="btn-categoria" data-categoria="alimentos">Alimentos</button>
+        <button class="btn-categoria" data-categoria="tiendas">Tiendas</button>
+        <button class="btn-categoria" data-categoria="servicios">Servicios</button>
+      </div>
+
+      <!-- Tarjetas de negocios -->
+      <section id="tarjetas-negocios"></section>
+    </main>
+
+    <!-- COLUMNA DERECHA (NOTICIAS) -->
+    <aside id="barra-lateral">
+      <h2>Últimas Noticias</h2>
+      <div id="contenedor-noticias" class="nubes"></div>
+    </aside>
+
+  </div> <!-- cierre layout -->
+
+  <script src="script.js"></script>
 </body>
 </html>

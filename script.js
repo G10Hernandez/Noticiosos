@@ -1,109 +1,99 @@
-let dataJson;
-const popupOverlay = document.getElementById("popup-overlay");
-const popupCerrar = document.getElementById("popup-cerrar");
+// Carrusel
+let indexSlide=0;
+const slides=document.querySelectorAll('#carrusel .slide');
+function mostrarSlide(i){
+  slides.forEach((s,idx)=> s.style.opacity= idx===i?1:0);
+}
+mostrarSlide(indexSlide);
+setInterval(()=>{
+  indexSlide=(indexSlide+1)%slides.length;
+  mostrarSlide(indexSlide);
+},3000);
 
-fetch("data.json")
-  .then(res => res.json())
-  .then(data => {
-    dataJson = data;
-    mostrarNoticias(data.noticias);
-    mostrarNegocios(data.negocios);
-  });
-
-// ================== Cargar Negocios ==================
-async function cargarNegocios() {
+// Tarjetas negocios
+async function cargarNegocios(){
   try {
-    const resp = await fetch("negocios.json");
-    const negocios = await resp.json();
-
-    const contenedor = document.getElementById("negocios-container");
-    contenedor.innerHTML = "";
-
-    negocios.forEach(negocio => {
-      const card = document.createElement("div");
-      card.classList.add("card-negocio");
-
-      card.innerHTML = `
-        <img src="${negocio.imagen}" alt="${negocio.nombre}" class="card-img">
-        <h3>${negocio.nombre}</h3>
-        <p><strong>Categoría:</strong> ${negocio.categoria}</p>
-        <p>${negocio.descripcion}</p>
-        <button onclick="abrirPopup('${negocio.nombre}')">Ver artículos</button>
+    const res = await fetch('data.json');
+    if(!res.ok) throw new Error('No se pudo cargar data.json');
+    const negocios = await res.json();
+    const cont = document.getElementById('tarjetas-negocios');
+    cont.innerHTML='';
+    negocios.forEach(n=>{
+      const div=document.createElement('div');
+      div.className='tarjeta';
+      div.dataset.categoria=n.categoria;
+      div.innerHTML=`
+        <img src="${n.imagen}" alt="${n.nombre}">
+        <h3>${n.nombre}</h3>
+        <p>${n.descripcion}</p>
+        <button class="btn-whatsapp" onclick="window.open('https://wa.me/${n.whatsapp}','_blank')">Contactar por WhatsApp</button>
       `;
-
-      contenedor.appendChild(card);
+      cont.appendChild(div);
     });
-  } catch (error) {
-    console.error("Error cargando negocios:", error);
-  }
+    filtrarTarjetas();
+  } catch(err){ console.error(err);}
 }
+cargarNegocios();
 
-
-// Noticias
-function mostrarNoticias(noticias) {
-  const cont = document.getElementById("lista-noticias");
-  noticias.forEach(n => {
-    const div = document.createElement("div");
-    div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
-    cont.appendChild(div);
+// Filtrado por categoría
+const botones=document.querySelectorAll('.btn-categoria');
+function filtrarTarjetas(){
+  botones.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const cat=btn.dataset.categoria;
+      document.querySelectorAll('.tarjeta').forEach(t=>{
+        t.style.display=(cat==='todos'|| t.dataset.categoria===cat)?'block':'none';
+      });
+    });
   });
 }
 
-// Negocios
-function mostrarNegocios(negocios) {
-  const cont = document.getElementById("lista-negocios");
-  negocios.forEach(n => {
-    const card = document.createElement("div");
-    card.className = "negocio-card";
-    card.innerHTML = `
-      <img src="${n.imagen}" alt="${n.nombre}">
-      <h3>${n.nombre}</h3>
-      <button onclick="abrirPopup('${n.nombre}')">Comprar</button>
-    `;
-    cont.appendChild(card);
+// Buscador
+document.getElementById('inputBusqueda').addEventListener('input', e=>{
+  const text=e.target.value.toLowerCase();
+  document.querySelectorAll('.tarjeta').forEach(t=>{
+    t.style.display = t.querySelector('h3').textContent.toLowerCase().includes(text)?'block':'none';
   });
+});
+
+// Nube de noticias
+const nube=document.getElementById('nube');
+async function cargarNoticias(){
+  try {
+    const res = await fetch('noticias.json');
+    if(!res.ok) throw new Error('No se pudo cargar noticias.json');
+    const data = await res.json();
+    data.forEach(item=>{
+      const burbuja=document.createElement('div');
+      burbuja.className='burbuja';
+      burbuja.innerHTML=`<b>${item.titulo}</b><br>${item.descripcion}`;
+      const W=nube.clientWidth,H=nube.clientHeight;
+      let posX=Math.random()*(W-220), posY=H;
+      const scale=0.7+Math.random()*0.6;
+      const opacity=0.5+Math.random()*0.5;
+      burbuja.style.transform=`scale(${scale})`;
+      burbuja.style.opacity=opacity;
+      burbuja.style.left=posX+'px';
+      burbuja.style.top=posY+'px';
+      burbuja.addEventListener('click',()=>window.open(item.link,'_blank'));
+      nube.appendChild(burbuja);
+
+      // Movimiento lento
+      const speed = 0.02 + Math.random()*0.05;
+      let t=0;
+      const anim=setInterval(()=>{
+        posY -= speed;
+        posX += Math.sin(t)*5;
+        burbuja.style.top = posY + 'px';
+        burbuja.style.left = posX + 'px';
+        t+=0.01;
+        if(posY + burbuja.offsetHeight <0){
+          clearInterval(anim);
+          nube.removeChild(burbuja);
+        }
+      },40);
+    });
+  } catch(err){ console.error(err);}
 }
-
-// Abrir popup
-function abrirPopup(nombre) {
-  const negocio = dataJson.negocios.find(n => n.nombre === nombre);
-  if (!negocio) return;
-
-  document.getElementById("popup-titulo").textContent = negocio.nombre;
-
-  const select = document.getElementById("popup-articulo");
-  select.innerHTML = "";
-  negocio.articulos.forEach(a => {
-    const option = document.createElement("option");
-    option.value = a.precio;
-    option.textContent = `${a.nombre} - $${a.precio}`;
-    select.appendChild(option);
-  });
-
-  document.getElementById("popup-precio").value = negocio.articulos[0].precio;
-
-  select.onchange = () => {
-    document.getElementById("popup-precio").value = select.value;
-  };
-
-  document.getElementById("popup-enviar").onclick = () => {
-    const articulo = select.options[select.selectedIndex].text;
-    const cantidad = document.getElementById("popup-cantidad").value;
-    const precio = document.getElementById("popup-precio").value;
-    const total = precio * cantidad;
-
-    const mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A` +
-                    `- ${articulo} x${cantidad} = $${total}%0A` +
-                    `Total: $${total}`;
-
-    window.open(`https://wa.me/${negocio.telefono}?text=${mensaje}`, "_blank");
-  };
-
-  popupOverlay.style.display = "flex";
-}
-
-// Cerrar popup
-popupCerrar.onclick = () => popupOverlay.style.display = "none";
-popupOverlay.onclick = e => {
-  if (e.target === popupOverlay) popupOverlay.style.display = "none";
-};
+cargarNoticias();
+setInterval(cargarNoticias,30000);
