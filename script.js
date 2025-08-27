@@ -10,30 +10,34 @@ fetch("data.json")
     mostrarNegocios(data.negocios);
   });
 
-// Noticias
-function mostrarNoticias(noticias) {
-  const cont = document.getElementById("lista-noticias");
-  noticias.forEach(n => {
-    const div = document.createElement("div");
-    div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
-    cont.appendChild(div);
-  });
+// ================== Cargar Negocios ==================
+async function cargarNegocios() {
+  try {
+    const resp = await fetch("negocios.json");
+    const negocios = await resp.json();
+
+    const contenedor = document.getElementById("negocios-container");
+    contenedor.innerHTML = "";
+
+    negocios.forEach(negocio => {
+      const card = document.createElement("div");
+      card.classList.add("card-negocio");
+
+      card.innerHTML = `
+        <img src="${negocio.imagen}" alt="${negocio.nombre}" class="card-img">
+        <h3>${negocio.nombre}</h3>
+        <p><strong>Categoría:</strong> ${negocio.categoria}</p>
+        <p>${negocio.descripcion}</p>
+        <button onclick="abrirPopup('${negocio.nombre}')">Ver artículos</button>
+      `;
+
+      contenedor.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error cargando negocios:", error);
+  }
 }
 
-// Negocios
-function mostrarNegocios(negocios) {
-  const cont = document.getElementById("lista-negocios");
-  negocios.forEach(n => {
-    const card = document.createElement("div");
-    card.className = "negocio-card";
-    card.innerHTML = `
-      <img src="${n.imagen}" alt="${n.nombre}">
-      <h3>${n.nombre}</h3>
-      <button onclick="abrirPopup('${n.nombre}')">Comprar</button>
-    `;
-    cont.appendChild(card);
-  });
-}
 
 // Abrir popup
 function abrirPopup(nombre) {
