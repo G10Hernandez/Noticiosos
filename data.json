@@ -15,10 +15,8 @@
       "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+A",
       "telefono": "5215512345678",
       "articulos": [
-        {"nombre": "Producto A1", "precio": 100},
-        {"nombre": "Producto A2", "precio": 150},
-        {"nombre": "Producto A3", "precio": 200},
-        {"nombre": "Producto A4", "precio": 250}
+        { "nombre": "Producto A1", "precio": 100 },
+        { "nombre": "Producto A2", "precio": 150 }
       ]
     },
     {
@@ -26,8 +24,8 @@
       "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+B",
       "telefono": "5215523456789",
       "articulos": [
-        {"nombre": "Producto B1", "precio": 200},
-        {"nombre": "Producto B2", "precio": 250}
+        { "nombre": "Producto B1", "precio": 200 },
+        { "nombre": "Producto B2", "precio": 250 }
       ]
     }
   ]

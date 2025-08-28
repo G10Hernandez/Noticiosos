@@ -13,6 +13,7 @@ fetch("data.json")
 // Noticias
 function mostrarNoticias(noticias) {
   const cont = document.getElementById("lista-noticias");
+  cont.innerHTML = "";
   noticias.forEach(n => {
     const div = document.createElement("div");
     div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
@@ -23,6 +24,7 @@ function mostrarNoticias(noticias) {
 // Negocios
 function mostrarNegocios(negocios) {
   const cont = document.getElementById("lista-negocios");
+  cont.innerHTML = "";
   negocios.forEach(n => {
     const card = document.createElement("div");
     card.className = "negocio-card";
