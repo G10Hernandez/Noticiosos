@@ -2,45 +2,48 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Portal Publicitario</title>
+  <title>Portal de Noticias y Negocios</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Encabezado -->
   <header>
-    <h1>Portal de Publicidad</h1>
+    <h1>🌴 Portal Noticias & Negocios</h1>
   </header>
 
-  <!-- Carrusel -->
-  <section id="carrusel"></section>
+  <!-- Layout general -->
+  <div class="layout">
+    
+    <!-- Columna izquierda: carrusel + negocios -->
+    <main>
+      <!-- Carrusel -->
+      <section id="carrusel"></section>
 
-  <!-- Noticias -->
-  <section id="noticias">
-    <h2>Noticias</h2>
-    <div id="lista-noticias"></div>
-  </section>
+      <!-- Negocios -->
+      <h2>Negocios</h2>
+      <section id="tarjetas-negocios"></section>
+    </main>
 
-  <!-- Negocios -->
-  <section id="negocios">
-    <h2>Negocios</h2>
-    <div id="lista-negocios"></div>
-  </section>
+    <!-- Columna derecha: noticias -->
+    <aside id="barra-lateral">
+      <h2>📰 Últimas Noticias</h2>
+      <div id="contenedor-noticias"></div>
+    </aside>
+  </div>
 
-  <!-- Popup -->
-  <div id="popup-overlay">
-    <div id="popup-content">
-      <span id="popup-cerrar">&times;</span>
-      <h2 id="popup-titulo"></h2>
-      <label for="popup-articulo">Artículo:</label>
-      <select id="popup-articulo"></select>
-      <label for="popup-cantidad">Cantidad:</label>
-      <input type="number" id="popup-cantidad" value="1" min="1">
-      <label for="popup-precio">Precio:</label>
-      <input type="text" id="popup-precio" readonly>
-      <button id="popup-enviar">Enviar por WhatsApp</button>
+  <!-- Popup de compras -->
+  <div id="popup" class="popup hidden">
+    <div class="popup-contenido">
+      <span id="cerrar-popup">&times;</span>
+      <h3 id="popup-titulo"></h3>
+      <div id="popup-articulos"></div>
+      <h4>Total: $<span id="popup-total">0</span></h4>
+      <button id="enviar-whatsapp">Enviar pedido por WhatsApp</button>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
 

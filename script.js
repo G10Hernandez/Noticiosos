@@ -1,82 +1,119 @@
-let dataJson;
-const popupOverlay = document.getElementById("popup-overlay");
-const popupCerrar = document.getElementById("popup-cerrar");
+let DATA = {};
+let total = 0;
 
+// ================== CARGAR DATA ==================
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
-    dataJson = data;
-    mostrarNoticias(data.noticias);
-    mostrarNegocios(data.negocios);
-  });
+    DATA = data;
+    cargarCarrusel(DATA.banners);
+    cargarNegocios(DATA.negocios);
+    cargarNoticias(DATA.noticias);
+  })
+  .catch(err => console.error("Error cargando data.json:", err));
 
-// Noticias
-function mostrarNoticias(noticias) {
-  const cont = document.getElementById("lista-noticias");
-  cont.innerHTML = "";
-  noticias.forEach(n => {
-    const div = document.createElement("div");
-    div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
-    cont.appendChild(div);
-  });
+// ================== CARRUSEL ==================
+function cargarCarrusel(banners) {
+  const carrusel = document.getElementById("carrusel");
+  if (!carrusel) return;
+
+  let i = 0;
+  const img = document.createElement("img");
+  img.src = banners[0].imagen;
+  carrusel.appendChild(img);
+
+  setInterval(() => {
+    i = (i + 1) % banners.length;
+    img.src = banners[i].imagen;
+  }, 3000);
 }
 
-// Negocios
-function mostrarNegocios(negocios) {
-  const cont = document.getElementById("lista-negocios");
-  cont.innerHTML = "";
+// ================== NEGOCIOS ==================
+function cargarNegocios(negocios) {
+  const contenedor = document.getElementById("tarjetas-negocios");
+  contenedor.innerHTML = "";
+
   negocios.forEach(n => {
     const card = document.createElement("div");
-    card.className = "negocio-card";
+    card.classList.add("tarjeta-negocio");
+
     card.innerHTML = `
       <img src="${n.imagen}" alt="${n.nombre}">
       <h3>${n.nombre}</h3>
-      <button onclick="abrirPopup('${n.nombre}')">Comprar</button>
+      <p>${n.descripcion}</p>
+      <button onclick="abrirPopup('${n.id}')">Ver artículos</button>
     `;
-    cont.appendChild(card);
+
+    contenedor.appendChild(card);
   });
 }
 
-// Abrir popup
-function abrirPopup(nombre) {
-  const negocio = dataJson.negocios.find(n => n.nombre === nombre);
+// ================== NOTICIAS ==================
+function cargarNoticias(noticias) {
+  const contenedor = document.getElementById("contenedor-noticias");
+  contenedor.innerHTML = "";
+
+  noticias.forEach(n => {
+    const card = document.createElement("div");
+    card.classList.add("tarjeta-noticia");
+
+    card.innerHTML = `
+      <img src="${n.imagen}" alt="noticia">
+      <div>
+        <h4>${n.titulo}</h4>
+        <p>${n.descripcion}</p>
+      </div>
+    `;
+
+    contenedor.appendChild(card);
+  });
+}
+
+// ================== POPUP COMPRAS ==================
+function abrirPopup(idNegocio) {
+  const negocio = DATA.negocios.find(n => n.id === idNegocio);
   if (!negocio) return;
 
-  document.getElementById("popup-titulo").textContent = negocio.nombre;
+  total = 0;
+  document.getElementById("popup-titulo").innerText = negocio.nombre;
+  const divArt = document.getElementById("popup-articulos");
+  divArt.innerHTML = "";
 
-  const select = document.getElementById("popup-articulo");
-  select.innerHTML = "";
   negocio.articulos.forEach(a => {
-    const option = document.createElement("option");
-    option.value = a.precio;
-    option.textContent = `${a.nombre} - $${a.precio}`;
-    select.appendChild(option);
+    const fila = document.createElement("div");
+
+    fila.innerHTML = `
+      <span>${a.nombre} ($${a.precio})</span>
+      <input type="number" min="0" value="0" onchange="actualizarTotal(${a.precio}, this)">
+    `;
+
+    divArt.appendChild(fila);
   });
 
-  document.getElementById("popup-precio").value = negocio.articulos[0].precio;
-
-  select.onchange = () => {
-    document.getElementById("popup-precio").value = select.value;
-  };
-
-  document.getElementById("popup-enviar").onclick = () => {
-    const articulo = select.options[select.selectedIndex].text;
-    const cantidad = document.getElementById("popup-cantidad").value;
-    const precio = document.getElementById("popup-precio").value;
-    const total = precio * cantidad;
-
-    const mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A` +
-                    `- ${articulo} x${cantidad} = $${total}%0A` +
-                    `Total: $${total}`;
-
-    window.open(`https://wa.me/${negocio.telefono}?text=${mensaje}`, "_blank");
-  };
-
-  popupOverlay.style.display = "flex";
+  document.getElementById("popup-total").innerText = total;
+  document.getElementById("popup").classList.remove("hidden");
 }
 
-// Cerrar popup
-popupCerrar.onclick = () => popupOverlay.style.display = "none";
-popupOverlay.onclick = e => {
-  if (e.target === popupOverlay) popupOverlay.style.display = "none";
+function actualizarTotal(precio, input) {
+  const cantidad = parseInt(input.value) || 0;
+  let subtotal = precio * cantidad;
+
+  // recalcular total sumando todos los inputs
+  total = 0;
+  document.querySelectorAll("#popup-articulos input").forEach(inp => {
+    let cant = parseInt(inp.value) || 0;
+    let prec = parseInt(inp.getAttribute("onchange").match(/\d+/)[0]);
+    total += cant * prec;
+  });
+
+  document.getElementById("popup-total").innerText = total;
+}
+
+document.getElementById("cerrar-popup").onclick = () => {
+  document.getElementById("popup").classList.add("hidden");
+};
+
+document.getElementById("enviar-whatsapp").onclick = () => {
+  let mensaje = `Hola, quiero hacer un pedido. Total: $${total}`;
+  window.open(`https://wa.me/5210000000000?text=${encodeURIComponent(mensaje)}`, "_blank");
 };

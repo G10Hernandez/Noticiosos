@@ -1,32 +1,32 @@
 {
-  "noticias": [
-    {
-      "titulo": "Nueva apertura en la ciudad",
-      "contenido": "Un nuevo centro comercial abre sus puertas."
-    },
-    {
-      "titulo": "Promoción especial",
-      "contenido": "Grandes descuentos en temporada."
-    }
+  "banners": [
+    { "imagen": "img/banner2.jpg", "texto": "Promoción de Verano" },
+    { "imagen": "img/noticias3.jpg", "texto": "Nuevos Productos" }
   ],
   "negocios": [
     {
-      "nombre": "Tienda A",
-      "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+A",
-      "telefono": "5215512345678",
+      "nombre": "Itali Pizzas",
+      "descripcion": "Las mejores pizzas italianas",
+      "imagen": "img/pizza1.jpg",
       "articulos": [
-        { "nombre": "Producto A1", "precio": 100 },
-        { "nombre": "Producto A2", "precio": 150 }
+        { "nombre": "Pizza Grande", "precio": 180 },
+        { "nombre": "Pizza Mediana", "precio": 130 },
+        { "nombre": "Bebida 1L", "precio": 50 }
       ]
     },
     {
-      "nombre": "Tienda B",
-      "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+B",
-      "telefono": "5215523456789",
+      "nombre": "Modas Chic",
+      "descripcion": "Ofertas de ropa de temporada",
+      "imagen": "img/moda1.jpg",
       "articulos": [
-        { "nombre": "Producto B1", "precio": 200 },
-        { "nombre": "Producto B2", "precio": 250 }
+        { "nombre": "Vestido", "precio": 450 },
+        { "nombre": "Blusa", "precio": 280 },
+        { "nombre": "Pantalón", "precio": 350 }
       ]
     }
+  ],
+  "noticias": [
+    { "titulo": "Concierto gratuito", "descripcion": "Este sábado en la plaza", "imagen": "img/concierto1.jpg" },
+    { "titulo": "Evento deportivo", "descripcion": "Torneo local de fútbol", "imagen": "img/gym1.jpg" }
   ]
 }
