@@ -1,49 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Portal de Noticias y Negocios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Negocios</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Encabezado -->
+
+  <!-- ENCABEZADO -->
   <header>
-    <h1>🌴 Portal Noticias & Negocios</h1>
+    <h1>Mi Portal de Negocios</h1>
   </header>
 
-  <!-- Layout general -->
-  <div class="layout">
-    
-    <!-- Columna izquierda: carrusel + negocios -->
-    <main>
-      <!-- Carrusel -->
-      <section id="carrusel"></section>
+  <!-- CONTENEDOR PRINCIPAL EN 2 COLUMNAS -->
+  <div id="layout">
 
-      <!-- Negocios -->
-      <h2>Negocios</h2>
+    <!-- COLUMNA IZQUIERDA -->
+    <main id="contenido-principal">
+
+      <!-- Buscador -->
+      <div id="buscador">
+        <input type="text" placeholder="Buscar negocio..." id="inputBusqueda">
+      </div>
+
+      <!-- Carrusel -->
+      <section id="carrusel">
+        <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
+        <div class="slide"><img src="img/banner2.jpg" alt="Banner 2"></div>
+        <div class="slide"><img src="img/banner3.jpg" alt="Banner 3"></div>
+        <div class="slide"><img src="img/banner4.jpg" alt="Banner 4"></div>
+      </section>
+
+      <!-- Categorías -->
+      <div id="categorias">
+        <button class="btn-categoria" data-categoria="todos">Todos</button>
+        <button class="btn-categoria" data-categoria="alimentos">Alimentos</button>
+        <button class="btn-categoria" data-categoria="tiendas">Tiendas</button>
+        <button class="btn-categoria" data-categoria="servicios">Servicios</button>
+      </div>
+
+      <!-- Tarjetas de negocios -->
       <section id="tarjetas-negocios"></section>
     </main>
 
-    <!-- Columna derecha: noticias -->
+    <!-- COLUMNA DERECHA (NOTICIAS) -->
     <aside id="barra-lateral">
-      <h2>📰 Últimas Noticias</h2>
-      <div id="contenedor-noticias"></div>
+      <h2>Últimas Noticias</h2>
+      <div id="contenedor-noticias" class="nubes"></div>
     </aside>
-  </div>
 
-  <!-- Popup de compras -->
-  <div id="popup" class="popup hidden">
-    <div class="popup-contenido">
-      <span id="cerrar-popup">&times;</span>
-      <h3 id="popup-titulo"></h3>
-      <div id="popup-articulos"></div>
-      <h4>Total: $<span id="popup-total">0</span></h4>
-      <button id="enviar-whatsapp">Enviar pedido por WhatsApp</button>
-    </div>
-  </div>
+  </div> <!-- cierre layout -->
 
   <script src="script.js"></script>
 </body>
 </html>
-
-

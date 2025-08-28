@@ -1,32 +1,24 @@
-{
-  "banners": [
-    { "imagen": "img/banner2.jpg", "texto": "Promoción de Verano" },
-    { "imagen": "img/noticias3.jpg", "texto": "Nuevos Productos" }
-  ],
-  "negocios": [
-    {
-      "nombre": "Itali Pizzas",
-      "descripcion": "Las mejores pizzas italianas",
-      "imagen": "img/pizza1.jpg",
-      "articulos": [
-        { "nombre": "Pizza Grande", "precio": 180 },
-        { "nombre": "Pizza Mediana", "precio": 130 },
-        { "nombre": "Bebida 1L", "precio": 50 }
-      ]
-    },
-    {
-      "nombre": "Modas Chic",
-      "descripcion": "Ofertas de ropa de temporada",
-      "imagen": "img/moda1.jpg",
-      "articulos": [
-        { "nombre": "Vestido", "precio": 450 },
-        { "nombre": "Blusa", "precio": 280 },
-        { "nombre": "Pantalón", "precio": 350 }
-      ]
-    }
-  ],
-  "noticias": [
-    { "titulo": "Concierto gratuito", "descripcion": "Este sábado en la plaza", "imagen": "img/concierto1.jpg" },
-    { "titulo": "Evento deportivo", "descripcion": "Torneo local de fútbol", "imagen": "img/gym1.jpg" }
-  ]
-}
+[
+  {
+    "nombre": "Café Central",
+    "categoria": "alimentos",
+    "descripcion": "El mejor café de la ciudad",
+    "imagen": "img/cafe1.jpg",
+    "whatsapp": "521123456789"
+  },
+  {
+    "nombre": "Tienda Moda Chic",
+    "categoria": "tiendas",
+    "descripcion": "Ropa y accesorios de moda",
+    "imagen": "img/tienda1.jpg",
+    "whatsapp": "521987654321"
+  },
+  {
+    "nombre": "Servicio Express",
+    "categoria": "servicios",
+    "descripcion": "Limpieza y mantenimiento",
+    "imagen": "img/servicio1.jpg",
+    "whatsapp": "521112233445"
+  }
+]
+

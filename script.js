@@ -1,119 +1,99 @@
-let DATA = {};
-let total = 0;
-
-// ================== CARGAR DATA ==================
-fetch("data.json")
-  .then(res => res.json())
-  .then(data => {
-    DATA = data;
-    cargarCarrusel(DATA.banners);
-    cargarNegocios(DATA.negocios);
-    cargarNoticias(DATA.noticias);
-  })
-  .catch(err => console.error("Error cargando data.json:", err));
-
-// ================== CARRUSEL ==================
-function cargarCarrusel(banners) {
-  const carrusel = document.getElementById("carrusel");
-  if (!carrusel) return;
-
-  let i = 0;
-  const img = document.createElement("img");
-  img.src = banners[0].imagen;
-  carrusel.appendChild(img);
-
-  setInterval(() => {
-    i = (i + 1) % banners.length;
-    img.src = banners[i].imagen;
-  }, 3000);
+// Carrusel
+let indexSlide=0;
+const slides=document.querySelectorAll('#carrusel .slide');
+function mostrarSlide(i){
+  slides.forEach((s,idx)=> s.style.opacity= idx===i?1:0);
 }
+mostrarSlide(indexSlide);
+setInterval(()=>{
+  indexSlide=(indexSlide+1)%slides.length;
+  mostrarSlide(indexSlide);
+},3000);
 
-// ================== NEGOCIOS ==================
-function cargarNegocios(negocios) {
-  const contenedor = document.getElementById("tarjetas-negocios");
-  contenedor.innerHTML = "";
-
-  negocios.forEach(n => {
-    const card = document.createElement("div");
-    card.classList.add("tarjeta-negocio");
-
-    card.innerHTML = `
-      <img src="${n.imagen}" alt="${n.nombre}">
-      <h3>${n.nombre}</h3>
-      <p>${n.descripcion}</p>
-      <button onclick="abrirPopup('${n.id}')">Ver artículos</button>
-    `;
-
-    contenedor.appendChild(card);
-  });
-}
-
-// ================== NOTICIAS ==================
-function cargarNoticias(noticias) {
-  const contenedor = document.getElementById("contenedor-noticias");
-  contenedor.innerHTML = "";
-
-  noticias.forEach(n => {
-    const card = document.createElement("div");
-    card.classList.add("tarjeta-noticia");
-
-    card.innerHTML = `
-      <img src="${n.imagen}" alt="noticia">
-      <div>
-        <h4>${n.titulo}</h4>
+// Tarjetas negocios
+async function cargarNegocios(){
+  try {
+    const res = await fetch('data.json');
+    if(!res.ok) throw new Error('No se pudo cargar data.json');
+    const negocios = await res.json();
+    const cont = document.getElementById('tarjetas-negocios');
+    cont.innerHTML='';
+    negocios.forEach(n=>{
+      const div=document.createElement('div');
+      div.className='tarjeta';
+      div.dataset.categoria=n.categoria;
+      div.innerHTML=`
+        <img src="${n.imagen}" alt="${n.nombre}">
+        <h3>${n.nombre}</h3>
         <p>${n.descripcion}</p>
-      </div>
-    `;
+        <button class="btn-whatsapp" onclick="window.open('https://wa.me/${n.whatsapp}','_blank')">Contactar por WhatsApp</button>
+      `;
+      cont.appendChild(div);
+    });
+    filtrarTarjetas();
+  } catch(err){ console.error(err);}
+}
+cargarNegocios();
 
-    contenedor.appendChild(card);
+// Filtrado por categoría
+const botones=document.querySelectorAll('.btn-categoria');
+function filtrarTarjetas(){
+  botones.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const cat=btn.dataset.categoria;
+      document.querySelectorAll('.tarjeta').forEach(t=>{
+        t.style.display=(cat==='todos'|| t.dataset.categoria===cat)?'block':'none';
+      });
+    });
   });
 }
 
-// ================== POPUP COMPRAS ==================
-function abrirPopup(idNegocio) {
-  const negocio = DATA.negocios.find(n => n.id === idNegocio);
-  if (!negocio) return;
-
-  total = 0;
-  document.getElementById("popup-titulo").innerText = negocio.nombre;
-  const divArt = document.getElementById("popup-articulos");
-  divArt.innerHTML = "";
-
-  negocio.articulos.forEach(a => {
-    const fila = document.createElement("div");
-
-    fila.innerHTML = `
-      <span>${a.nombre} ($${a.precio})</span>
-      <input type="number" min="0" value="0" onchange="actualizarTotal(${a.precio}, this)">
-    `;
-
-    divArt.appendChild(fila);
+// Buscador
+document.getElementById('inputBusqueda').addEventListener('input', e=>{
+  const text=e.target.value.toLowerCase();
+  document.querySelectorAll('.tarjeta').forEach(t=>{
+    t.style.display = t.querySelector('h3').textContent.toLowerCase().includes(text)?'block':'none';
   });
+});
 
-  document.getElementById("popup-total").innerText = total;
-  document.getElementById("popup").classList.remove("hidden");
+// Nube de noticias
+const nube=document.getElementById('nube');
+async function cargarNoticias(){
+  try {
+    const res = await fetch('noticias.json');
+    if(!res.ok) throw new Error('No se pudo cargar noticias.json');
+    const data = await res.json();
+    data.forEach(item=>{
+      const burbuja=document.createElement('div');
+      burbuja.className='burbuja';
+      burbuja.innerHTML=`<b>${item.titulo}</b><br>${item.descripcion}`;
+      const W=nube.clientWidth,H=nube.clientHeight;
+      let posX=Math.random()*(W-220), posY=H;
+      const scale=0.7+Math.random()*0.6;
+      const opacity=0.5+Math.random()*0.5;
+      burbuja.style.transform=`scale(${scale})`;
+      burbuja.style.opacity=opacity;
+      burbuja.style.left=posX+'px';
+      burbuja.style.top=posY+'px';
+      burbuja.addEventListener('click',()=>window.open(item.link,'_blank'));
+      nube.appendChild(burbuja);
+
+      // Movimiento lento
+      const speed = 0.02 + Math.random()*0.05;
+      let t=0;
+      const anim=setInterval(()=>{
+        posY -= speed;
+        posX += Math.sin(t)*5;
+        burbuja.style.top = posY + 'px';
+        burbuja.style.left = posX + 'px';
+        t+=0.01;
+        if(posY + burbuja.offsetHeight <0){
+          clearInterval(anim);
+          nube.removeChild(burbuja);
+        }
+      },40);
+    });
+  } catch(err){ console.error(err);}
 }
-
-function actualizarTotal(precio, input) {
-  const cantidad = parseInt(input.value) || 0;
-  let subtotal = precio * cantidad;
-
-  // recalcular total sumando todos los inputs
-  total = 0;
-  document.querySelectorAll("#popup-articulos input").forEach(inp => {
-    let cant = parseInt(inp.value) || 0;
-    let prec = parseInt(inp.getAttribute("onchange").match(/\d+/)[0]);
-    total += cant * prec;
-  });
-
-  document.getElementById("popup-total").innerText = total;
-}
-
-document.getElementById("cerrar-popup").onclick = () => {
-  document.getElementById("popup").classList.add("hidden");
-};
-
-document.getElementById("enviar-whatsapp").onclick = () => {
-  let mensaje = `Hola, quiero hacer un pedido. Total: $${total}`;
-  window.open(`https://wa.me/5210000000000?text=${encodeURIComponent(mensaje)}`, "_blank");
-};
+cargarNoticias();
+setInterval(cargarNoticias,30000);
