@@ -7,37 +7,52 @@
     {
       "titulo": "Promoción especial",
       "contenido": "Grandes descuentos en temporada."
+    },
+    {
+      "titulo": "Tiendas Coppel",
+      "contenido": "Mejora tu Vida."
+    },
+    {
+      "titulo": "CENDEPI Reforma",
+      "contenido": "Atención Integral de Calidad para Maternales y Lactantes."
+    },
+    {
+      "titulo": "¿Por qué Estudiar la Biblia?",
+      "contenido": "Escucha a Dios y Viviras para Siempre."
     }
   ],
   "negocios": [
     {
-      "nombre": "Tienda A",
+      "nombre": "Tienda Moda Chick",
       "categoria": "Ropa",
-      "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+A",
-      "telefono": "5215512345678",
+      "imagen": "img/moda1.jpg",
+      "telefono": "525519259552",
       "articulos": [
         { "nombre": "Camisa A1", "precio": 100 },
-        { "nombre": "Pantalón A2", "precio": 150 }
+        { "nombre": "Pantalón A2", "precio": 150 },
+		{ "nombre": "Blusa A3", "precio": 200 }
       ]
     },
     {
       "nombre": "Tienda B",
       "categoria": "Electrónica",
-      "imagen": "https://via.placeholder.com/300x200.png?text=Tienda+B",
-      "telefono": "5215523456789",
+      "imagen": "img/tecno1.jpg",
+      "telefono": "525519259552",
       "articulos": [
         { "nombre": "Audífonos B1", "precio": 200 },
-        { "nombre": "Mouse B2", "precio": 250 }
+        { "nombre": "Mouse B2", "precio": 250 },
+		{ "nombre": "Teclados B3", "precio": 178 }
       ]
     },
     {
-      "nombre": "Restaurante C",
+      "nombre": "Itali Pizzas",
       "categoria": "Alimentos",
-      "imagen": "https://via.placeholder.com/300x200.png?text=Restaurante+C",
-      "telefono": "5215534567890",
+      "imagen": "img/restaurante1.jpg",
+      "telefono": "525519259552",
       "articulos": [
         { "nombre": "Hamburguesa C1", "precio": 80 },
-        { "nombre": "Pizza C2", "precio": 120 }
+        { "nombre": "Pizza Familiar C2", "precio": 120 },
+        { "nombre": "Pizza Grande  C3", "precio": 130 }
       ]
     }
   ]

@@ -3,6 +3,7 @@ const popupOverlay = document.getElementById("popup-overlay");
 const popupCerrar = document.getElementById("popup-cerrar");
 const filtroCategoria = document.getElementById("filtro-categoria");
 
+// Cargar datos
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
@@ -10,6 +11,7 @@ fetch("data.json")
     mostrarNoticias(data.noticias);
     cargarCategorias(data.negocios);
     mostrarNegocios(data.negocios);
+    iniciarCarrusel();
   });
 
 // Noticias
@@ -77,20 +79,27 @@ function abrirPopup(nombre) {
     select.appendChild(option);
   });
 
-  document.getElementById("popup-precio").value = negocio.articulos[0].precio;
+  // Inicializar valores
+  actualizarTotal();
 
-  select.onchange = () => {
-    document.getElementById("popup-precio").value = select.value;
-  };
+  select.onchange = actualizarTotal;
+  document.getElementById("popup-cantidad").oninput = actualizarTotal;
+
+  function actualizarTotal() {
+    const precio = parseFloat(select.value);
+    const cantidad = parseInt(document.getElementById("popup-cantidad").value) || 1;
+    const total = precio * cantidad;
+    document.getElementById("popup-precio").value = precio;
+    document.getElementById("popup-total").value = total;
+  }
 
   document.getElementById("popup-enviar").onclick = () => {
     const articulo = select.options[select.selectedIndex].text;
     const cantidad = document.getElementById("popup-cantidad").value;
-    const precio = document.getElementById("popup-precio").value;
-    const total = precio * cantidad;
+    const total = document.getElementById("popup-total").value;
 
     const mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A` +
-                    `- ${articulo} x${cantidad} = $${total}%0A` +
+                    `- ${articulo} x${cantidad}%0A` +
                     `Total: $${total}`;
 
     window.open(`https://wa.me/${negocio.telefono}?text=${mensaje}`, "_blank");
@@ -104,3 +113,16 @@ popupCerrar.onclick = () => popupOverlay.style.display = "none";
 popupOverlay.onclick = e => {
   if (e.target === popupOverlay) popupOverlay.style.display = "none";
 };
+
+// Carrusel
+function iniciarCarrusel() {
+  const banners = document.querySelectorAll("#carrusel .banner");
+  let indice = 0;
+  banners[indice].classList.add("active");
+
+  setInterval(() => {
+    banners[indice].classList.remove("active");
+    indice = (indice + 1) % banners.length;
+    banners[indice].classList.add("active");
+  }, 4000);
+}

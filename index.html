@@ -7,11 +7,15 @@
 </head>
 <body>
   <header>
-    <h1>Publicidad Vallarta</h1>
+    <h1>🌴 Publicidad 🌴</h1>
   </header>
 
   <!-- Carrusel -->
-  <section id="carrusel"></section>
+  <section id="carrusel">
+    <div class="banner"><img src="https://via.placeholder.com/1200x300/ffe4b5/333?text=Banner+1" alt="Banner 1"></div>
+    <div class="banner"><img src="https://via.placeholder.com/1200x300/b0e0e6/333?text=Banner+2" alt="Banner 2"></div>
+    <div class="banner"><img src="https://via.placeholder.com/1200x300/fadadd/333?text=Banner+3" alt="Banner 3"></div>
+  </section>
 
   <!-- Noticias -->
   <section id="noticias">
@@ -21,12 +25,9 @@
 
   <!-- Negocios -->
   <section id="negocios">
-    <h2>🌴 Negocios 🏪</h2>
-
-    <!-- Filtro de Categorías -->
+    <h2>Negocios 🏪</h2>
     <label for="filtro-categoria"><strong>Categoría:</strong></label>
     <select id="filtro-categoria"></select>
-
     <div id="lista-negocios"></div>
   </section>
 
@@ -35,12 +36,27 @@
     <div id="popup-content">
       <span id="popup-cerrar">&times;</span>
       <h2 id="popup-titulo"></h2>
-      <label for="popup-articulo">Artículo:</label>
-      <select id="popup-articulo"></select>
-      <label for="popup-cantidad">Cantidad:</label>
-      <input type="number" id="popup-cantidad" value="1" min="1">
-      <label for="popup-precio">Precio:</label>
-      <input type="text" id="popup-precio" readonly>
+
+      <div class="popup-field">
+        <label for="popup-articulo">Artículo:</label>
+        <select id="popup-articulo"></select>
+      </div>
+
+      <div class="popup-field">
+        <label for="popup-cantidad">Cantidad:</label>
+        <input type="number" id="popup-cantidad" value="1" min="1">
+      </div>
+
+      <div class="popup-field">
+        <label>Precio unitario:</label>
+        <input type="text" id="popup-precio" readonly>
+      </div>
+
+      <div class="popup-field">
+        <label>Total:</label>
+        <input type="text" id="popup-total" readonly>
+      </div>
+
       <button id="popup-enviar">Enviar por WhatsApp</button>
     </div>
   </div>
@@ -49,4 +65,8 @@
 </body>
 </html>
 
-<!-- 🛒 Carrito de Compras-->
+
+<!-- 🛒 Carrito de Compras,
+	🌴 Negocios 🏪,
+	📰 Últimas Noticias 
+-->
