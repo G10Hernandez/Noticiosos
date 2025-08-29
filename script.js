@@ -2,7 +2,7 @@ let dataJson;
 const popupOverlay = document.getElementById("popup-overlay");
 const popupCerrar = document.getElementById("popup-cerrar");
 
-// Cargar data
+// Cargar datos
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
@@ -15,16 +15,16 @@ fetch("data.json")
 // Carrusel
 function mostrarCarrusel(banners) {
   const carrusel = document.getElementById("carrusel");
-  banners.forEach((url, i) => {
+  banners.forEach((b, i) => {
     const img = document.createElement("img");
-    img.src = url;
+    img.src = b;
     if (i === 0) img.classList.add("active");
     carrusel.appendChild(img);
   });
 
   let index = 0;
+  const imgs = carrusel.querySelectorAll("img");
   setInterval(() => {
-    const imgs = carrusel.querySelectorAll("img");
     imgs[index].classList.remove("active");
     index = (index + 1) % imgs.length;
     imgs[index].classList.add("active");
@@ -56,47 +56,38 @@ function mostrarNegocios(negocios) {
   });
 }
 
-// Abrir popup
+// Abrir popup con múltiples artículos
 function abrirPopup(nombre) {
   const negocio = dataJson.negocios.find(n => n.nombre === nombre);
   if (!negocio) return;
 
   document.getElementById("popup-titulo").textContent = negocio.nombre;
-  const articulosDiv = document.getElementById("popup-articulos");
-  articulosDiv.innerHTML = "";
 
-  let total = 0;
+  const contArticulos = document.getElementById("popup-articulos");
+  contArticulos.innerHTML = "";
 
   negocio.articulos.forEach(a => {
-    const row = document.createElement("div");
-    row.innerHTML = `
-      <label>${a.nombre} - $${a.precio}</label>
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <span>${a.nombre} - $${a.precio}</span>
       <input type="number" value="0" min="0" data-precio="${a.precio}">
     `;
-    articulosDiv.appendChild(row);
+    contArticulos.appendChild(div);
   });
 
-  // Recalcular total al cambiar cantidades
-  articulosDiv.querySelectorAll("input").forEach(input => {
-    input.addEventListener("input", () => {
-      total = 0;
-      articulosDiv.querySelectorAll("input").forEach(i => {
-        total += i.value * i.dataset.precio;
-      });
-      document.getElementById("popup-total").textContent = total;
-    });
-  });
+  actualizarTotal();
 
-  // Enviar WhatsApp
+  contArticulos.oninput = actualizarTotal;
+
   document.getElementById("popup-enviar").onclick = () => {
     let mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A`;
-    total = 0;
-    articulosDiv.querySelectorAll("input").forEach(i => {
-      if (i.value > 0) {
-        const precio = i.dataset.precio;
-        const subtotal = i.value * precio;
-        total += subtotal;
-        mensaje += `- ${i.previousElementSibling.textContent} x${i.value} = $${subtotal}%0A`;
+    let total = 0;
+    contArticulos.querySelectorAll("input").forEach(input => {
+      const cantidad = parseInt(input.value) || 0;
+      const precio = parseFloat(input.dataset.precio);
+      if (cantidad > 0) {
+        mensaje += `- ${input.previousElementSibling.textContent} x${cantidad} = $${cantidad * precio}%0A`;
+        total += cantidad * precio;
       }
     });
     mensaje += `Total: $${total}`;
@@ -104,6 +95,16 @@ function abrirPopup(nombre) {
   };
 
   popupOverlay.style.display = "flex";
+}
+
+function actualizarTotal() {
+  let total = 0;
+  document.querySelectorAll("#popup-articulos input").forEach(input => {
+    const cantidad = parseInt(input.value) || 0;
+    const precio = parseFloat(input.dataset.precio);
+    total += cantidad * precio;
+  });
+  document.getElementById("popup-total").textContent = total;
 }
 
 // Cerrar popup
