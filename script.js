@@ -1,99 +1,164 @@
-// Carrusel
-let indexSlide=0;
-const slides=document.querySelectorAll('#carrusel .slide');
-function mostrarSlide(i){
-  slides.forEach((s,idx)=> s.style.opacity= idx===i?1:0);
-}
-mostrarSlide(indexSlide);
-setInterval(()=>{
-  indexSlide=(indexSlide+1)%slides.length;
-  mostrarSlide(indexSlide);
-},3000);
+let carrito = [];
+let datos = { banners: [], noticias: [], negocios: [] };
 
-// Tarjetas negocios
-async function cargarNegocios(){
+async function cargarDatos() {
   try {
-    const res = await fetch('data.json');
-    if(!res.ok) throw new Error('No se pudo cargar data.json');
-    const negocios = await res.json();
-    const cont = document.getElementById('tarjetas-negocios');
-    cont.innerHTML='';
-    negocios.forEach(n=>{
-      const div=document.createElement('div');
-      div.className='tarjeta';
-      div.dataset.categoria=n.categoria;
-      div.innerHTML=`
-        <img src="${n.imagen}" alt="${n.nombre}">
-        <h3>${n.nombre}</h3>
-        <p>${n.descripcion}</p>
-        <button class="btn-whatsapp" onclick="window.open('https://wa.me/${n.whatsapp}','_blank')">Contactar por WhatsApp</button>
-      `;
-      cont.appendChild(div);
-    });
-    filtrarTarjetas();
-  } catch(err){ console.error(err);}
-}
-cargarNegocios();
+    const res = await fetch("datos.json");
+    datos = await res.json();
+    cargarCarrusel();
+    cargarNoticias();
+    cargarNegocios();
 
-// Filtrado por categoría
-const botones=document.querySelectorAll('.btn-categoria');
-function filtrarTarjetas(){
-  botones.forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const cat=btn.dataset.categoria;
-      document.querySelectorAll('.tarjeta').forEach(t=>{
-        t.style.display=(cat==='todos'|| t.dataset.categoria===cat)?'block':'none';
-      });
-    });
+  } catch (err) {
+    console.error("❌ Error cargando datos.json:", err);
+  }
+}
+
+/* ========== CARRUSEL ========== 🎠*/
+function cargarCarrusel() {
+  const carrusel = document.getElementById("carrusel");
+  carrusel.innerHTML = "";
+
+  datos.banners.forEach((banner, i) => {
+    const img = document.createElement("img");
+    img.src = banner.imagen;
+    img.alt = banner.titulo;
+    img.classList.add("slide");
+    if (i === 0) img.classList.add("activo");
+    carrusel.appendChild(img);
+  });
+
+  // Rotación automática
+  let index = 0;
+  setInterval(() => {
+    const slides = document.querySelectorAll("#carrusel .slide");
+    slides.forEach(s => s.classList.remove("activo"));
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("activo");
+  }, 4000);
+}
+
+/* ========== NOTICIAS ========== */
+function cargarNoticias() {
+  const contenedor = document.getElementById("lista-noticias");
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "";
+
+  datos.noticias.forEach(noticia => {
+    const div = document.createElement("div");
+    div.classList.add("noticia");
+
+    div.innerHTML = `
+      <img src="${noticia.imagen}" alt="${noticia.titulo}">
+      <h3>${noticia.titulo}</h3>
+      <p>${noticia.descripcion}</p>
+    `;
+    contenedor.appendChild(div);
   });
 }
 
-// Buscador
-document.getElementById('inputBusqueda').addEventListener('input', e=>{
-  const text=e.target.value.toLowerCase();
-  document.querySelectorAll('.tarjeta').forEach(t=>{
-    t.style.display = t.querySelector('h3').textContent.toLowerCase().includes(text)?'block':'none';
+/* ========== NEGOCIOS ========== */
+function cargarNegocios(filtroCategoria = "", busqueda = "") {
+  const contenedor = document.getElementById("tarjetas-negocios");
+  const filtros = document.getElementById("filtros-categorias");
+
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "";
+  filtros.innerHTML = "";
+
+  // Crear categorías
+  const categorias = [...new Set(datos.negocios.map(n => n.categoria))];
+  categorias.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.onclick = () => cargarNegocios(cat, document.getElementById("buscador").value);
+    filtros.appendChild(btn);
   });
+
+  // Filtrar negocios
+  let negociosFiltrados = datos.negocios;
+  if (filtroCategoria) {
+    negociosFiltrados = negociosFiltrados.filter(n => n.categoria === filtroCategoria);
+  }
+  if (busqueda) {
+    negociosFiltrados = negociosFiltrados.filter(n => n.nombre.toLowerCase().includes(busqueda.toLowerCase()));
+  }
+
+  // Render tarjetas
+  negociosFiltrados.forEach(negocio => {
+    const card = document.createElement("div");
+    card.classList.add("tarjeta");
+
+    card.innerHTML = `
+      <img src="${negocio.imagen}" alt="${negocio.nombre}">
+      <h3>${negocio.nombre}</h3>
+      <p>${negocio.descripcion}</p>
+      <button class="btn-carrito" onclick="abrirPopup('${negocio.nombre}')">🛒 Ver artículos</button>
+    `;
+
+    contenedor.appendChild(card);
+  });
+}
+
+/* ========== CARRITO POPUP ========== */
+function abrirPopup(nombreNegocio) {
+  const popup = document.getElementById("popup");
+  const lista = document.getElementById("lista-carrito");
+  lista.innerHTML = "";
+
+  // Buscar negocio
+  const negocio = datos.negocios.find(n => n.nombre === nombreNegocio);
+  if (!negocio) return;
+
+  negocio.articulos.forEach(art => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${art.nombre} - $${art.precio} 
+      <input type="number" min="1" value="1" id="qty-${art.nombre}">
+      <button onclick="agregarAlCarrito('${art.nombre}', ${art.precio})">Agregar</button>
+    `;
+    lista.appendChild(li);
+  });
+
+  popup.style.display = "block";
+}
+
+function cerrarPopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+function agregarAlCarrito(nombre, precio) {
+  const qty = parseInt(document.getElementById(`qty-${nombre}`).value) || 1;
+  carrito.push({ nombre, precio, cantidad: qty });
+  actualizarTotal();
+}
+
+function actualizarTotal() {
+  let total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+  document.getElementById("total-carrito").textContent = `Total: $${total}`;
+}
+
+function enviarWhatsApp() {
+  let mensaje = "🛒 Pedido:\n";
+  carrito.forEach(item => {
+    mensaje += `${item.cantidad} x ${item.nombre} = $${item.precio * item.cantidad}\n`;
+  });
+  mensaje += document.getElementById("total-carrito").textContent;
+
+  const url = `https://wa.me/5215555555555?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+}
+
+/* ========== BUSCADOR ========== */
+document.addEventListener("DOMContentLoaded", () => {
+  cargarDatos();
+
+  const buscador = document.getElementById("buscador");
+  if (buscador) {
+    buscador.addEventListener("input", e => {
+      cargarNegocios("", e.target.value);
+    });
+  }
 });
-
-// Nube de noticias
-const nube=document.getElementById('nube');
-async function cargarNoticias(){
-  try {
-    const res = await fetch('noticias.json');
-    if(!res.ok) throw new Error('No se pudo cargar noticias.json');
-    const data = await res.json();
-    data.forEach(item=>{
-      const burbuja=document.createElement('div');
-      burbuja.className='burbuja';
-      burbuja.innerHTML=`<b>${item.titulo}</b><br>${item.descripcion}`;
-      const W=nube.clientWidth,H=nube.clientHeight;
-      let posX=Math.random()*(W-220), posY=H;
-      const scale=0.7+Math.random()*0.6;
-      const opacity=0.5+Math.random()*0.5;
-      burbuja.style.transform=`scale(${scale})`;
-      burbuja.style.opacity=opacity;
-      burbuja.style.left=posX+'px';
-      burbuja.style.top=posY+'px';
-      burbuja.addEventListener('click',()=>window.open(item.link,'_blank'));
-      nube.appendChild(burbuja);
-
-      // Movimiento lento
-      const speed = 0.02 + Math.random()*0.05;
-      let t=0;
-      const anim=setInterval(()=>{
-        posY -= speed;
-        posX += Math.sin(t)*5;
-        burbuja.style.top = posY + 'px';
-        burbuja.style.left = posX + 'px';
-        t+=0.01;
-        if(posY + burbuja.offsetHeight <0){
-          clearInterval(anim);
-          nube.removeChild(burbuja);
-        }
-      },40);
-    });
-  } catch(err){ console.error(err);}
-}
-cargarNoticias();
-setInterval(cargarNoticias,30000);

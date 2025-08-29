@@ -2,56 +2,46 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal de Negocios</title>
+  <title>Portal Publicitario</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- ENCABEZADO -->
   <header>
-    <h1>Mi Portal de Negocios</h1>
+    <h1>🌴 Publicaciones Tecámac 😎</h1>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL EN 2 COLUMNAS -->
-  <div id="layout">
+  <main class="layout">
+    <!-- Carrusel -->
+    <section id="carrusel"></section>
 
-    <!-- COLUMNA IZQUIERDA -->
-    <main id="contenido-principal">
+    <!-- Barra lateral de noticias -->
+    <section id="noticias">
+		<h2>📰 Últimas Noticias</h2>
+		<div id="lista-noticias"></div>
+	</section>
 
-      <!-- Buscador -->
-      <div id="buscador">
-        <input type="text" placeholder="Buscar negocio..." id="inputBusqueda">
-      </div>
+    <!-- Negocios -->
+    <section id="negocios">
+      <h2>🌴 Negocios 🏪</h2>
+      <input type="text" id="buscador" placeholder="Buscar negocio...">
+      <div id="filtros-categorias"></div>
+      <div id="tarjetas-negocios"></div>
+    </section>
+  </main>
 
-      <!-- Carrusel -->
-      <section id="carrusel">
-        <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
-        <div class="slide"><img src="img/banner2.jpg" alt="Banner 2"></div>
-        <div class="slide"><img src="img/banner3.jpg" alt="Banner 3"></div>
-        <div class="slide"><img src="img/banner4.jpg" alt="Banner 4"></div>
-      </section>
+<!-- Ventana Popup del carrito -->
+<div id="popup" class="popup">
+  <div class="popup-contenido">
+    <h2>🛒 Carrito de Compras</h2>
+    <ul id="lista-carrito"></ul>
+    <p id="total-carrito">Total: $0</p>
+    <button onclick="enviarWhatsApp()">Enviar a WhatsApp</button>
+    <button onclick="cerrarPopup()">Cerrar</button>
+  </div>
+</div>
 
-      <!-- Categorías -->
-      <div id="categorias">
-        <button class="btn-categoria" data-categoria="todos">Todos</button>
-        <button class="btn-categoria" data-categoria="alimentos">Alimentos</button>
-        <button class="btn-categoria" data-categoria="tiendas">Tiendas</button>
-        <button class="btn-categoria" data-categoria="servicios">Servicios</button>
-      </div>
-
-      <!-- Tarjetas de negocios -->
-      <section id="tarjetas-negocios"></section>
-    </main>
-
-    <!-- COLUMNA DERECHA (NOTICIAS) -->
-    <aside id="barra-lateral">
-      <h2>Últimas Noticias</h2>
-      <div id="contenedor-noticias" class="nubes"></div>
-    </aside>
-
-  </div> <!-- cierre layout -->
 
   <script src="script.js"></script>
 </body>
 </html>
+

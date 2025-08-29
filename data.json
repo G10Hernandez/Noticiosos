@@ -1,24 +1,58 @@
-[
-  {
-    "nombre": "Café Central",
-    "categoria": "alimentos",
-    "descripcion": "El mejor café de la ciudad",
-    "imagen": "img/cafe1.jpg",
-    "whatsapp": "521123456789"
-  },
-  {
-    "nombre": "Tienda Moda Chic",
-    "categoria": "tiendas",
-    "descripcion": "Ropa y accesorios de moda",
-    "imagen": "img/tienda1.jpg",
-    "whatsapp": "521987654321"
-  },
-  {
-    "nombre": "Servicio Express",
-    "categoria": "servicios",
-    "descripcion": "Limpieza y mantenimiento",
-    "imagen": "img/servicio1.jpg",
-    "whatsapp": "521112233445"
-  }
-]
-
+{
+  "banners": [
+    { "titulo": "Promo Playa", "imagen": "img/playa1.jpg" },
+    { "titulo": "Hoteles", "imagen": "img/banner2.jpg" },
+    { "titulo": "Restaurantes", "imagen": "img/restaurante1.jpg" }
+  ],
+  "noticias": [
+    { "titulo": "Nuevo Malecón", "descripcion": "Se inaugura un nuevo malecón turístico frente al mar." },
+    { "titulo": "Festival Gastronómico", "descripcion": "Participan más de 30 restaurantes de la región." },
+    { "titulo": "Concierto en la Playa", "descripcion": "Bandas locales ofrecerán conciertos gratuitos." }
+  ],
+  "negocios": [
+    {
+      "id": "n1",
+      "nombre": "Restaurante El Marisco",
+      "categoria": "Comida",
+      "descripcion": "Especialidad en pescados y mariscos frescos.",
+      "imagen": "img/restaurante2.jpg",
+      "articulos": [
+        { "nombre": "Ceviche", "precio": 120 },
+        { "nombre": "Coctel de camarón", "precio": 150 }
+      ]
+    },
+    {
+      "id": "n2",
+      "nombre": "Hotel Sol y Arena",
+      "categoria": "Hospedaje",
+      "descripcion": "Hotel 4 estrellas frente al mar con alberca.",
+      "imagen": "img/hotel2.jpg",
+      "articulos": [
+        { "nombre": "Noche estándar", "precio": 850 },
+        { "nombre": "Noche suite", "precio": 1450 }
+      ]
+    },
+    {
+      "id": "n3",
+      "nombre": "Tours Aventureros",
+      "categoria": "Turismo",
+      "descripcion": "Excursiones guiadas a arrecifes y paseos en lancha.",
+      "imagen": "img/tour1.jpg",
+      "articulos": [
+        { "nombre": "Tour snorkel", "precio": 500 },
+        { "nombre": "Paseo en lancha", "precio": 700 }
+      ]
+    },
+    {
+      "id": "n3",
+      "nombre": "Café Gourmet",
+      "categoria": "Alimentos",
+      "descripcion": "Café con Aroma de Mujer - Colombiano.",
+      "imagen": "img/cafe1.jpg",
+      "articulos": [
+        { "nombre": "Capuchino", "precio": 58 },
+        { "nombre": "Turco", "precio": 50 }
+      ]
+    }
+  ]
+}
