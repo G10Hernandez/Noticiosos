@@ -34,7 +34,7 @@
       ]
     },
     {
-      "nombre": "Tienda B",
+      "nombre": "Electrónicos y Juegos",
       "categoria": "Electrónica",
       "imagen": "img/tecno1.jpg",
       "telefono": "525519259552",
@@ -53,6 +53,117 @@
         { "nombre": "Hamburguesa C1", "precio": 80 },
         { "nombre": "Pizza Familiar C2", "precio": 120 },
         { "nombre": "Pizza Grande  C3", "precio": 130 }
+      ]
+    },
+    {
+      "nombre": "Café Gourmet",
+      "categoria": "Alimentos",
+      "imagen": "img/cafe1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Capuchino D1", "precio": 80 },
+        { "nombre": "Café Turco D2", "precio": 85 },
+        { "nombre": "Café Vienes D3", "precio": 90 }
+      ]
+    },
+    {
+      "nombre": "Carparvi",
+      "categoria": "Servicios",
+      "imagen": "img/carparvi1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Pintura E1", "precio": 600 },
+        { "nombre": "Electricidad E2", "precio": 500 },
+        { "nombre": "Plomería  E3", "precio": 750 }
+      ]
+    },
+    {
+      "nombre": "Médico General",
+      "categoria": "Salud",
+      "imagen": "img/medic1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Consulta  F1", "precio": 50 },
+        { "nombre": "Inyecciones  F2", "precio": 40 },
+        { "nombre": "Curaciones  F3", "precio": 100 }
+      ]
+    },
+    {
+      "nombre": "Gimnasio Hercules",
+      "categoria": "Salud",
+      "imagen": "img/gym1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Pesas  G1", "precio": 250 },
+        { "nombre": "Zumba  G2", "precio": 120 },
+        { "nombre": "Pilates  G3", "precio": 180 }
+      ]
+    },
+    {
+      "nombre": "Alternativa Ferretera",
+      "categoria": "Servicios",
+      "imagen": "img/negocio3.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Estructuras Metálicas H1", "precio": 800 },
+        { "nombre": "Artículos para Hogar H2", "precio": 250 },
+        { "nombre": "Herramientas  H3", "precio": 450 }
+      ]
+    },
+    {
+      "nombre": "La Esperanza",
+      "categoria": "Alimentos",
+      "imagen": "img/panaderia1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Pasteles I1", "precio": 220 },
+        { "nombre": "Gelatinas I2", "precio": 180 },
+        { "nombre": "Pan México-Español  I3", "precio": 20 }
+      ]
+    },
+    {
+      "nombre": "Salón de Belleza",
+      "categoria": "Servicios",
+      "imagen": "img/salon1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Corte de Cabello J1", "precio": 80 },
+        { "nombre": "Peinados J2", "precio": 150 },
+        { "nombre": "Tintes  J3", "precio": 200 },
+		{ "nombre": "Arreglo Añas  J4", "precio": 180 }
+      ]
+    },
+    {
+      "nombre": "Pollería Hugo",
+      "categoria": "Alimentos",
+      "imagen": "img/pollo1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Pechuga K1", "precio": 64 },
+        { "nombre": "Pierna y Muslo K2", "precio": 56 },
+        { "nombre": "Pollo Entero  K3", "precio": 110 }
+      ]
+    },
+    {
+      "nombre": "Noticias StarTimes",
+      "categoria": "Servicios",
+      "imagen": "img/noticias4.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Poscat Noticias L1", "precio": 80 },
+        { "nombre": "Periódico L2", "precio": 35 },
+        { "nombre": "En Línes  L3", "precio": 25 }
+      ]
+    },
+    {
+      "nombre": "Hotel Paraiso",
+      "categoria": "Turismo",
+      "imagen": "img/hotel2.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "Sencilla C1", "precio": 750 },
+        { "nombre": "Triple C2", "precio": 1450 },
+        { "nombre": "Suit Especial  C3", "precio": 7500 }
       ]
     }
   ]

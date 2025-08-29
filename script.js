@@ -1,62 +1,55 @@
 let dataJson;
+let carrito = [];
 const popupOverlay = document.getElementById("popup-overlay");
 const popupCerrar = document.getElementById("popup-cerrar");
-const filtroCategoria = document.getElementById("filtro-categoria");
 
-// Cargar datos
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
     dataJson = data;
+    mostrarCarrusel(data.banners);
     mostrarNoticias(data.noticias);
-    cargarCategorias(data.negocios);
     mostrarNegocios(data.negocios);
-    iniciarCarrusel();
   });
+
+// Carrusel
+function mostrarCarrusel(banners) {
+  const carrusel = document.getElementById("carrusel");
+  banners.forEach((url, i) => {
+    const img = document.createElement("img");
+    img.src = url;
+    if (i === 0) img.classList.add("active");
+    carrusel.appendChild(img);
+  });
+
+  let index = 0;
+  setInterval(() => {
+    const imgs = carrusel.querySelectorAll("img");
+    imgs[index].classList.remove("active");
+    index = (index + 1) % imgs.length;
+    imgs[index].classList.add("active");
+  }, 4000);
+}
 
 // Noticias
 function mostrarNoticias(noticias) {
   const cont = document.getElementById("lista-noticias");
-  cont.innerHTML = "";
   noticias.forEach(n => {
     const div = document.createElement("div");
-    div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
+    div.innerHTML = `<strong>${n.titulo}</strong><br>${n.contenido}`;
     cont.appendChild(div);
   });
-}
-
-// Categorías
-function cargarCategorias(negocios) {
-  const categorias = ["Todas", ...new Set(negocios.map(n => n.categoria))];
-  filtroCategoria.innerHTML = "";
-  categorias.forEach(cat => {
-    const option = document.createElement("option");
-    option.value = cat;
-    option.textContent = cat;
-    filtroCategoria.appendChild(option);
-  });
-
-  filtroCategoria.onchange = () => {
-    const seleccion = filtroCategoria.value;
-    if (seleccion === "Todas") {
-      mostrarNegocios(dataJson.negocios);
-    } else {
-      mostrarNegocios(dataJson.negocios.filter(n => n.categoria === seleccion));
-    }
-  };
 }
 
 // Negocios
 function mostrarNegocios(negocios) {
   const cont = document.getElementById("lista-negocios");
-  cont.innerHTML = "";
   negocios.forEach(n => {
     const card = document.createElement("div");
     card.className = "negocio-card";
     card.innerHTML = `
       <img src="${n.imagen}" alt="${n.nombre}">
       <h3>${n.nombre}</h3>
-      <p><em>${n.categoria}</em></p>
       <button onclick="abrirPopup('${n.nombre}')">Comprar</button>
     `;
     cont.appendChild(card);
@@ -65,6 +58,9 @@ function mostrarNegocios(negocios) {
 
 // Abrir popup
 function abrirPopup(nombre) {
+  carrito = [];
+  actualizarCarrito();
+
   const negocio = dataJson.negocios.find(n => n.nombre === nombre);
   if (!negocio) return;
 
@@ -79,28 +75,27 @@ function abrirPopup(nombre) {
     select.appendChild(option);
   });
 
-  // Inicializar valores
-  actualizarTotal();
+  document.getElementById("popup-precio").value = negocio.articulos[0].precio;
 
-  select.onchange = actualizarTotal;
-  document.getElementById("popup-cantidad").oninput = actualizarTotal;
+  select.onchange = () => {
+    document.getElementById("popup-precio").value = select.value;
+  };
 
-  function actualizarTotal() {
-    const precio = parseFloat(select.value);
-    const cantidad = parseInt(document.getElementById("popup-cantidad").value) || 1;
-    const total = precio * cantidad;
-    document.getElementById("popup-precio").value = precio;
-    document.getElementById("popup-total").value = total;
-  }
+  document.getElementById("popup-agregar").onclick = () => {
+    const articulo = select.options[select.selectedIndex].text;
+    const cantidad = parseInt(document.getElementById("popup-cantidad").value);
+    const precio = parseInt(document.getElementById("popup-precio").value);
+    carrito.push({ articulo, cantidad, precio, subtotal: precio * cantidad });
+    actualizarCarrito();
+  };
 
   document.getElementById("popup-enviar").onclick = () => {
-    const articulo = select.options[select.selectedIndex].text;
-    const cantidad = document.getElementById("popup-cantidad").value;
-    const total = document.getElementById("popup-total").value;
-
-    const mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A` +
-                    `- ${articulo} x${cantidad}%0A` +
-                    `Total: $${total}`;
+    let total = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+    let mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A`;
+    carrito.forEach(item => {
+      mensaje += `- ${item.articulo} x${item.cantidad} = $${item.subtotal}%0A`;
+    });
+    mensaje += `Total: $${total}`;
 
     window.open(`https://wa.me/${negocio.telefono}?text=${mensaje}`, "_blank");
   };
@@ -108,21 +103,23 @@ function abrirPopup(nombre) {
   popupOverlay.style.display = "flex";
 }
 
+// Actualizar carrito en popup
+function actualizarCarrito() {
+  const lista = document.getElementById("popup-carrito");
+  const totalSpan = document.getElementById("popup-total");
+  lista.innerHTML = "";
+  let total = 0;
+  carrito.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.articulo} x${item.cantidad} = $${item.subtotal}`;
+    lista.appendChild(li);
+    total += item.subtotal;
+  });
+  totalSpan.textContent = total;
+}
+
 // Cerrar popup
 popupCerrar.onclick = () => popupOverlay.style.display = "none";
 popupOverlay.onclick = e => {
   if (e.target === popupOverlay) popupOverlay.style.display = "none";
 };
-
-// Carrusel
-function iniciarCarrusel() {
-  const banners = document.querySelectorAll("#carrusel .banner");
-  let indice = 0;
-  banners[indice].classList.add("active");
-
-  setInterval(() => {
-    banners[indice].classList.remove("active");
-    indice = (indice + 1) % banners.length;
-    banners[indice].classList.add("active");
-  }, 4000);
-}
