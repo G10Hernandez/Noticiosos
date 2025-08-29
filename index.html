@@ -10,49 +10,30 @@
     <h1>🌴 Publicidad 🌴</h1>
   </header>
 
-  <!-- Contenedor principal -->
   <main>
-    <div id="contenido-izquierda">
-      <!-- Carrusel -->
-      <section id="carrusel"></section>
+    <!-- Carrusel -->
+    <section id="carrusel"></section>
 
-      <!-- Negocios -->
-      <section id="negocios">
-        <h2>Negocios 🏪</h2>
-        <div id="lista-negocios"></div>
-      </section>
-    </div>
-
-    <!-- Noticias (columna derecha) -->
+    <!-- Noticias (a la derecha del carrusel) -->
     <aside id="noticias">
       <h2>📰 Últimas Noticias</h2>
-      <div id="marquee-noticias">
-        <div id="lista-noticias"></div>
-      </div>
+      <div id="lista-noticias"></div>
     </aside>
   </main>
+
+  <!-- Negocios -->
+  <section id="negocios">
+    <h2>Negocios 🏪</h2>
+    <div id="lista-negocios"></div>
+  </section>
 
   <!-- Popup -->
   <div id="popup-overlay">
     <div id="popup-content">
       <span id="popup-cerrar">&times;</span>
       <h2 id="popup-titulo"></h2>
-
-      <label for="popup-articulo">Artículo:</label>
-      <select id="popup-articulo"></select>
-
-      <label for="popup-cantidad">Cantidad:</label>
-      <input type="number" id="popup-cantidad" value="1" min="1">
-
-      <label for="popup-precio">Precio:</label>
-      <input type="text" id="popup-precio" readonly>
-
-      <button id="popup-agregar">🛒 Agregar al carrito</button>
-
-      <h3>🛒Carrito</h3>
-      <ul id="popup-carrito"></ul>
-      <p><strong>Total:</strong> $<span id="popup-total">0</span></p>
-
+      <div id="popup-articulos"></div>
+      <h3>Total: $<span id="popup-total">0</span></h3>
       <button id="popup-enviar">Enviar por WhatsApp</button>
     </div>
   </div>
@@ -60,6 +41,7 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
 

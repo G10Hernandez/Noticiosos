@@ -1,29 +1,32 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #fdfcf7;
+  background: #fdfdfd;
   color: #333;
 }
 
+/* Encabezado */
 header {
-  background: linear-gradient(90deg, #a8edea, #fed6e3);
+  background: linear-gradient(90deg, #ffd8a8, #c5f6fa);
   color: #333;
   padding: 15px;
   text-align: center;
 }
 
+/* Layout principal */
 main {
   display: flex;
+  position: relative;
 }
 
 /* Carrusel */
 #carrusel {
-  width: 100%;
-  height: 200px;
+  flex: 3;
+  height: 250px;
   overflow: hidden;
   position: relative;
-  margin-bottom: 20px;
 }
+
 #carrusel img {
   width: 100%;
   height: 100%;
@@ -32,47 +35,43 @@ main {
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
+
 #carrusel img.active {
   opacity: 1;
 }
 
 /* Noticias */
 #noticias {
-  width: 300px;
-  background: #fffaf2;
-  border-left: 2px solid #eee;
+  flex: 1;
+  background: #e7f5ff;
   padding: 10px;
-  box-sizing: border-box;
-}
-
-#marquee-noticias {
-  height: calc(100vh - 100px);
   overflow: hidden;
-  position: relative;
+  max-height: 250px;
 }
 
 #lista-noticias {
   display: flex;
   flex-direction: column;
-  animation: scrollNoticias 20s linear infinite;
+  animation: scrollNoticias 12s linear infinite;
 }
 
 #lista-noticias div {
-  margin: 15px 0;
-  padding: 10px;
-  background: #e6f7ff;
-  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 14px;
 }
 
+/* Animación de noticias */
 @keyframes scrollNoticias {
-  0%   { transform: translateY(100%); }
+  0% { transform: translateY(100%); }
+  10%, 30% { transform: translateY(0); }
+  70% { transform: translateY(-50%); }
   100% { transform: translateY(-100%); }
 }
 
 /* Negocios */
-#contenido-izquierda {
-  flex: 1;
+#negocios {
   padding: 20px;
+  background: #fff;
 }
 
 #lista-negocios {
@@ -105,14 +104,14 @@ main {
   margin: 10px;
   padding: 8px 12px;
   border: none;
-  background: #4db6ac;
+  background: #4dabf7;
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .negocio-card button:hover {
-  background: #00897b;
+  background: #339af0;
 }
 
 /* Popup */
@@ -130,10 +129,8 @@ main {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 350px;
+  width: 320px;
   position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
 #popup-cerrar {
@@ -141,4 +138,8 @@ main {
   top: 10px; right: 10px;
   cursor: pointer;
   font-size: 20px;
+}
+
+#popup-articulos div {
+  margin-bottom: 10px;
 }

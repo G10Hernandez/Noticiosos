@@ -1,8 +1,8 @@
 let dataJson;
-let carrito = [];
 const popupOverlay = document.getElementById("popup-overlay");
 const popupCerrar = document.getElementById("popup-cerrar");
 
+// Cargar data
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
@@ -36,7 +36,7 @@ function mostrarNoticias(noticias) {
   const cont = document.getElementById("lista-noticias");
   noticias.forEach(n => {
     const div = document.createElement("div");
-    div.innerHTML = `<strong>${n.titulo}</strong><br>${n.contenido}`;
+    div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
     cont.appendChild(div);
   });
 }
@@ -58,64 +58,52 @@ function mostrarNegocios(negocios) {
 
 // Abrir popup
 function abrirPopup(nombre) {
-  carrito = [];
-  actualizarCarrito();
-
   const negocio = dataJson.negocios.find(n => n.nombre === nombre);
   if (!negocio) return;
 
   document.getElementById("popup-titulo").textContent = negocio.nombre;
+  const articulosDiv = document.getElementById("popup-articulos");
+  articulosDiv.innerHTML = "";
 
-  const select = document.getElementById("popup-articulo");
-  select.innerHTML = "";
+  let total = 0;
+
   negocio.articulos.forEach(a => {
-    const option = document.createElement("option");
-    option.value = a.precio;
-    option.textContent = `${a.nombre} - $${a.precio}`;
-    select.appendChild(option);
+    const row = document.createElement("div");
+    row.innerHTML = `
+      <label>${a.nombre} - $${a.precio}</label>
+      <input type="number" value="0" min="0" data-precio="${a.precio}">
+    `;
+    articulosDiv.appendChild(row);
   });
 
-  document.getElementById("popup-precio").value = negocio.articulos[0].precio;
+  // Recalcular total al cambiar cantidades
+  articulosDiv.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", () => {
+      total = 0;
+      articulosDiv.querySelectorAll("input").forEach(i => {
+        total += i.value * i.dataset.precio;
+      });
+      document.getElementById("popup-total").textContent = total;
+    });
+  });
 
-  select.onchange = () => {
-    document.getElementById("popup-precio").value = select.value;
-  };
-
-  document.getElementById("popup-agregar").onclick = () => {
-    const articulo = select.options[select.selectedIndex].text;
-    const cantidad = parseInt(document.getElementById("popup-cantidad").value);
-    const precio = parseInt(document.getElementById("popup-precio").value);
-    carrito.push({ articulo, cantidad, precio, subtotal: precio * cantidad });
-    actualizarCarrito();
-  };
-
+  // Enviar WhatsApp
   document.getElementById("popup-enviar").onclick = () => {
-    let total = carrito.reduce((sum, item) => sum + item.subtotal, 0);
     let mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A`;
-    carrito.forEach(item => {
-      mensaje += `- ${item.articulo} x${item.cantidad} = $${item.subtotal}%0A`;
+    total = 0;
+    articulosDiv.querySelectorAll("input").forEach(i => {
+      if (i.value > 0) {
+        const precio = i.dataset.precio;
+        const subtotal = i.value * precio;
+        total += subtotal;
+        mensaje += `- ${i.previousElementSibling.textContent} x${i.value} = $${subtotal}%0A`;
+      }
     });
     mensaje += `Total: $${total}`;
-
     window.open(`https://wa.me/${negocio.telefono}?text=${mensaje}`, "_blank");
   };
 
   popupOverlay.style.display = "flex";
-}
-
-// Actualizar carrito en popup
-function actualizarCarrito() {
-  const lista = document.getElementById("popup-carrito");
-  const totalSpan = document.getElementById("popup-total");
-  lista.innerHTML = "";
-  let total = 0;
-  carrito.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = `${item.articulo} x${item.cantidad} = $${item.subtotal}`;
-    lista.appendChild(li);
-    total += item.subtotal;
-  });
-  totalSpan.textContent = total;
 }
 
 // Cerrar popup
