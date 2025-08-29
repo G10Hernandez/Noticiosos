@@ -1,164 +1,106 @@
-let carrito = [];
-let datos = { banners: [], noticias: [], negocios: [] };
+let dataJson;
+const popupOverlay = document.getElementById("popup-overlay");
+const popupCerrar = document.getElementById("popup-cerrar");
+const filtroCategoria = document.getElementById("filtro-categoria");
 
-async function cargarDatos() {
-  try {
-    const res = await fetch("datos.json");
-    datos = await res.json();
-    cargarCarrusel();
-    cargarNoticias();
-    cargarNegocios();
-
-  } catch (err) {
-    console.error("❌ Error cargando datos.json:", err);
-  }
-}
-
-/* ========== CARRUSEL ========== 🎠*/
-function cargarCarrusel() {
-  const carrusel = document.getElementById("carrusel");
-  carrusel.innerHTML = "";
-
-  datos.banners.forEach((banner, i) => {
-    const img = document.createElement("img");
-    img.src = banner.imagen;
-    img.alt = banner.titulo;
-    img.classList.add("slide");
-    if (i === 0) img.classList.add("activo");
-    carrusel.appendChild(img);
+fetch("data.json")
+  .then(res => res.json())
+  .then(data => {
+    dataJson = data;
+    mostrarNoticias(data.noticias);
+    cargarCategorias(data.negocios);
+    mostrarNegocios(data.negocios);
   });
 
-  // Rotación automática
-  let index = 0;
-  setInterval(() => {
-    const slides = document.querySelectorAll("#carrusel .slide");
-    slides.forEach(s => s.classList.remove("activo"));
-    index = (index + 1) % slides.length;
-    slides[index].classList.add("activo");
-  }, 4000);
-}
-
-/* ========== NOTICIAS ========== */
-function cargarNoticias() {
-  const contenedor = document.getElementById("lista-noticias");
-  if (!contenedor) return;
-
-  contenedor.innerHTML = "";
-
-  datos.noticias.forEach(noticia => {
+// Noticias
+function mostrarNoticias(noticias) {
+  const cont = document.getElementById("lista-noticias");
+  cont.innerHTML = "";
+  noticias.forEach(n => {
     const div = document.createElement("div");
-    div.classList.add("noticia");
-
-    div.innerHTML = `
-      <img src="${noticia.imagen}" alt="${noticia.titulo}">
-      <h3>${noticia.titulo}</h3>
-      <p>${noticia.descripcion}</p>
-    `;
-    contenedor.appendChild(div);
+    div.innerHTML = `<strong>${n.titulo}</strong>: ${n.contenido}`;
+    cont.appendChild(div);
   });
 }
 
-/* ========== NEGOCIOS ========== */
-function cargarNegocios(filtroCategoria = "", busqueda = "") {
-  const contenedor = document.getElementById("tarjetas-negocios");
-  const filtros = document.getElementById("filtros-categorias");
-
-  if (!contenedor) return;
-
-  contenedor.innerHTML = "";
-  filtros.innerHTML = "";
-
-  // Crear categorías
-  const categorias = [...new Set(datos.negocios.map(n => n.categoria))];
+// Categorías
+function cargarCategorias(negocios) {
+  const categorias = ["Todas", ...new Set(negocios.map(n => n.categoria))];
+  filtroCategoria.innerHTML = "";
   categorias.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.textContent = cat;
-    btn.onclick = () => cargarNegocios(cat, document.getElementById("buscador").value);
-    filtros.appendChild(btn);
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    filtroCategoria.appendChild(option);
   });
 
-  // Filtrar negocios
-  let negociosFiltrados = datos.negocios;
-  if (filtroCategoria) {
-    negociosFiltrados = negociosFiltrados.filter(n => n.categoria === filtroCategoria);
-  }
-  if (busqueda) {
-    negociosFiltrados = negociosFiltrados.filter(n => n.nombre.toLowerCase().includes(busqueda.toLowerCase()));
-  }
+  filtroCategoria.onchange = () => {
+    const seleccion = filtroCategoria.value;
+    if (seleccion === "Todas") {
+      mostrarNegocios(dataJson.negocios);
+    } else {
+      mostrarNegocios(dataJson.negocios.filter(n => n.categoria === seleccion));
+    }
+  };
+}
 
-  // Render tarjetas
-  negociosFiltrados.forEach(negocio => {
+// Negocios
+function mostrarNegocios(negocios) {
+  const cont = document.getElementById("lista-negocios");
+  cont.innerHTML = "";
+  negocios.forEach(n => {
     const card = document.createElement("div");
-    card.classList.add("tarjeta");
-
+    card.className = "negocio-card";
     card.innerHTML = `
-      <img src="${negocio.imagen}" alt="${negocio.nombre}">
-      <h3>${negocio.nombre}</h3>
-      <p>${negocio.descripcion}</p>
-      <button class="btn-carrito" onclick="abrirPopup('${negocio.nombre}')">🛒 Ver artículos</button>
+      <img src="${n.imagen}" alt="${n.nombre}">
+      <h3>${n.nombre}</h3>
+      <p><em>${n.categoria}</em></p>
+      <button onclick="abrirPopup('${n.nombre}')">Comprar</button>
     `;
-
-    contenedor.appendChild(card);
+    cont.appendChild(card);
   });
 }
 
-/* ========== CARRITO POPUP ========== */
-function abrirPopup(nombreNegocio) {
-  const popup = document.getElementById("popup");
-  const lista = document.getElementById("lista-carrito");
-  lista.innerHTML = "";
-
-  // Buscar negocio
-  const negocio = datos.negocios.find(n => n.nombre === nombreNegocio);
+// Abrir popup
+function abrirPopup(nombre) {
+  const negocio = dataJson.negocios.find(n => n.nombre === nombre);
   if (!negocio) return;
 
-  negocio.articulos.forEach(art => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${art.nombre} - $${art.precio} 
-      <input type="number" min="1" value="1" id="qty-${art.nombre}">
-      <button onclick="agregarAlCarrito('${art.nombre}', ${art.precio})">Agregar</button>
-    `;
-    lista.appendChild(li);
+  document.getElementById("popup-titulo").textContent = negocio.nombre;
+
+  const select = document.getElementById("popup-articulo");
+  select.innerHTML = "";
+  negocio.articulos.forEach(a => {
+    const option = document.createElement("option");
+    option.value = a.precio;
+    option.textContent = `${a.nombre} - $${a.precio}`;
+    select.appendChild(option);
   });
 
-  popup.style.display = "block";
+  document.getElementById("popup-precio").value = negocio.articulos[0].precio;
+
+  select.onchange = () => {
+    document.getElementById("popup-precio").value = select.value;
+  };
+
+  document.getElementById("popup-enviar").onclick = () => {
+    const articulo = select.options[select.selectedIndex].text;
+    const cantidad = document.getElementById("popup-cantidad").value;
+    const precio = document.getElementById("popup-precio").value;
+    const total = precio * cantidad;
+
+    const mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A` +
+                    `- ${articulo} x${cantidad} = $${total}%0A` +
+                    `Total: $${total}`;
+
+    window.open(`https://wa.me/${negocio.telefono}?text=${mensaje}`, "_blank");
+  };
+
+  popupOverlay.style.display = "flex";
 }
 
-function cerrarPopup() {
-  document.getElementById("popup").style.display = "none";
-}
-
-function agregarAlCarrito(nombre, precio) {
-  const qty = parseInt(document.getElementById(`qty-${nombre}`).value) || 1;
-  carrito.push({ nombre, precio, cantidad: qty });
-  actualizarTotal();
-}
-
-function actualizarTotal() {
-  let total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
-  document.getElementById("total-carrito").textContent = `Total: $${total}`;
-}
-
-function enviarWhatsApp() {
-  let mensaje = "🛒 Pedido:\n";
-  carrito.forEach(item => {
-    mensaje += `${item.cantidad} x ${item.nombre} = $${item.precio * item.cantidad}\n`;
-  });
-  mensaje += document.getElementById("total-carrito").textContent;
-
-  const url = `https://wa.me/5215555555555?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-}
-
-/* ========== BUSCADOR ========== */
-document.addEventListener("DOMContentLoaded", () => {
-  cargarDatos();
-
-  const buscador = document.getElementById("buscador");
-  if (buscador) {
-    buscador.addEventListener("input", e => {
-      cargarNegocios("", e.target.value);
-    });
-  }
-});
+// Cerrar popup
+popupCerrar.onclick = () => popupOverlay.style.display = "none";
+popupOverlay.onclick = e => {
+  if (e.target === popupOverlay) popupOverlay.style.display = "none";
+};

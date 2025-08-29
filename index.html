@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -7,41 +7,46 @@
 </head>
 <body>
   <header>
-    <h1>🌴 Publicaciones Tecámac 😎</h1>
+    <h1>Publicidad Vallarta</h1>
   </header>
 
-  <main class="layout">
-    <!-- Carrusel -->
-    <section id="carrusel"></section>
+  <!-- Carrusel -->
+  <section id="carrusel"></section>
 
-    <!-- Barra lateral de noticias -->
-    <section id="noticias">
-		<h2>📰 Últimas Noticias</h2>
-		<div id="lista-noticias"></div>
-	</section>
+  <!-- Noticias -->
+  <section id="noticias">
+    <h2>📰 Últimas Noticias</h2>
+    <div id="lista-noticias"></div>
+  </section>
 
-    <!-- Negocios -->
-    <section id="negocios">
-      <h2>🌴 Negocios 🏪</h2>
-      <input type="text" id="buscador" placeholder="Buscar negocio...">
-      <div id="filtros-categorias"></div>
-      <div id="tarjetas-negocios"></div>
-    </section>
-  </main>
+  <!-- Negocios -->
+  <section id="negocios">
+    <h2>🌴 Negocios 🏪</h2>
 
-<!-- Ventana Popup del carrito -->
-<div id="popup" class="popup">
-  <div class="popup-contenido">
-    <h2>🛒 Carrito de Compras</h2>
-    <ul id="lista-carrito"></ul>
-    <p id="total-carrito">Total: $0</p>
-    <button onclick="enviarWhatsApp()">Enviar a WhatsApp</button>
-    <button onclick="cerrarPopup()">Cerrar</button>
+    <!-- Filtro de Categorías -->
+    <label for="filtro-categoria"><strong>Categoría:</strong></label>
+    <select id="filtro-categoria"></select>
+
+    <div id="lista-negocios"></div>
+  </section>
+
+  <!-- Popup -->
+  <div id="popup-overlay">
+    <div id="popup-content">
+      <span id="popup-cerrar">&times;</span>
+      <h2 id="popup-titulo"></h2>
+      <label for="popup-articulo">Artículo:</label>
+      <select id="popup-articulo"></select>
+      <label for="popup-cantidad">Cantidad:</label>
+      <input type="number" id="popup-cantidad" value="1" min="1">
+      <label for="popup-precio">Precio:</label>
+      <input type="text" id="popup-precio" readonly>
+      <button id="popup-enviar">Enviar por WhatsApp</button>
+    </div>
   </div>
-</div>
-
 
   <script src="script.js"></script>
 </body>
 </html>
 
+<!-- 🛒 Carrito de Compras-->
