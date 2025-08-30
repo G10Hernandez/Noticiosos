@@ -96,3 +96,55 @@ function showSlides() {
   slides[slideIndex - 1].style.display = "block";
   setTimeout(showSlides, 4000); // cambia cada 4s
 }
+
+let cart = [];
+
+// === Función para añadir al carrito ===
+function addToCart(nombre, precio) {
+  cart.push({ nombre, precio });
+  updateCart();
+  document.getElementById("cartPopup").style.display = "block"; // abre popup
+}
+
+// === Actualizar carrito ===
+function updateCart() {
+  const cartItems = document.getElementById("cartItems");
+  cartItems.innerHTML = "";
+  let total = 0;
+  cart.forEach((item, index) => {
+    total += item.precio;
+    const div = document.createElement("div");
+    div.innerHTML = `${item.nombre} - $${item.precio} <button onclick="removeFromCart(${index})">❌</button>`;
+    cartItems.appendChild(div);
+  });
+  document.getElementById("cartTotal").textContent = total;
+}
+
+// === Quitar producto del carrito ===
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
+// === Cerrar popup ===
+document.getElementById("closePopup").onclick = function() {
+  document.getElementById("cartPopup").style.display = "none";
+};
+
+// === Enviar a WhatsApp ===
+document.getElementById("sendWhatsapp").onclick = function() {
+  if (cart.length === 0) {
+    alert("Tu carrito está vacío.");
+    return;
+  }
+
+  let message = "🛍️ Pedido desde el Portal:\n";
+  cart.forEach(item => {
+    message += `- ${item.nombre}: $${item.precio}\n`;
+  });
+  message += `\nTotal: $${document.getElementById("cartTotal").textContent}`;
+
+  const phone = "5211234567890"; // <-- coloca tu número de WhatsApp aquí
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+};

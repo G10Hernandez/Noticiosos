@@ -23,9 +23,16 @@ h1 {
 /* Carrusel */
 #carrusel {
   margin: 20px auto;
-  max-width: 800px;
+  max-width: 25%;   /* 🔹 ocupa solo 25% del ancho */
+  min-width: 250px; /* 🔹 evita que se haga demasiado chico */
   position: relative;
 }
+
+#carrusel img {
+  width: 100%;      /* 🔹 imagen se adapta al nuevo tamaño */
+  border-radius: 15px;
+}
+
 
 .carousel-container {
   position: relative;
@@ -37,10 +44,10 @@ h1 {
   display: none;
 }
 
-.carousel-slide img {
+/*.carousel-slide img {
   width: 100%;
   border-radius: 15px;
-}
+}*/
 
 .fade {
   animation: fadeEffect 2s;
