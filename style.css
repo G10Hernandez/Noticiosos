@@ -1,154 +1,128 @@
+/* Fondo playero pastel */
 body {
-  font-family: Arial, sans-serif;
-  background: url("https://i.ibb.co/mDth3Fx/playa.jpg") no-repeat center center fixed;
-  background-size: cover;
   margin: 0;
-  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #a8edea, #fed6e3);
+  background-attachment: fixed;
   color: #333;
 }
 
-/* Encabezado */
 header {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  color: #006994;
+  padding: 15px;
   text-align: center;
-  padding: 20px;
-  border-bottom: 2px solid #00aaff;
+  font-size: 28px;
+  font-weight: bold;
+  border-bottom: 3px solid #ffd59e;
 }
 
-h1 {
-  margin: 0;
-  color: #006688;
+/* Banner más pequeño */
+#banner {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px;
 }
-
-/* Carrusel */
-#carrusel {
-  margin: 20px auto;
-  max-width: 25%;   /* 🔹 ocupa solo 25% del ancho */
-  min-width: 250px; /* 🔹 evita que se haga demasiado chico */
-  position: relative;
-}
-
-#carrusel img {
-  width: 100%;      /* 🔹 imagen se adapta al nuevo tamaño */
+#banner img {
+  width: 25%;
+  height: auto;
   border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-
-.carousel-container {
-  position: relative;
-  overflow: hidden;
-  border-radius: 15px;
-}
-
-.carousel-slide {
-  display: none;
-}
-
-/*.carousel-slide img {
-  width: 100%;
-  border-radius: 15px;
-}*/
-
-.fade {
-  animation: fadeEffect 2s;
-}
-
-@keyframes fadeEffect {
-  from { opacity: 0.4; }
-  to { opacity: 1; }
-}
-
-/* Noticias */
-#noticias {
-  position: fixed;
-  top: 120px;
-  right: 10px;
-  width: 250px;
-  height: 300px;
-  overflow: hidden;
-  background: rgba(0, 102, 136, 0.8);
-  color: white;
-  border-radius: 15px;
-  padding: 10px;
-  z-index: 10;
-}
-
-#newsContainer {
-  position: relative;
-  animation: scrollNews 20s linear infinite;
-}
-
-.news-item {
-  margin-bottom: 15px;
-  font-size: 14px;
-}
-
-@keyframes scrollNews {
-  0%   { top: 100%; }
-  100% { top: -100%; }
-}
-
-/* Botones de categorías */
+/* Categorías */
 #categorias {
-  margin: 20px;
   text-align: center;
+  margin: 15px;
 }
-
-#categoryButtons button {
+#categorias button {
   margin: 5px;
-  padding: 10px 15px;
+  padding: 10px 20px;
+  background: #ffd59e;
   border: none;
   border-radius: 10px;
-  background: #00aaff;
-  color: white;
   cursor: pointer;
+  font-weight: bold;
   transition: 0.3s;
 }
-
-#categoryButtons button:hover {
-  background: #0088cc;
+#categorias button:hover {
+  background: #ff9a76;
+  color: white;
 }
 
-#categoryButtons .active {
-  background: #ffaa00;
-}
-
-/* Negocios */
+/* Tarjetas */
 #negocios {
-  margin: 20px;
-  text-align: center;
-}
-
-#cardsContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
 }
-
 .card {
-  background: rgba(255, 255, 255, 0.85);
+  background: #ffffffcc;
+  border: 1px solid #ffd59e;
   border-radius: 15px;
   padding: 15px;
-  width: 200px;
+  margin: 15px;
+  width: 250px;
   text-align: center;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease-in-out;
 }
-
+.card:hover {
+  transform: scale(1.05);
+}
 .card img {
   width: 100%;
-  max-height: 120px;
-  object-fit: contain;
   border-radius: 10px;
 }
-
-.card h3 {
-  margin: 10px 0 5px;
-  color: #006688;
+.card button {
+  margin-top: 10px;
+  background: #00a896;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.card button:hover {
+  background: #028090;
 }
 
-.card p {
-  font-size: 14px;
-  margin: 5px 0;
+/* Noticias */
+#noticias-container {
+  margin: 20px auto;
+  padding: 15px;
+  width: 80%;
+  background: rgba(255,255,255,0.7);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+#noticias {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Popup */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+.popup-content {
+  background: white;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 15px;
+  width: 400px;
+  text-align: center;
+}
+.close {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
 }
 

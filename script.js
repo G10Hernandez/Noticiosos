@@ -1,150 +1,83 @@
-let businessesData = [];
+let cart = [];
+let total = 0;
 
-// === Cargar negocios desde data.json ===
+// Cargar negocios desde data.json
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
-    businessesData = data.negocios;
-
-    // Crear botones de categorías
-    const categories = [...new Set(businessesData.map(b => b.categoria))];
-    const buttonsContainer = document.getElementById("categoryButtons");
-
-    // Botón "Todos"
-    const allBtn = document.createElement("button");
-    allBtn.textContent = "Todos";
-    allBtn.classList.add("active");
-    allBtn.addEventListener("click", () => filterBusinesses("Todos", allBtn));
-    buttonsContainer.appendChild(allBtn);
-
-    // Botones de cada categoría
-    categories.forEach(cat => {
-      const btn = document.createElement("button");
-      btn.textContent = cat;
-      btn.addEventListener("click", () => filterBusinesses(cat, btn));
-      buttonsContainer.appendChild(btn);
-    });
-
-    // Mostrar todos al inicio
-    renderBusinesses(businessesData);
+    renderCategorias(data.categorias);
+    renderNegocios(data.negocios);
   });
 
-// === Renderizar negocios ===
-function renderBusinesses(businesses) {
-  const cardsContainer = document.getElementById("cardsContainer");
-  cardsContainer.innerHTML = "";
-  businesses.forEach(business => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${business.imagen}" alt="${business.nombre}">
-      <h3>${business.nombre}</h3>
-      <p><strong>${business.categoria}</strong></p>
-      <p>${business.descripcion}</p>
+// Render categorías
+function renderCategorias(categorias) {
+  const cont = document.getElementById("categorias");
+  categorias.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.innerText = cat;
+    btn.onclick = () => filterNegocios(cat);
+    cont.appendChild(btn);
+  });
+}
+
+// Render negocios
+function renderNegocios(negocios) {
+  const container = document.getElementById("negocios");
+  container.innerHTML = "";
+  negocios.forEach(n => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <img src="${n.imagen}" alt="${n.nombre}">
+      <h3>${n.nombre}</h3>
+      <p>${n.descripcion}</p>
+      <p><strong>$${n.precio}</strong></p>
+      <button onclick="addToCart('${n.nombre}', ${n.precio})">🛒 Comprar</button>
     `;
-    cardsContainer.appendChild(card);
+    container.appendChild(div);
   });
 }
 
-// === Filtro por categorías ===
-function filterBusinesses(category, clickedBtn) {
-  const buttons = document.querySelectorAll("#categoryButtons button");
-  buttons.forEach(btn => btn.classList.remove("active"));
-  clickedBtn.classList.add("active");
-
-  if (category === "Todos") {
-    renderBusinesses(businessesData);
-  } else {
-    const filtered = businessesData.filter(b => b.categoria === category);
-    renderBusinesses(filtered);
-  }
-}
-
-// === Noticias RSS ===
-async function fetchNews() {
-  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml";
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const newsContainer = document.getElementById("newsContainer");
-    newsContainer.innerHTML = "";
-
-    data.items.slice(0, 6).forEach(article => {
-      const newsItem = document.createElement("div");
-      newsItem.className = "news-item";
-      newsItem.innerHTML = `<a href="${article.link}" target="_blank" style="color:white; text-decoration:none;">${article.title}</a>`;
-      newsContainer.appendChild(newsItem);
+// Filtrar negocios
+function filterNegocios(cat) {
+  fetch("data.json")
+    .then(res => res.json())
+    .then(data => {
+      const filtrados = data.negocios.filter(n => n.categoria === cat);
+      renderNegocios(filtrados);
     });
-  } catch (error) {
-    console.error("Error al cargar noticias:", error);
-  }
 }
 
-fetchNews();
-
-// === Carrusel automático ===
-let slideIndex = 0;
-showSlides();
-
-function showSlides() {
-  const slides = document.getElementsByClassName("carousel-slide");
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) { slideIndex = 1 }
-  slides[slideIndex - 1].style.display = "block";
-  setTimeout(showSlides, 4000); // cambia cada 4s
-}
-
-let cart = [];
-
-// === Función para añadir al carrito ===
+// Carrito
 function addToCart(nombre, precio) {
   cart.push({ nombre, precio });
-  updateCart();
-  document.getElementById("cartPopup").style.display = "block"; // abre popup
+  total += precio;
+  openPopup();
+  renderCart();
 }
 
-// === Actualizar carrito ===
-function updateCart() {
-  const cartItems = document.getElementById("cartItems");
-  cartItems.innerHTML = "";
-  let total = 0;
-  cart.forEach((item, index) => {
-    total += item.precio;
-    const div = document.createElement("div");
-    div.innerHTML = `${item.nombre} - $${item.precio} <button onclick="removeFromCart(${index})">❌</button>`;
-    cartItems.appendChild(div);
-  });
-  document.getElementById("cartTotal").textContent = total;
-}
-
-// === Quitar producto del carrito ===
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  updateCart();
-}
-
-// === Cerrar popup ===
-document.getElementById("closePopup").onclick = function() {
-  document.getElementById("cartPopup").style.display = "none";
-};
-
-// === Enviar a WhatsApp ===
-document.getElementById("sendWhatsapp").onclick = function() {
-  if (cart.length === 0) {
-    alert("Tu carrito está vacío.");
-    return;
-  }
-
-  let message = "🛍️ Pedido desde el Portal:\n";
+function renderCart() {
+  const list = document.getElementById("cart-items");
+  list.innerHTML = "";
   cart.forEach(item => {
-    message += `- ${item.nombre}: $${item.precio}\n`;
+    const li = document.createElement("li");
+    li.innerText = `${item.nombre} - $${item.precio}`;
+    list.appendChild(li);
   });
-  message += `\nTotal: $${document.getElementById("cartTotal").textContent}`;
+  document.getElementById("cart-total").innerText = total;
+}
 
-  const phone = "5211234567890"; // <-- coloca tu número de WhatsApp aquí
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+function openPopup() {
+  document.getElementById("popup").style.display = "block";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+// Enviar pedido a WhatsApp
+document.getElementById("send-whatsapp").addEventListener("click", () => {
+  const mensaje = cart.map(i => `${i.nombre} - $${i.precio}`).join("\n");
+  const url = `https://wa.me/521234567890?text=Pedido:%0A${mensaje}%0ATotal: $${total}`;
   window.open(url, "_blank");
-};
+});

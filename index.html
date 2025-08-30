@@ -1,49 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Portal de Publicidad Playa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Publicidad - Playa</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🌴 Portal de Publicidad - Playa</h1>
+    🌴 Publicidad - Playa 🌴
   </header>
 
-  <!-- Carrusel -->
-  <section id="carrusel">
-    <div class="carousel-container">
-      <div class="carousel-slide fade">
-        <img src="img/auto1.jpg" alt="Publicidad 1">
-      </div>
-      <div class="carousel-slide fade">
-        <img src="img/banner2.jpg" alt="Publicidad 2">
-      </div>
-      <div class="carousel-slide fade">
-        <img src="img/noticias4.jpg" alt="Publicidad 3">
-      </div>
-    </div>
+  <!-- Banner reducido -->
+  <section id="banner">
+    <img src="banner1.jpg" alt="Publicidad 1">
+    <img src="banner2.jpg" alt="Publicidad 2">
   </section>
 
-  <main>
-    <!-- Noticias -->
-    <aside id="noticias">
-      <h2>📰 Últimas Noticias</h2>
-      <div id="newsContainer"></div>
-    </aside>
+  <!-- Botones de categorías -->
+  <nav id="categorias"></nav>
 
-    <!-- Botones de categorías -->
-    <section id="categorias">
-      <h2>Categorías</h2>
-      <div id="categoryButtons"></div>
-    </section>
+  <!-- Tarjetas de negocios -->
+  <section id="negocios"></section>
 
-    <!-- Negocios -->
-    <section id="negocios">
-      <h2>Negocios</h2>
-      <div id="cardsContainer"></div>
-    </section>
-  </main>
+  <!-- Noticias -->
+  <section id="noticias-container">
+    <h2>📰 Noticias</h2>
+    <div id="noticias"></div>
+  </section>
+
+  <!-- Popup Carrito -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closePopup()">&times;</span>
+      <h2>🛒 Carrito de Compras</h2>
+      <ul id="cart-items"></ul>
+      <p><strong>Total: $<span id="cart-total">0</span></strong></p>
+      <button id="send-whatsapp">Enviar a WhatsApp</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
