@@ -1,48 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Portal Publicitario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Playa Publicidad</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Portal de Publicidad</h1>
+    <h1>🌴 Publicidad 🌴</h1> 
   </header>
 
   <main>
-    <!-- Carrusel + Noticias al lado -->
-    <section id="top-section">
-      <div id="carrusel"></div>
-      <aside id="noticias">
-        <h2>📰 Últimas Noticias</h2>
-        <div id="lista-noticias"></div>
-      </aside>
+    <section id="categories">
+      <h2>Categorías de Negocios 🏪</h2>
+      <div id="categoryButtons" class="buttons-container">
+        <!-- Botones generados dinámicamente -->
+      </div>
+      <div class="cards-container" id="cardsContainer">
+        <!-- Tarjetas cargadas desde data.json -->
+      </div>
     </section>
 
-    <!-- Negocios -->
-    <section id="negocios">
-      <h2>Negocios 🏪</h2>
-      <div id="lista-negocios"></div>
+    <section id="news">
+      <h2>📰 Noticias en Vivo</h2>
+      <div class="news-container" id="newsContainer">
+        <!-- Noticias flotantes -->
+      </div>
     </section>
   </main>
-
-  <!-- Popup -->
-  <div id="popup-overlay">
-    <div id="popup-content">
-      <span id="popup-cerrar">&times;</span>
-      <h2 id="popup-titulo"></h2>
-      <div id="popup-articulos"></div>
-      <div class="popup-total">
-        <strong>Total: $<span id="popup-total">0</span></strong>
-      </div>
-      <button id="popup-enviar">Enviar por WhatsApp</button>
-    </div>
-  </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
