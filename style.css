@@ -1,103 +1,147 @@
-/* Fondo playa */
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1950&q=80')
-    no-repeat center center fixed;
+  background: url("https://i.ibb.co/mDth3Fx/playa.jpg") no-repeat center center fixed;
   background-size: cover;
+  margin: 0;
+  padding: 0;
   color: #333;
 }
 
+/* Encabezado */
 header {
+  background: rgba(255, 255, 255, 0.7);
   text-align: center;
-  padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  padding: 20px;
+  border-bottom: 2px solid #00aaff;
 }
 
-h1, h2 {
-  color: #004d40;
+h1 {
+  margin: 0;
+  color: #006688;
 }
 
-main {
-  margin-top: 30px;
+/* Carrusel */
+#carrusel {
+  margin: 20px auto;
+  max-width: 800px;
+  position: relative;
 }
 
-/* Botones categorías */
-.buttons-container {
-  text-align: center;
-  margin: 1rem;
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
 }
 
-.buttons-container button {
-  background-color: #009688;
+.carousel-slide {
+  display: none;
+}
+
+.carousel-slide img {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.fade {
+  animation: fadeEffect 2s;
+}
+
+@keyframes fadeEffect {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+/* Noticias */
+#noticias {
+  position: fixed;
+  top: 120px;
+  right: 10px;
+  width: 250px;
+  height: 300px;
+  overflow: hidden;
+  background: rgba(0, 102, 136, 0.8);
   color: white;
+  border-radius: 15px;
+  padding: 10px;
+  z-index: 10;
+}
+
+#newsContainer {
+  position: relative;
+  animation: scrollNews 20s linear infinite;
+}
+
+.news-item {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+@keyframes scrollNews {
+  0%   { top: 100%; }
+  100% { top: -100%; }
+}
+
+/* Botones de categorías */
+#categorias {
+  margin: 20px;
+  text-align: center;
+}
+
+#categoryButtons button {
+  margin: 5px;
+  padding: 10px 15px;
   border: none;
-  padding: 0.6rem 1rem;
-  margin: 0.3rem;
-  border-radius: 8px;
+  border-radius: 10px;
+  background: #00aaff;
+  color: white;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s;
+  transition: 0.3s;
 }
 
-.buttons-container button:hover {
-  background-color: #00796b;
+#categoryButtons button:hover {
+  background: #0088cc;
 }
 
-.buttons-container button.active {
-  background-color: #004d40;
+#categoryButtons .active {
+  background: #ffaa00;
 }
 
-/* Tarjetas de negocios */
-.cards-container {
+/* Negocios */
+#negocios {
+  margin: 20px;
+  text-align: center;
+}
+
+#cardsContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 2rem;
-  margin-top: 20px;
+  gap: 15px;
 }
 
 .card {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  padding: 1rem;
-  width: 220px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 15px;
+  padding: 15px;
+  width: 200px;
   text-align: center;
-  transition: transform 0.2s;
-}
-
-.card:hover {
-  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
 
 .card img {
   width: 100%;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
-
-/* Noticias */
-.news-container {
-  position: relative;
-  height: 250px;
-  overflow: hidden;
-  background-color: rgba(255,255,255,0.6);
+  max-height: 120px;
+  object-fit: contain;
   border-radius: 10px;
-  margin: 1rem;
-  padding: 1rem;
 }
 
-.news-item {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  padding: 0.5rem;
-  background-color: rgba(0,150,136,0.7);
-  color: #fff;
-  border-radius: 5px;
-  text-align: center;
-  user-select: none;
+.card h3 {
+  margin: 10px 0 5px;
+  color: #006688;
 }
+
+.card p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
