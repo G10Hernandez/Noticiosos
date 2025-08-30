@@ -2,31 +2,30 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   background: #fdfdfd;
-  color: #333;
 }
 
 /* Encabezado */
 header {
-  background: linear-gradient(90deg, #ffd8a8, #c5f6fa);
+  background: linear-gradient(90deg, #87ceeb, #ffd59e);
   color: #333;
   padding: 15px;
   text-align: center;
 }
 
-/* Layout principal */
-main {
+/* Carrusel y noticias */
+#top-section {
   display: flex;
-  position: relative;
+  width: 100%;
+  height: 250px;
 }
 
 /* Carrusel */
 #carrusel {
   flex: 3;
-  height: 250px;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+  background: #d6f5ff;
 }
-
 #carrusel img {
   width: 100%;
   height: 100%;
@@ -35,7 +34,6 @@ main {
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
-
 #carrusel img.active {
   opacity: 1;
 }
@@ -43,43 +41,44 @@ main {
 /* Noticias */
 #noticias {
   flex: 1;
-  background: #e7f5ff;
+  background: #fff8dc;
   padding: 10px;
   overflow: hidden;
-  max-height: 250px;
-}
-
-#lista-noticias {
   display: flex;
   flex-direction: column;
-  animation: scrollNoticias 12s linear infinite;
 }
-
+#noticias h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+#lista-noticias {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  animation: scrollNoticias 15s linear infinite;
+}
 #lista-noticias div {
   margin-bottom: 20px;
-  font-size: 14px;
 }
 
-/* Animación de noticias */
 @keyframes scrollNoticias {
   0% { transform: translateY(100%); }
-  10%, 30% { transform: translateY(0); }
-  70% { transform: translateY(-50%); }
+  10% { transform: translateY(0); }
+  90% { transform: translateY(-100%); }
   100% { transform: translateY(-100%); }
 }
 
 /* Negocios */
 #negocios {
   padding: 20px;
-  background: #fff;
+  background: #e8fff0;
 }
-
 #lista-negocios {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+  justify-content: center;
 }
-
 .negocio-card {
   width: 200px;
   border: 1px solid #ddd;
@@ -89,29 +88,25 @@ main {
   background: #fafafa;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
 .negocio-card img {
   width: 100%;
   height: 150px;
   object-fit: cover;
 }
-
 .negocio-card h3 {
   margin: 10px 0;
 }
-
 .negocio-card button {
   margin: 10px;
   padding: 8px 12px;
   border: none;
-  background: #4dabf7;
+  background: #20b273;
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
-
 .negocio-card button:hover {
-  background: #339af0;
+  background: #17885a;
 }
 
 /* Popup */
@@ -124,22 +119,39 @@ main {
   justify-content: center;
   align-items: center;
 }
-
 #popup-content {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 320px;
+  width: 350px;
+  max-height: 80%;
+  overflow-y: auto;
   position: relative;
 }
-
 #popup-cerrar {
   position: absolute;
   top: 10px; right: 10px;
   cursor: pointer;
   font-size: 20px;
 }
-
-#popup-articulos div {
-  margin-bottom: 10px;
+#popup-articulos {
+  margin-bottom: 15px;
+}
+.popup-articulo {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+.popup-total {
+  margin-top: 10px;
+  font-size: 16px;
+}
+#popup-enviar {
+  width: 100%;
+  padding: 10px;
+  background: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

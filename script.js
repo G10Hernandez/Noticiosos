@@ -2,7 +2,6 @@ let dataJson;
 const popupOverlay = document.getElementById("popup-overlay");
 const popupCerrar = document.getElementById("popup-cerrar");
 
-// Cargar datos
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
@@ -12,26 +11,26 @@ fetch("data.json")
     mostrarNegocios(data.negocios);
   });
 
-// Carrusel
+// ================= Carrusel =================
 function mostrarCarrusel(banners) {
   const carrusel = document.getElementById("carrusel");
-  banners.forEach((b, i) => {
+  banners.forEach((src, i) => {
     const img = document.createElement("img");
-    img.src = b;
+    img.src = src;
     if (i === 0) img.classList.add("active");
     carrusel.appendChild(img);
   });
 
-  let index = 0;
-  const imgs = carrusel.querySelectorAll("img");
+  let idx = 0;
   setInterval(() => {
-    imgs[index].classList.remove("active");
-    index = (index + 1) % imgs.length;
-    imgs[index].classList.add("active");
+    const imgs = carrusel.querySelectorAll("img");
+    imgs[idx].classList.remove("active");
+    idx = (idx + 1) % imgs.length;
+    imgs[idx].classList.add("active");
   }, 4000);
 }
 
-// Noticias
+// ================= Noticias =================
 function mostrarNoticias(noticias) {
   const cont = document.getElementById("lista-noticias");
   noticias.forEach(n => {
@@ -41,7 +40,7 @@ function mostrarNoticias(noticias) {
   });
 }
 
-// Negocios
+// ================= Negocios =================
 function mostrarNegocios(negocios) {
   const cont = document.getElementById("lista-negocios");
   negocios.forEach(n => {
@@ -56,7 +55,7 @@ function mostrarNegocios(negocios) {
   });
 }
 
-// Abrir popup con múltiples artículos
+// ================= Popup =================
 function abrirPopup(nombre) {
   const negocio = dataJson.negocios.find(n => n.nombre === nombre);
   if (!negocio) return;
@@ -65,49 +64,48 @@ function abrirPopup(nombre) {
 
   const contArticulos = document.getElementById("popup-articulos");
   contArticulos.innerHTML = "";
+  let total = 0;
 
-  negocio.articulos.forEach(a => {
-    const div = document.createElement("div");
-    div.innerHTML = `
+  negocio.articulos.forEach((a, i) => {
+    const row = document.createElement("div");
+    row.className = "popup-articulo";
+    row.innerHTML = `
       <span>${a.nombre} - $${a.precio}</span>
-      <input type="number" value="0" min="0" data-precio="${a.precio}">
+      <input type="number" id="cantidad-${i}" value="0" min="0" style="width:50px">
     `;
-    contArticulos.appendChild(div);
+    contArticulos.appendChild(row);
   });
 
-  actualizarTotal();
+  function actualizarTotal() {
+    total = 0;
+    negocio.articulos.forEach((a, i) => {
+      const cant = parseInt(document.getElementById(`cantidad-${i}`).value) || 0;
+      total += cant * a.precio;
+    });
+    document.getElementById("popup-total").textContent = total;
+  }
 
-  contArticulos.oninput = actualizarTotal;
+  contArticulos.querySelectorAll("input").forEach(inp => {
+    inp.addEventListener("input", actualizarTotal);
+  });
 
   document.getElementById("popup-enviar").onclick = () => {
     let mensaje = `Hola, quiero comprar en *${negocio.nombre}*:%0A`;
-    let total = 0;
-    contArticulos.querySelectorAll("input").forEach(input => {
-      const cantidad = parseInt(input.value) || 0;
-      const precio = parseFloat(input.dataset.precio);
-      if (cantidad > 0) {
-        mensaje += `- ${input.previousElementSibling.textContent} x${cantidad} = $${cantidad * precio}%0A`;
-        total += cantidad * precio;
+    negocio.articulos.forEach((a, i) => {
+      const cant = parseInt(document.getElementById(`cantidad-${i}`).value) || 0;
+      if (cant > 0) {
+        mensaje += `- ${a.nombre} x${cant} = $${a.precio * cant}%0A`;
       }
     });
     mensaje += `Total: $${total}`;
     window.open(`https://wa.me/${negocio.telefono}?text=${mensaje}`, "_blank");
   };
 
+  document.getElementById("popup-total").textContent = total;
   popupOverlay.style.display = "flex";
 }
 
-function actualizarTotal() {
-  let total = 0;
-  document.querySelectorAll("#popup-articulos input").forEach(input => {
-    const cantidad = parseInt(input.value) || 0;
-    const precio = parseFloat(input.dataset.precio);
-    total += cantidad * precio;
-  });
-  document.getElementById("popup-total").textContent = total;
-}
-
-// Cerrar popup
+// ================= Cerrar popup =================
 popupCerrar.onclick = () => popupOverlay.style.display = "none";
 popupOverlay.onclick = e => {
   if (e.target === popupOverlay) popupOverlay.style.display = "none";

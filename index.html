@@ -7,25 +7,25 @@
 </head>
 <body>
   <header>
-    <h1>🌴 Publicidad 🌴</h1>
+    <h1>Portal de Publicidad</h1>
   </header>
 
   <main>
-    <!-- Carrusel -->
-    <section id="carrusel"></section>
+    <!-- Carrusel + Noticias al lado -->
+    <section id="top-section">
+      <div id="carrusel"></div>
+      <aside id="noticias">
+        <h2>📰 Últimas Noticias</h2>
+        <div id="lista-noticias"></div>
+      </aside>
+    </section>
 
-    <!-- Noticias (a la derecha del carrusel) -->
-    <aside id="noticias">
-      <h2>📰 Últimas Noticias</h2>
-      <div id="lista-noticias"></div>
-    </aside>
+    <!-- Negocios -->
+    <section id="negocios">
+      <h2>Negocios 🏪</h2>
+      <div id="lista-negocios"></div>
+    </section>
   </main>
-
-  <!-- Negocios -->
-  <section id="negocios">
-    <h2>Negocios 🏪</h2>
-    <div id="lista-negocios"></div>
-  </section>
 
   <!-- Popup -->
   <div id="popup-overlay">
@@ -33,7 +33,9 @@
       <span id="popup-cerrar">&times;</span>
       <h2 id="popup-titulo"></h2>
       <div id="popup-articulos"></div>
-      <h3>Total: $<span id="popup-total">0</span></h3>
+      <div class="popup-total">
+        <strong>Total: $<span id="popup-total">0</span></strong>
+      </div>
       <button id="popup-enviar">Enviar por WhatsApp</button>
     </div>
   </div>
@@ -41,7 +43,6 @@
   <script src="script.js"></script>
 </body>
 </html>
-
 
 
 
