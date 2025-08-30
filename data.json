@@ -161,9 +161,20 @@
       "imagen": "img/hotel2.jpg",
       "telefono": "525519259552",
       "articulos": [
-        { "nombre": "Sencilla C1", "precio": 750 },
-        { "nombre": "Triple C2", "precio": 1450 },
-        { "nombre": "Suit Especial  C3", "precio": 7500 }
+        { "nombre": "Sencilla M1", "precio": 750 },
+        { "nombre": "Triple M2", "precio": 1450 },
+        { "nombre": "Suit Especial  N3", "precio": 7500 }
+      ]
+    },
+    {
+      "nombre": "Nano's Chicken",
+      "categoria": "Alimentos",
+      "imagen": "img/chicken1.jpg",
+      "telefono": "525519259552",
+      "articulos": [
+        { "nombre": "8 Pzas c/Pure y Ensalada N1", "precio": 110 },
+        { "nombre": "12 Pzas c/Pure y Ensalada N2", "precio": 140 },
+        { "nombre": "16 Pzas  c/Pure y Ensalada N3", "precio": 250 }
       ]
     }
   ]
