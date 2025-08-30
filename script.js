@@ -26,27 +26,40 @@ fetch("data.json")
     });
 
     // Mostrar todos al inicio
-    renderBusinesses(businessesData);
+    renderNegocios(businessesData);
   });
 
 // === Renderizar negocios ===
 function renderNegocios(negocios) {
-  const container = document.getElementById("negocios");
+  const container = document.getElementById("cardsContainer");
   container.innerHTML = "";
   negocios.forEach(negocio => {
     const div = document.createElement("div");
     div.className = "card";
+
+    // generar listado de artículos
+    let articulosHTML = "";
+    negocio.articulos.forEach(a => {
+      articulosHTML += `
+        <div class="articulo">
+          ${a.nombre} - $${a.precio}
+          <button onclick="addToCart('${a.nombre}', ${a.precio})">🛒</button>
+        </div>
+      `;
+    });
+
     div.innerHTML = `
       <img src="${negocio.imagen}" alt="${negocio.nombre}" style="width:100%; border-radius:10px;">
       <h3>${negocio.nombre}</h3>
-      <p>${negocio.descripcion}</p>
-      <p><strong>$${negocio.precio}</strong></p>
-      <button onclick="addToCart('${negocio.nombre}', ${negocio.precio})">🛒 Comprar</button>
+      <p><strong>Categoría:</strong> ${negocio.categoria}</p>
+      <p><strong>Tel:</strong> ${negocio.telefono}</p>
+      <div class="articulos">
+        ${articulosHTML}
+      </div>
     `;
     container.appendChild(div);
   });
 }
-
 
 // === Filtro por categorías ===
 function filterBusinesses(category, clickedBtn) {
@@ -55,10 +68,10 @@ function filterBusinesses(category, clickedBtn) {
   clickedBtn.classList.add("active");
 
   if (category === "Todos") {
-    renderBusinesses(businessesData);
+    renderNegocios(businessesData);
   } else {
     const filtered = businessesData.filter(b => b.categoria === category);
-    renderBusinesses(filtered);
+    renderNegocios(filtered);
   }
 }
 
@@ -99,6 +112,7 @@ function showSlides() {
   setTimeout(showSlides, 4000); // cambia cada 4s
 }
 
+// === Carrito ===
 let cart = [];
 
 // === Función para añadir al carrito ===
