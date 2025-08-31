@@ -1,25 +1,11 @@
 {
-  "noticias": [
-    {
-      "titulo": "Nueva apertura en la ciudad",
-      "contenido": "Un nuevo centro comercial abre sus puertas."
-    },
-    {
-      "titulo": "Promoción especial",
-      "contenido": "Grandes descuentos en temporada."
-    },
-    {
-      "titulo": "Tiendas Coppel",
-      "contenido": "Mejora tu Vida."
-    },
-    {
-      "titulo": "CENDEPI Reforma",
-      "contenido": "Atención Integral de Calidad para Maternales y Lactantes."
-    },
-    {
-      "titulo": "¿Por qué Estudiar la Biblia?",
-      "contenido": "Escucha a Dios y Viviras para Siempre."
-    }
+	"categorias": [
+    { "id": 1, "nombre": "Electrónica" },
+    { "id": 2, "nombre": "Ropa" },
+    { "id": 3, "nombre": "Alimentos" },
+    { "id": 4, "nombre": "Servicios" },
+    { "id": 5, "nombre": "Salud" },
+    { "id": 6, "nombre": "Turismo" }
   ],
   "negocios": [
     {
