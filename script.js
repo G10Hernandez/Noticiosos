@@ -1,162 +1,162 @@
-// ===================
-// Carrusel
-// ===================
-let slideIndex = 0;
-function showSlides() {
-  const slides = document.getElementsByClassName("carousel-slide");
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) { slideIndex = 1; }
-  slides[slideIndex-1].style.display = "block";
-  setTimeout(showSlides, 4000);
-}
-showSlides();
+let businessesData = [];
+let cart = [];
+let selectedItems = [];
 
-// ===================
-// Noticias desde BBC Mundo con rss2json
-// ===================
-function cargarNoticias() {
-  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml";
-
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const noticias = data.items.slice(0, 5);
-      const newsContainer = document.getElementById("newsContainer");
-      newsContainer.innerHTML = "";
-
-      noticias.forEach(n => {
-        const div = document.createElement("div");
-        div.classList.add("noticia");
-        div.innerHTML = `<a href="${n.link}" target="_blank">${n.title}</a>`;
-        newsContainer.appendChild(div);
-      });
-    })
-    .catch(err => {
-      console.error("Error cargando noticias:", err);
-      document.getElementById("newsContainer").innerHTML = "<p>No se pudieron cargar las noticias.</p>";
-    });
-}
-cargarNoticias();
-
-// ===================
-// Negocios y Carrito
-// ===================
-let carrito = [];
-let negociosData = [];
-
-function mostrarCategorias() {
-  const categorias = [...new Set(negociosData.map(n => n.categoria))];
-  const catContainer = document.getElementById("categoryButtons");
-  catContainer.innerHTML = "";
-
-  categorias.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.textContent = cat;
-    btn.onclick = () => mostrarNegocios(cat);
-    catContainer.appendChild(btn);
-  });
-}
-
-function mostrarNegocios(categoria) {
-  const container = document.getElementById("cardsContainer");
-  container.innerHTML = "";
-
-  const filtrados = negociosData.filter(n => n.categoria === categoria);
-
-  filtrados.forEach(negocio => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.innerHTML = `
-      <img src="${negocio.imagen}" alt="${negocio.nombre}">
-      <h3>${negocio.nombre}</h3>
-      <button onclick="abrirPopup(${negocio.id})">Ver artículos</button>
-    `;
-    container.appendChild(card);
-  });
-}
-
-// ===================
-// Popup
-// ===================
-const modal = document.getElementById("popup");
-const closePopup = document.getElementById("closePopup");
-const popupTitle = document.getElementById("popupTitle");
-const popupItems = document.getElementById("popupItems");
-
-function abrirPopup(idNegocio) {
-  const negocio = negociosData.find(n => n.id === idNegocio);
-  popupTitle.textContent = negocio.nombre;
-  popupItems.innerHTML = "";
-
-  negocio.articulos.forEach(item => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${item.nombre} - $${item.precio}
-      <button onclick="agregarAlCarrito('${item.nombre}', ${item.precio})">Agregar</button>
-    `;
-    popupItems.appendChild(li);
-  });
-
-  modal.style.display = "block";
-}
-
-closePopup.onclick = () => modal.style.display = "none";
-window.onclick = (event) => { if (event.target === modal) modal.style.display = "none"; };
-
-// ===================
-// Carrito
-// ===================
-function agregarAlCarrito(nombre, precio) {
-  carrito.push({nombre, precio});
-  renderCarrito();
-}
-
-function renderCarrito() {
-  const lista = document.getElementById("carritoLista");
-  const totalElem = document.getElementById("carritoTotal");
-  lista.innerHTML = "";
-  let total = 0;
-
-  carrito.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = `${item.nombre} - $${item.precio}`;
-    lista.appendChild(li);
-    total += item.precio;
-  });
-
-  totalElem.textContent = `Total: $${total}`;
-}
-
-// ===================
-// WhatsApp
-// ===================
-document.getElementById("whatsappBtn").addEventListener("click", () => {
-  if (carrito.length === 0) {
-    alert("El carrito está vacío");
-    return;
-  }
-
-  let mensaje = "Hola, quiero comprar:\n";
-  carrito.forEach(item => {
-    mensaje += `- ${item.nombre} $${item.precio}\n`;
-  });
-  const total = carrito.reduce((sum, item) => sum + item.precio, 0);
-  mensaje += `\nTotal: $${total}`;
-
-  const url = `https://wa.me/521234567890?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-});
-
-// ===================
-// Cargar datos desde data.json
-// ===================
+// Cargar negocios
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
-    negociosData = data.negocios;
-    mostrarCategorias();
+    businessesData = data.negocios;
+    setupCategories();
+    renderNegocios(businessesData);
   })
   .catch(err => console.error("Error cargando data.json:", err));
+
+// Categorías
+function setupCategories() {
+  const categories = [...new Set(businessesData.map(b => b.categoria))];
+  const buttonsContainer = document.getElementById("categoryButtons");
+
+  const allBtn = document.createElement("button");
+  allBtn.textContent = "Todos";
+  allBtn.classList.add("active");
+  allBtn.addEventListener("click", () => filterBusinesses("Todos", allBtn));
+  buttonsContainer.appendChild(allBtn);
+
+  categories.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.addEventListener("click", () => filterBusinesses(cat, btn));
+    buttonsContainer.appendChild(btn);
+  });
+}
+
+function filterBusinesses(category, clickedBtn) {
+  const buttons = document.querySelectorAll("#categoryButtons button");
+  buttons.forEach(btn => btn.classList.remove("active"));
+  clickedBtn.classList.add("active");
+
+  if (category === "Todos") renderNegocios(businessesData);
+  else {
+    const filtered = businessesData.filter(b => b.categoria === category);
+    renderNegocios(filtered);
+  }
+}
+
+// Render tarjetas
+function renderNegocios(negocios) {
+  const container = document.getElementById("cardsContainer");
+  container.innerHTML = "";
+  negocios.forEach(n => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <img src="${n.imagen}" alt="${n.nombre}">
+      <h3>${n.nombre}</h3>
+      <p><strong>Categoría:</strong> ${n.categoria}</p>
+      <p><strong>Tel:</strong> ${n.telefono}</p>
+      <button onclick='openItemsPopup(${JSON.stringify(n.articulos)})'>Ver artículos</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Abrir popup de artículos
+function openItemsPopup(articulos) {
+  selectedItems = articulos.map(a => ({...a, selected: false}));
+  const container = document.getElementById("itemsContainer");
+  container.innerHTML = "";
+
+  selectedItems.forEach((item, idx) => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <input type="checkbox" id="item${idx}" />
+      <label for="item${idx}">${item.nombre} - $${item.precio}</label>
+    `;
+    container.appendChild(div);
+  });
+
+  document.getElementById("itemsPopup").style.display = "flex";
+}
+
+document.getElementById("closeItemsPopup").onclick = function() {
+  document.getElementById("itemsPopup").style.display = "none";
+}
+
+// Añadir al carrito desde popup
+document.getElementById("addToCartFromPopup").onclick = function() {
+  selectedItems.forEach(item => {
+    const checkbox = document.querySelector(`#itemsContainer input[type="checkbox"][id]`);
+    const checkboxes = document.querySelectorAll("#itemsContainer input[type='checkbox']");
+    checkboxes.forEach((cb, idx) => {
+      if(cb.checked) cart.push(selectedItems[idx]);
+    });
+  });
+  updateCart();
+  document.getElementById("itemsPopup").style.display = "none";
+  document.getElementById("cartPopup").style.display = "flex";
+}
+
+// Carrito
+function updateCart() {
+  const cartItems = document.getElementById("cartItems");
+  cartItems.innerHTML = "";
+  let total = 0;
+  cart.forEach((item, idx) => {
+    total += item.precio;
+    const div = document.createElement("div");
+    div.innerHTML = `${item.nombre} - $${item.precio} <button onclick="removeFromCart(${idx})">❌</button>`;
+    cartItems.appendChild(div);
+  });
+  document.getElementById("cartTotal").textContent = total;
+}
+
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  updateCart();
+}
+
+// Cerrar carrito
+document.getElementById("closeCartPopup").onclick = function() {
+  document.getElementById("cartPopup").style.display = "none";
+}
+
+// WhatsApp
+document.getElementById("sendWhatsapp").onclick = function() {
+  if(cart.length===0){alert("Carrito vacío"); return;}
+  let msg="🛍️ Pedido desde el Portal:\n";
+  cart.forEach(i=>msg+=`- ${i.nombre}: $${i.precio}\n`);
+  msg+=`\nTotal: $${document.getElementById("cartTotal").textContent}`;
+  const phone="5211234567890";
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,"_blank");
+}
+
+// Noticias BBC (RSS2JSON)
+async function fetchNews() {
+  const url="https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml";
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const container = document.getElementById("newsContainer");
+    container.innerHTML="";
+    data.items.slice(0,6).forEach(a=>{
+      const div = document.createElement("div");
+      div.className="news-item";
+      div.innerHTML=`<a href="${a.link}" target="_blank" style="color:white;text-decoration:none;">${a.title}</a>`;
+      container.appendChild(div);
+    });
+  } catch(e){ console.error("Error noticias:", e);}
+}
+fetchNews();
+
+// Carrusel
+let slideIndex=0;
+function showSlides() {
+  const slides=document.getElementsByClassName("carousel-slide");
+  for(let i=0;i<slides.length;i++) slides[i].style.display="none";
+  slideIndex++;
+  if(slideIndex>slides.length) slideIndex=1;
+  slides[slideIndex-1].style.display="block";
+  setTimeout(showSlides,4000);
+}
+showSlides();
