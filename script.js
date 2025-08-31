@@ -1,140 +1,102 @@
-let businessesData = [];
-let cart = [];
+let negocios = [];
+let carrito = [];
 
-// ================= CARGAR DATA.JSON =================
+// Cargar datos locales
 fetch("data.json")
   .then(res => res.json())
   .then(data => {
-    businessesData = data.negocios;
-    mostrarCategorias(data.categorias);
-    mostrarNegocios(businessesData);
+    if (data.categorias) mostrarCategorias(data.categorias);
+    if (data.negocios) {
+      negocios = data.negocios;
+      mostrarNegocios(); // todos al inicio
+    }
   });
 
-// ================= MOSTRAR CATEGORÍAS =================
+// Noticias en vivo desde BBC Mundo
+fetch("https://feeds.bbci.co.uk/mundo/rss.xml")
+  .then(res => res.text())
+  .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+  .then(data => {
+    const items = data.querySelectorAll("item");
+    const container = document.getElementById("newsContainer");
+    container.innerHTML = "";
+    items.forEach((item, index) => {
+      if (index < 5) {
+        let div = document.createElement("div");
+        div.innerHTML = `<a href="${item.querySelector("link").textContent}" target="_blank">${item.querySelector("title").textContent}</a>`;
+        container.appendChild(div);
+      }
+    });
+  });
+
+// Mostrar categorías
 function mostrarCategorias(categorias) {
-  const cont = document.getElementById("categoryButtons");
-  cont.innerHTML = "";
+  const container = document.getElementById("categoryButtons");
+  container.innerHTML = "";
   categorias.forEach(cat => {
     const btn = document.createElement("button");
-    btn.textContent = cat;
-    btn.onclick = () => filtrarNegocios(cat);
-    cont.appendChild(btn);
+    btn.textContent = cat.nombre;
+    btn.addEventListener("click", () => mostrarNegocios(cat.id));
+    container.appendChild(btn);
   });
 }
-function filtrarNegocios(cat) {
-  const filtrados = businessesData.filter(n => n.categoria === cat);
-  mostrarNegocios(filtrados);
-}
 
-// ================= MOSTRAR NEGOCIOS =================
-function mostrarNegocios(negocios) {
-  const cont = document.getElementById("cardsContainer");
-  cont.innerHTML = "";
-  negocios.forEach((n, i) => {
+// Mostrar negocios
+function mostrarNegocios(categoriaId = null) {
+  const container = document.getElementById("cardsContainer");
+  container.innerHTML = "";
+  let filtrados = categoriaId ? negocios.filter(n => n.categoriaId === categoriaId) : negocios;
+
+  filtrados.forEach(neg => {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      <img src="${n.imagen}" alt="${n.nombre}">
-      <h3>${n.nombre}</h3>
-      <p>${n.descripcion}</p>
-      <button onclick="abrirPopupArticulos(${i})">Ver artículos / servicios</button>
+      <img src="${neg.imagen}" alt="${neg.nombre}">
+      <h3>${neg.nombre}</h3>
+      <p>${neg.descripcion}</p>
+      <button onclick="abrirPopup(${neg.id})">Ver artículos</button>
     `;
-    cont.appendChild(card);
+    container.appendChild(card);
   });
 }
 
-// ================= POPUP DE ARTÍCULOS =================
-function abrirPopupArticulos(index) {
-  const negocio = businessesData[index];
-  document.getElementById("popupTitulo").textContent = negocio.nombre;
+// Popup de artículos
+function abrirPopup(negocioId) {
+  const negocio = negocios.find(n => n.id === negocioId);
+  if (!negocio) return;
+  document.getElementById("popupTitle").textContent = negocio.nombre;
+  const itemsList = document.getElementById("popupItems");
+  itemsList.innerHTML = "";
 
-  const cont = document.getElementById("popupArticulos");
-  cont.innerHTML = "";
-  negocio.articulos.forEach(a => {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      ${a.nombre} - $${a.precio}
-      <button onclick="addToCart('${a.nombre}', ${a.precio})">🛒</button>
-    `;
-    cont.appendChild(div);
+  negocio.articulos.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.nombre} - $${item.precio}`;
+    li.addEventListener("click", () => {
+      carrito.push(item);
+      alert(`${item.nombre} agregado al carrito`);
+    });
+    itemsList.appendChild(li);
   });
 
-  document.getElementById("articulosPopup").style.display = "flex";
+  document.getElementById("popup").classList.remove("hidden");
 }
-document.getElementById("closeArticulosPopup").onclick = () => {
-  document.getElementById("articulosPopup").style.display = "none";
-};
 
-// ================= CARRITO =================
-function addToCart(nombre, precio) {
-  cart.push({ nombre, precio });
-  renderCart();
-}
-// Enviar carrito por WhatsApp
-function sendCart() {
-  if (cart.length === 0) {
+// Cerrar popup
+document.getElementById("closePopup").addEventListener("click", () => {
+  document.getElementById("popup").classList.add("hidden");
+});
+
+// Enviar carrito a WhatsApp
+document.getElementById("whatsappBtn").addEventListener("click", () => {
+  if (carrito.length === 0) {
     alert("El carrito está vacío");
     return;
   }
-
-  let mensaje = "🛍 Pedido:\n";
-  cart.forEach(item => {
+  let mensaje = "Pedido:\n";
+  carrito.forEach(item => {
     mensaje += `- ${item.nombre} ($${item.precio})\n`;
   });
-
-  // <<<<<<<<<<< AQUÍ PONES TU NÚMERO DE WHATSAPP
-  const numero = prompt("Ingresa el número de WhatsApp en formato internacional (ej. 521234567890):");
-
-  if (numero) {
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
-  }
-}
-
-
-// ================= WHATSAPP =================
-document.getElementById("whatsappButton").onclick = () => {
-  if (cart.length === 0) {
-    alert("Tu carrito está vacío");
-    return;
-  }
-  let mensaje = "Hola, quiero comprar:\n";
-  cart.forEach(item => {
-    mensaje += `- ${item.nombre} $${item.precio}\n`;
-  });
-  const url = `https://wa.me/521234567890?text=${encodeURIComponent(mensaje)}`;
+  // Número editable
+  const url = `https://wa.me/52XXXXXXXXXX?text=${encodeURIComponent(mensaje)}`;
   window.open(url, "_blank");
-};
-
-// ================= CARRUSEL =================
-let slideIndex = 0;
-function showSlides() {
-  const slides = document.getElementsByClassName("carousel-slide");
-  for (let i=0; i<slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) { slideIndex = 1; }
-  slides[slideIndex-1].style.display = "block";
-  setTimeout(showSlides, 4000);
-}
-showSlides();
-
-// ================= NOTICIAS (RSS BBC) =================
-async function fetchNews() {
-  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml";
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    const cont = document.getElementById("newsContainer");
-    cont.innerHTML = "";
-    data.items.slice(0, 5).forEach(n => {
-      const div = document.createElement("div");
-      div.innerHTML = `<a href="${n.link}" target="_blank">${n.title}</a>`;
-      cont.appendChild(div);
-    });
-  } catch (e) {
-    console.error("Error cargando noticias", e);
-  }
-}
-fetchNews();
+});
