@@ -102,34 +102,28 @@ function enviarWhatsApp() {
   window.open(`https://wa.me/${telefono}?text=${mensaje}`, "_blank");
 }
 
-// ===================
-// Cargar Noticias BBC Mundo con rss2json y mostrar como Ticker
-// ===================
-function cargarNoticias() {
-  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml";
+// ====== Noticias desde BBC Mundo ======
+async function cargarNoticias() {
+  try {
+    const res = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("https://feeds.bbci.co.uk/mundo/rss.xml"));
+    const dataFeed = await res.json();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(dataFeed.contents, "text/xml");
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const noticias = data.items.slice(0, 10); // hasta 10 noticias
-      const newsContainer = document.getElementById("newsContainer");
-      newsContainer.innerHTML = "";
+    const items = xml.querySelectorAll("item");
+    const newsContainer = document.getElementById("newsContainer");
+    newsContainer.innerHTML = "";
 
-      const ticker = document.createElement("div");
-      ticker.classList.add("ticker");
-
-      // concatenamos todas las noticias en una sola línea desplazable
-      ticker.innerHTML = noticias
-        .map(n => `<span class="noticia"><a href="${n.link}" target="_blank">${n.title}</a></span>`)
-        .join(" • ");
-
-      newsContainer.appendChild(ticker);
-    })
-    .catch(err => {
-      console.error("Error cargando noticias:", err);
-      document.getElementById("newsContainer").innerHTML = "<p>No se pudieron cargar las noticias.</p>";
+    items.forEach((item, idx) => {
+      if (idx < 5) {
+        const title = item.querySelector("title").textContent;
+        const link = item.querySelector("link").textContent;
+        const p = document.createElement("p");
+        p.innerHTML = `<a href="${link}" target="_blank">${title}</a>`;
+        newsContainer.appendChild(p);
+      }
     });
+  } catch (e) {
+    document.getElementById("newsContainer").innerHTML = "Error cargando noticias.";
+  }
 }
-
-// Llamar la función al cargar la página
-cargarNoticias();

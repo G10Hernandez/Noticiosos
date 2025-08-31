@@ -43,43 +43,31 @@ header {
   background: #fff;
 }
 
+/* Noticias */
 #noticias {
-  position: relative;
-  overflow: hidden;
-  height: 40px; /* altura fija del ticker */
-  line-height: 40px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
   background: #fdfdfd;
   border-left: 2px solid #ccc;
-  padding: 0 10px;
 }
 
-.ticker {
-  display: inline-block;
-  white-space: nowrap;
-  animation: scrollNoticias 40s linear infinite; /* más alto = más lento */
+#noticias h2 {
+  margin-bottom: 10px;
 }
 
-.ticker .noticia {
-  margin-right: 50px;
-}
-
-.ticker a {
-  color: #0066cc;
-  text-decoration: none;
+.noticia {
+  margin-bottom: 8px;
   font-size: 14px;
 }
 
-.ticker a:hover {
-  text-decoration: underline;
+.noticia a {
+  color: #0066cc;
+  text-decoration: none;
 }
 
-@keyframes scrollNoticias {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
+.noticia a:hover {
+  text-decoration: underline;
 }
 
 
