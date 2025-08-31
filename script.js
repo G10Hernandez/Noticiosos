@@ -1,129 +1,176 @@
-let data = {};
-let carrito = [];
+// ========= Estado =========
+let businessesData = [];
+let cart = [];
+let currentBusiness = null;
 
-// ====== Cargar data.json ======
+// ========= Cargar JSON (negocios + categorías) =========
 fetch("data.json")
   .then(res => res.json())
-  .then(json => {
-    data = json;
-    mostrarCategorias();
-    mostrarNegocios(data.negocios);
-    cargarNoticias();
-  });
+  .then(data => {
+    businessesData = data.negocios || [];
 
-// ====== Categorías ======
-function mostrarCategorias() {
-  const categorias = [...new Set(data.negocios.map(n => n.categoria))];
-  const div = document.getElementById("categoryButtons");
-  div.innerHTML = "";
+    // Categorías: si vienen en data.categorias úsalo; si no, derivarlas de los negocios
+    const catsFromJson = (data.categorias || []).map(c => c.nombre).filter(Boolean);
+    const catsFromBiz  = [...new Set((businessesData || []).map(b => b.categoria).filter(Boolean))];
+    const categories   = (catsFromJson.length ? catsFromJson : catsFromBiz);
 
-  const btnTodos = document.createElement("button");
-  btnTodos.textContent = "Todos";
-  btnTodos.onclick = () => mostrarNegocios(data.negocios);
-  div.appendChild(btnTodos);
+    // Crear botones de categorías
+    const buttonsContainer = document.getElementById("categoryButtons");
+    buttonsContainer.innerHTML = "";
 
-  categorias.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.textContent = cat;
-    btn.onclick = () => filtrarNegocios(cat);
-    div.appendChild(btn);
-  });
-}
+    const allBtn = document.createElement("button");
+    allBtn.textContent = "Todos";
+    allBtn.classList.add("active");
+    allBtn.addEventListener("click", () => filterBusinesses("Todos", allBtn));
+    buttonsContainer.appendChild(allBtn);
 
-function filtrarNegocios(categoria) {
-  const filtrados = data.negocios.filter(n => n.categoria === categoria);
-  mostrarNegocios(filtrados);
-}
+    categories.forEach(cat => {
+      const btn = document.createElement("button");
+      btn.textContent = cat;
+      btn.addEventListener("click", () => filterBusinesses(cat, btn));
+      buttonsContainer.appendChild(btn);
+    });
 
-// ====== Negocios ======
-function mostrarNegocios(lista) {
+    // Mostrar todos al inicio
+    renderNegocios(businessesData);
+  })
+  .catch(err => console.error("Error cargando data.json:", err));
+
+// ========= Renderizar tarjetas (solo el botón abre popup) =========
+function renderNegocios(negocios) {
   const container = document.getElementById("cardsContainer");
   container.innerHTML = "";
-
-  lista.forEach(negocio => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
+  negocios.forEach(negocio => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
       <img src="${negocio.imagen}" alt="${negocio.nombre}">
       <h3>${negocio.nombre}</h3>
-      <p>Categoría: ${negocio.categoria}</p>
-      <button onclick="abrirPopup('${negocio.nombre}')">Ver artículos</button>
+      <p><strong>Categoría:</strong> ${negocio.categoria}</p>
+      <p><strong>Tel:</strong> ${negocio.telefono}</p>
+      <button onclick="openItemsPopup('${negocio.nombre}')">Ver artículos / servicios</button>
     `;
-    container.appendChild(card);
+    container.appendChild(div);
   });
 }
 
-// ====== Popup Artículos ======
-function abrirPopup(nombreNegocio) {
-  const negocio = data.negocios.find(n => n.nombre === nombreNegocio);
-  document.getElementById("popup-titulo").textContent = negocio.nombre;
+// ========= Filtro por categoría =========
+function filterBusinesses(category, clickedBtn) {
+  const buttons = document.querySelectorAll("#categoryButtons button");
+  buttons.forEach(btn => btn.classList.remove("active"));
+  clickedBtn.classList.add("active");
 
-  const contenedor = document.getElementById("popup-articulos");
-  contenedor.innerHTML = "";
-  negocio.articulos.forEach(art => {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <p>${art.nombre} - $${art.precio}</p>
-      <button onclick="agregarAlCarrito('${art.nombre}', ${art.precio}, '${negocio.telefono}')">Agregar</button>
-    `;
-    contenedor.appendChild(div);
-  });
-
-  document.getElementById("popup").style.display = "block";
-}
-
-function cerrarPopup() {
-  document.getElementById("popup").style.display = "none";
-}
-
-// ====== Carrito ======
-function agregarAlCarrito(nombre, precio, telefono) {
-  carrito.push({ nombre, precio, telefono });
-  mostrarCarrito();
-}
-
-function mostrarCarrito() {
-  const div = document.getElementById("cartContainer");
-  div.innerHTML = carrito.map(item => `<p>${item.nombre} - $${item.precio}</p>`).join("");
-  const total = carrito.reduce((sum, item) => sum + item.precio, 0);
-  div.innerHTML += `<h4>Total: $${total}</h4>
-    <button onclick="enviarWhatsApp()">Enviar por WhatsApp</button>`;
-}
-
-function enviarWhatsApp() {
-  if (carrito.length === 0) return;
-  const total = carrito.reduce((sum, item) => sum + item.precio, 0);
-  let mensaje = "Pedido:%0A";
-  carrito.forEach(item => {
-    mensaje += `${item.nombre} - $${item.precio}%0A`;
-  });
-  mensaje += `Total: $${total}`;
-  const telefono = carrito[0].telefono;
-  window.open(`https://wa.me/${telefono}?text=${mensaje}`, "_blank");
-}
-
-// ====== Noticias desde BBC Mundo ======
-async function cargarNoticias() {
-  try {
-    const res = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("https://feeds.bbci.co.uk/mundo/rss.xml"));
-    const dataFeed = await res.json();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(dataFeed.contents, "text/xml");
-
-    const items = xml.querySelectorAll("item");
-    const newsContainer = document.getElementById("newsContainer");
-    newsContainer.innerHTML = "";
-
-    items.forEach((item, idx) => {
-      if (idx < 5) {
-        const title = item.querySelector("title").textContent;
-        const link = item.querySelector("link").textContent;
-        const p = document.createElement("p");
-        p.innerHTML = `<a href="${link}" target="_blank">${title}</a>`;
-        newsContainer.appendChild(p);
-      }
-    });
-  } catch (e) {
-    document.getElementById("newsContainer").innerHTML = "Error cargando noticias.";
+  if (category === "Todos") {
+    renderNegocios(businessesData);
+  } else {
+    const filtered = businessesData.filter(b => b.categoria === category);
+    renderNegocios(filtered);
   }
 }
+
+// ========= Popup de artículos/servicios =========
+function openItemsPopup(nombreNegocio) {
+  currentBusiness = businessesData.find(b => b.nombre === nombreNegocio);
+  if (!currentBusiness) return;
+
+  const title = document.getElementById("itemsTitle");
+  const list  = document.getElementById("itemsList");
+  title.textContent = `Artículos / Servicios - ${currentBusiness.nombre}`;
+  list.innerHTML = "";
+
+  currentBusiness.articulos.forEach(a => {
+    const row = document.createElement("div");
+    row.innerHTML = `
+      ${a.nombre} - $${a.precio}
+      <button onclick="addToCart('${a.nombre}', ${a.precio})">🛒 Agregar</button>
+    `;
+    list.appendChild(row);
+  });
+
+  document.getElementById("itemsPopup").style.display = "flex";
+}
+document.getElementById("closeItemsPopup").onclick = () => {
+  document.getElementById("itemsPopup").style.display = "none";
+};
+
+// ========= Carrito =========
+function addToCart(nombre, precio) {
+  cart.push({ nombre, precio });
+  updateCart();
+  // abre popup carrito cada vez que se agrega (opcional)
+  document.getElementById("cartPopup").style.display = "block";
+}
+
+function updateCart() {
+  const cartItems = document.getElementById("cartItems");
+  cartItems.innerHTML = "";
+  let total = 0;
+  cart.forEach((item, index) => {
+    total += item.precio;
+    const div = document.createElement("div");
+    div.innerHTML = `${item.nombre} - $${item.precio} <button onclick="removeFromCart(${index})">❌</button>`;
+    cartItems.appendChild(div);
+  });
+  document.getElementById("cartTotal").textContent = total;
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
+document.getElementById("closePopup").onclick = function() {
+  document.getElementById("cartPopup").style.display = "none";
+};
+
+// ========= WhatsApp =========
+// Déjalo editable: te preguntará el número antes de enviar
+document.getElementById("sendWhatsapp").onclick = function() {
+  if (cart.length === 0) {
+    alert("Tu carrito está vacío.");
+    return;
+  }
+  let message = "🛍️ Pedido desde el Portal:\n";
+  cart.forEach(item => {
+    message += `- ${item.nombre}: $${item.precio}\n`;
+  });
+  message += `\nTotal: $${document.getElementById("cartTotal").textContent}`;
+
+  const phone = prompt("Ingresa el número de WhatsApp en formato internacional (ej. 521234567890):");
+  if (!phone) return;
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+};
+
+// ========= Noticias (BBC Mundo en vivo) =========
+async function fetchNews() {
+  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml";
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const newsContainer = document.getElementById("newsContainer");
+    newsContainer.innerHTML = "";
+    (data.items || []).slice(0, 6).forEach(article => {
+      const newsItem = document.createElement("div");
+      newsItem.className = "news-item";
+      newsItem.innerHTML = `<a href="${article.link}" target="_blank" style="color:white; text-decoration:none;">${article.title}</a>`;
+      newsContainer.appendChild(newsItem);
+    });
+  } catch (error) {
+    console.error("Error al cargar noticias:", error);
+  }
+}
+fetchNews();
+
+// ========= Carrusel automático (sin brincos) =========
+let slideIndex = 0;
+function showSlides() {
+  const slides = document.getElementsByClassName("carousel-slide");
+  for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+  slideIndex++;
+  if (slideIndex > slides.length) slideIndex = 1;
+  slides[slideIndex - 1].style.display = "block";
+  setTimeout(showSlides, 4000);
+}
+showSlides();

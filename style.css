@@ -27,10 +27,6 @@ header {
   grid-area: carrusel;
 }
 
-.carrusel {
-  background: linear-gradient(90deg, #fceabb, #f8b500); /* dorado playero */
-}
-
 .carousel-container {
   position: relative;
   width: 100%;
@@ -45,31 +41,11 @@ header {
 
 /* Noticias */
 #noticias {
-  max-height: 400px;
-  overflow-y: auto;
+  grid-area: noticias;
+  background: #f8f9fa;
   padding: 10px;
-  background: #fdfdfd;
   border-left: 2px solid #ccc;
 }
-
-#noticias h2 {
-  margin-bottom: 10px;
-}
-
-.noticia {
-  margin-bottom: 8px;
-  font-size: 14px;
-}
-
-.noticia a {
-  color: #0066cc;
-  text-decoration: none;
-}
-
-.noticia a:hover {
-  text-decoration: underline;
-}
-
 
 /* Categorías */
 #categorias {
