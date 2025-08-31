@@ -4,38 +4,37 @@
   <meta charset="UTF-8">
   <title>Portal de Publicidad Playa</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
   <header>
     <h1>🌴 Portal de Publicidad - Playa</h1>
   </header>
 
-  <!-- Carrusel -->
-  <section id="carrusel">
-    <div class="carousel-container">
-      <div class="carousel-slide fade">
-        <img src="img/auto1.jpg" alt="Publicidad 1">
-      </div>
-      <div class="carousel-slide fade">
-        <img src="img/banner2.jpg" alt="Publicidad 2">
-      </div>
-      <div class="carousel-slide fade">
-        <img src="img/noticias4.jpg" alt="Publicidad 3">
-      </div>
-    </div>
-  </section>
-
   <main>
+    <!-- Carrusel -->
+    <section id="carrusel">
+      <div class="carousel-container">
+        <div class="carousel-slide fade">
+          <img src="img/auto1.jpg" alt="Publicidad 1">
+        </div>
+        <div class="carousel-slide fade">
+          <img src="img/banner2.jpg" alt="Publicidad 2">
+        </div>
+        <div class="carousel-slide fade">
+          <img src="img/noticias4.jpg" alt="Publicidad 3">
+        </div>
+      </div>
+    </section>
+
     <!-- Noticias -->
     <aside id="noticias">
       <h2>📰 Últimas Noticias</h2>
       <div id="newsContainer"></div>
     </aside>
 
-    <!-- Botones de categorías -->
+    <!-- Categorías -->
     <section id="categorias">
-      <h2>🔎 Categorías</h2>
+      <h2>Categorías 🔎</h2>
       <div id="categoryButtons"></div>
     </section>
 
@@ -46,15 +45,21 @@
     </section>
   </main>
 
-  <!-- Popup -->
-  <div id="popup" class="popup hidden">
+  <!-- Popup de artículos -->
+  <div id="articulosPopup" class="popup" style="display:none;">
     <div class="popup-content">
-      <span id="closePopup">&times;</span>
-      <h2 id="popupTitle"></h2>
-      <ul id="popupItems"></ul>
-      <button id="whatsappBtn">Enviar por WhatsApp</button>
+      <span id="closeArticulosPopup" class="close">&times;</span>
+      <h2 id="popupTitulo"></h2>
+      <div id="popupArticulos"></div>
     </div>
   </div>
+
+  <!-- Carrito -->
+  <section id="carrito">
+    <h2>🛒 Carrito</h2>
+    <div id="cartContainer"></div>
+    <button id="whatsappButton">Enviar pedido por WhatsApp</button>
+  </section>
 
   <script src="script.js"></script>
 </body>
@@ -63,9 +68,11 @@
 
 
 
+
+
 <!-- 🛒 Carrito de Compras,
 	🌴 Publicidad 🌴,
-	Categorías 🔎,
+	Categorías 🔎
 	Negocios 🏪,
-	📰 Últimas Noticias. 
+	📰 Últimas Noticias 
 -->

@@ -1,18 +1,20 @@
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #1e3c72, #2a5298);
-  color: #fff;
+  margin: 0;
+  background: linear-gradient(to right, #0077b6, #ffd166);
+  color: #222;
 }
 
 header {
-  background: #00264d;
   text-align: center;
-  padding: 1rem;
+  padding: 20px;
+  color: white;
+  background: #023e8a;
 }
 
-h1, h2 {
-  margin: 0.5rem 0;
+main {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /* Carrusel */
@@ -22,7 +24,8 @@ h1, h2 {
 }
 .carousel-container {
   position: relative;
-  max-width: 100%;
+  width: 100%;
+  height: 300px;
   overflow: hidden;
 }
 .carousel-slide img {
@@ -34,51 +37,27 @@ h1, h2 {
 /* Noticias */
 #noticias {
   width: 30%;
-  float: right;
-  background: #004080;
-  padding: 1rem;
+  padding: 10px;
+  background: #fff3;
   box-sizing: border-box;
-  min-height: 300px;
-}
-#newsContainer div {
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
 }
 
-/* Categorías */
-#categorias {
-  clear: both;
-  padding: 1rem;
-}
-#categoryButtons button {
-  margin: 0.3rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 8px;
-  background: #ffcc00;
-  cursor: pointer;
-}
-#categoryButtons button:hover {
-  background: #ffaa00;
-}
-
-/* Negocios */
-#negocios {
-  padding: 1rem;
+/* Categorías y Negocios */
+#categorias, #negocios {
+  width: 100%;
+  padding: 20px;
 }
 #cardsContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 15px;
 }
 .card {
-  background: #fff;
-  color: #000;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
   width: 200px;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   text-align: center;
 }
 .card img {
@@ -87,57 +66,31 @@ h1, h2 {
   object-fit: cover;
   border-radius: 8px;
 }
-.card button {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.card button:hover {
-  background: #005fa3;
-}
 
 /* Popup */
 .popup {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.6);
   display: flex;
-  align-items: center;
   justify-content: center;
-}
-.popup.hidden {
-  display: none;
+  align-items: center;
 }
 .popup-content {
-  background: #fff;
-  color: #000;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
 }
-#closePopup {
+.close {
   float: right;
+  font-size: 20px;
   cursor: pointer;
-  font-size: 1.5rem;
 }
-#popupItems {
-  list-style: none;
-  padding: 0;
-}
-#popupItems li {
-  margin-bottom: 0.5rem;
-}
-#whatsappBtn {
-  margin-top: 1rem;
-  padding: 0.5rem;
-  background: #25d366;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+
+/* Carrito */
+#carrito {
+  padding: 20px;
+  background: #f9f9f9;
 }
