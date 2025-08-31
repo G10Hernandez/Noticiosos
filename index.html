@@ -2,50 +2,72 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Portal Publicitario</title>
+  <title>Portal de Publicidad Playa</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🌴 Portal de Publicidad 🌴</h1>
-    <nav id="categorias"></nav>
+    <h1>🌴 Portal de Publicidad - Playa</h1>
   </header>
 
   <!-- Carrusel -->
   <section id="carrusel">
-    <div class="carrusel-contenedor">
-      <img src="img/banner1.jpg" class="activo">
-      <img src="img/banner2.jpg">
-      <img src="img/banner3.jpg">
+    <div class="carousel-container">
+      <div class="carousel-slide fade">
+        <img src="img/auto1.jpg" alt="Publicidad 1">
+      </div>
+      <div class="carousel-slide fade">
+        <img src="img/banner2.jpg" alt="Publicidad 2">
+      </div>
+      <div class="carousel-slide fade">
+        <img src="img/noticias4.jpg" alt="Publicidad 3">
+      </div>
     </div>
   </section>
 
-  <!-- Negocios -->
-  <section>
-    <h2>🏪 Negocios</h2>
-    <div id="negocios" class="grid"></div>
-  </section>
+  <main>
+    <!-- Noticias -->
+    <aside id="noticias">
+      <h2>📰 Últimas Noticias</h2>
+      <div id="newsContainer"></div>
+      <div class="ver-mas">
+        <a href="https://www.bbc.com/mundo" target="_blank">Ver más noticias</a>
+      </div>
+    </aside>
 
-  <!-- Noticias -->
-  <section>
-    <h2>📰 Noticias</h2>
-    <div id="noticias" class="grid-noticias"></div>
-  </section>
+    <!-- Botones de categorías -->
+    <section id="categorias">
+      <h2>Categorías</h2>
+      <div id="categoryButtons"></div>
+    </section>
+
+    <!-- Negocios -->
+    <section id="negocios">
+      <h2>Negocios</h2>
+      <div id="cardsContainer"></div>
+    </section>
+
+    <!-- Carrito -->
+    <section id="carrito">
+      <h2>🛒 Carrito</h2>
+      <ul id="carritoLista"></ul>
+      <p id="carritoTotal">Total: $0</p>
+      <button id="whatsappBtn">Enviar por WhatsApp</button>
+    </section>
+  </main>
 
   <!-- Popup -->
-  <div id="popup" class="popup">
-    <div class="popup-contenido">
-      <span class="cerrar" onclick="cerrarPopup()">&times;</span>
-      <h3 id="popupTitulo"></h3>
-      <ul id="popupArticulos"></ul>
+  <div id="popup" class="modal">
+    <div class="modal-content">
+      <span id="closePopup" class="close">&times;</span>
+      <h3 id="popupTitle"></h3>
+      <ul id="popupItems"></ul>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-
 
 
 
