@@ -1,4 +1,6 @@
 let businessesData = [];
+let currentBusiness = null; // negocio seleccionado
+let cart = [];
 
 // === Cargar negocios desde data.json ===
 fetch("data.json")
@@ -6,8 +8,8 @@ fetch("data.json")
   .then(data => {
     businessesData = data.negocios;
 
-    // Crear botones de categorías
-    const categories = [...new Set(businessesData.map(b => b.categoria))];
+    // Botones de categorías desde data.json
+    const categories = data.categorias.map(c => c.nombre);
     const buttonsContainer = document.getElementById("categoryButtons");
 
     // Botón "Todos"
@@ -37,92 +39,47 @@ function renderNegocios(negocios) {
     const div = document.createElement("div");
     div.className = "card";
 
-    // generar listado de artículos
-    let articulosHTML = "";
-    negocio.articulos.forEach(a => {
-      articulosHTML += `
-        <div class="articulo">
-          ${a.nombre} - $${a.precio}
-          <button onclick="addToCart('${a.nombre}', ${a.precio})">🛒</button>
-        </div>
-      `;
-    });
-
     div.innerHTML = `
-      <img src="${negocio.imagen}" alt="${negocio.nombre}" style="width:100%; border-radius:10px;">
+      <img src="${negocio.imagen}" alt="${negocio.nombre}">
       <h3>${negocio.nombre}</h3>
       <p><strong>Categoría:</strong> ${negocio.categoria}</p>
       <p><strong>Tel:</strong> ${negocio.telefono}</p>
-      <div class="articulos">
-        ${articulosHTML}
-      </div>
+      <button onclick="openItemsPopup('${negocio.nombre}')">Ver artículos</button>
     `;
     container.appendChild(div);
   });
 }
 
-// === Filtro por categorías ===
-function filterBusinesses(category, clickedBtn) {
-  const buttons = document.querySelectorAll("#categoryButtons button");
-  buttons.forEach(btn => btn.classList.remove("active"));
-  clickedBtn.classList.add("active");
+// === Abrir popup de artículos ===
+function openItemsPopup(nombreNegocio) {
+  currentBusiness = businessesData.find(b => b.nombre === nombreNegocio);
+  const itemsList = document.getElementById("itemsList");
+  itemsList.innerHTML = "";
 
-  if (category === "Todos") {
-    renderNegocios(businessesData);
-  } else {
-    const filtered = businessesData.filter(b => b.categoria === category);
-    renderNegocios(filtered);
-  }
+  currentBusiness.articulos.forEach((a, index) => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      ${a.nombre} - $${a.precio}
+      <button onclick="addToCart('${a.nombre}', ${a.precio})">🛒</button>
+    `;
+    itemsList.appendChild(div);
+  });
+
+  document.getElementById("itemsPopup").style.display = "block";
 }
 
-// === Noticias RSS ===
-async function fetchNews() {
-  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml";
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const newsContainer = document.getElementById("newsContainer");
-    newsContainer.innerHTML = "";
-
-    data.items.slice(0, 6).forEach(article => {
-      const newsItem = document.createElement("div");
-      newsItem.className = "news-item";
-      newsItem.innerHTML = `<a href="${article.link}" target="_blank" style="color:white; text-decoration:none;">${article.title}</a>`;
-      newsContainer.appendChild(newsItem);
-    });
-  } catch (error) {
-    console.error("Error al cargar noticias:", error);
-  }
-}
-
-fetchNews();
-
-// === Carrusel automático ===
-let slideIndex = 0;
-showSlides();
-
-function showSlides() {
-  const slides = document.getElementsByClassName("carousel-slide");
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) { slideIndex = 1 }
-  slides[slideIndex - 1].style.display = "block";
-  setTimeout(showSlides, 4000); // cambia cada 4s
-}
+// === Cerrar popup de artículos ===
+document.getElementById("closeItemsPopup").onclick = () => {
+  document.getElementById("itemsPopup").style.display = "none";
+};
 
 // === Carrito ===
-let cart = [];
-
-// === Función para añadir al carrito ===
 function addToCart(nombre, precio) {
   cart.push({ nombre, precio });
   updateCart();
-  document.getElementById("cartPopup").style.display = "block"; // abre popup
+  document.getElementById("cartPopup").style.display = "block"; // abre popup carrito
 }
 
-// === Actualizar carrito ===
 function updateCart() {
   const cartItems = document.getElementById("cartItems");
   cartItems.innerHTML = "";
@@ -136,31 +93,26 @@ function updateCart() {
   document.getElementById("cartTotal").textContent = total;
 }
 
-// === Quitar producto del carrito ===
 function removeFromCart(index) {
   cart.splice(index, 1);
   updateCart();
 }
 
-// === Cerrar popup ===
-document.getElementById("closePopup").onclick = function() {
+document.getElementById("closePopup").onclick = () => {
   document.getElementById("cartPopup").style.display = "none";
 };
 
-// === Enviar a WhatsApp ===
-document.getElementById("sendWhatsapp").onclick = function() {
+document.getElementById("sendWhatsapp").onclick = () => {
   if (cart.length === 0) {
     alert("Tu carrito está vacío.");
     return;
   }
-
   let message = "🛍️ Pedido desde el Portal:\n";
   cart.forEach(item => {
     message += `- ${item.nombre}: $${item.precio}\n`;
   });
   message += `\nTotal: $${document.getElementById("cartTotal").textContent}`;
-
-  const phone = "5211234567890"; // <-- coloca tu número de WhatsApp aquí
+  const phone = "5211234567890";
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank");
 };
