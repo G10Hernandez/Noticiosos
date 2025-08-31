@@ -31,25 +31,25 @@ function mostrarCategorias() {
 
 // Mostrar negocios filtrados
 function mostrarNegocios(categoriaNombre) {
-  const cont = document.getElementById("negocios");
-  cont.innerHTML = "";
+  const contenedor = document.getElementById("negocios");
+  contenedor.innerHTML = "";
 
   data.negocios
     .filter(n => !categoriaNombre || n.categoria === categoriaNombre)
     .forEach(n => {
       const card = document.createElement("div");
       card.className = "tarjeta";
+
       card.innerHTML = `
         <img src="${n.imagen}" alt="${n.nombre}">
         <h3>${n.nombre}</h3>
-        <p><b>Categoría:</b> ${n.categoria}</p>
-        <button onclick='abrirPopup(${JSON.stringify(n).replace(/'/g,"&apos;")})'>
-          Ver artículos
-        </button>
+        <p>Categoría: ${n.categoria}</p>
+        <button onclick='abrirPopup(${JSON.stringify(n.articulos)})'>Ver artículos</button>
       `;
-      cont.appendChild(card);
+      contenedor.appendChild(card);
     });
 }
+
 
 // Mostrar noticias (negocios de categoría "Servicios" o "Noticias")
 function mostrarNoticias() {
