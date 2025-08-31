@@ -1,32 +1,32 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Portal de Publicidad Playa</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>🌴 Portal de Publicidad Playa</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>🌴 Portal de Publicidad - Playa</h1>
   </header>
 
-  <!-- Carrusel (ocupa todo hasta antes de noticias) -->
+  <!-- Carrusel -->
   <section id="carrusel">
     <div class="carousel-container">
       <div class="carousel-slide fade">
-        <img src="img/auto1.jpg" alt="Publicidad 1" />
+        <img src="img/auto1.jpg" alt="Publicidad 1">
       </div>
       <div class="carousel-slide fade">
-        <img src="img/banner2.jpg" alt="Publicidad 2" />
+        <img src="img/banner2.jpg" alt="Publicidad 2">
       </div>
       <div class="carousel-slide fade">
-        <img src="img/noticias4.jpg" alt="Publicidad 3" />
+        <img src="img/noticias4.jpg" alt="Publicidad 3">
       </div>
     </div>
   </section>
 
   <main>
-    <!-- Noticias (no modificar este bloque) -->
+    <!-- Noticias -->
     <aside id="noticias">
       <h2>📰 Últimas Noticias</h2>
       <div id="newsContainer"></div>
@@ -34,7 +34,7 @@
 
     <!-- Categorías -->
     <section id="categorias">
-      <h2>Categorías</h2>
+      <h2>📂 Categorías</h2>
       <div id="categoryButtons"></div>
     </section>
 
@@ -43,25 +43,20 @@
       <h2>🏪 Negocios</h2>
       <div id="cardsContainer"></div>
     </section>
+
+    <!-- Carrito -->
+    <section id="carrito">
+      <h2>🛒 Carrito</h2>
+      <div id="cartContainer"></div>
+    </section>
   </main>
 
-  <!-- Popup del carrito -->
-  <div id="cartPopup" class="popup" style="display:none;">
-    <div class="popup-content">
-      <span id="closePopup" class="close">&times;</span>
-      <h2>🛒 Carrito</h2>
-      <div id="cartItems"></div>
-      <p>Total: $<span id="cartTotal">0</span></p>
-      <button id="sendWhatsapp">Enviar por WhatsApp</button>
-    </div>
-  </div>
-
-  <!-- Popup de artículos/servicios (nuevo) -->
-  <div id="itemsPopup" class="popup" style="display:none;">
-    <div class="popup-content">
-      <span id="closeItemsPopup" class="close">&times;</span>
-      <h2 id="itemsTitle">Artículos / Servicios</h2>
-      <div id="itemsList"></div>
+  <!-- Popup Modal -->
+  <div id="popup" class="modal">
+    <div class="modal-content">
+      <span class="cerrar" onclick="cerrarPopup()">&times;</span>
+      <h3 id="popup-titulo"></h3>
+      <div id="popup-articulos"></div>
     </div>
   </div>
 
