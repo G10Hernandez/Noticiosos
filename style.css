@@ -1,96 +1,164 @@
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  background: linear-gradient(to right, #0077b6, #ffd166);
-  color: #222;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #a8edea, #fed6e3); /* azul claro a rosa arena */
+  background-attachment: fixed;
+  color: #333;
 }
 
+/* Encabezado */
 header {
+  background: rgba(255, 255, 255, 0.8);
+  color: #006994;
+  padding: 15px;
   text-align: center;
-  padding: 20px;
-  color: white;
-  background: #023e8a;
+  font-size: 28px;
+  font-weight: bold;
+  border-bottom: 3px solid #ffd59e;
 }
 
-main {
-  display: flex;
-  flex-wrap: wrap;
+h1 {
+  margin: 0;
+  color: #006688;
 }
 
 /* Carrusel */
 #carrusel {
-  width: 70%;
-  float: left;
+  margin: 20px auto;
+  max-width: 25%;   /* 🔹 ocupa solo 25% del ancho */
+  min-width: 250px; /* 🔹 evita que se haga demasiado chico */
+  position: relative;
 }
+
+.carousel img {
+    width: 100%;
+    height: 300px;   /* altura fija */
+    object-fit: cover; /* recorta sin deformar */
+}
+
+
 .carousel-container {
   position: relative;
-  width: 100%;
-  height: 300px;
   overflow: hidden;
+  border-radius: 15px;
 }
-.carousel-slide img {
+
+.carousel-slide {
+  display: none;
+}
+
+/*.carousel-slide img {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
+  border-radius: 15px;
+}*/
+
+.fade {
+  animation: fadeEffect 2s;
+}
+
+@keyframes fadeEffect {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
 }
 
 /* Noticias */
 #noticias {
-  width: 30%;
+  position: fixed;
+  top: 120px;
+  right: 10px;
+  width: 250px;
+  height: 300px;
+  overflow: hidden;
+  background: rgba(0, 102, 136, 0.8);
+  color: white;
+  border-radius: 15px;
   padding: 10px;
-  background: #fff3;
-  box-sizing: border-box;
+  z-index: 10;
 }
 
-/* Categorías y Negocios */
-#categorias, #negocios {
-  width: 100%;
-  padding: 20px;
+#newsContainer {
+  position: relative;
+  animation: scrollNews 20s linear infinite;
 }
+
+.news-item {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+@keyframes scrollNews {
+  0%   { top: 100%; }
+  100% { top: -100%; }
+}
+
+/* Botones de categorías */
+#categorias {
+  margin: 20px;
+  text-align: center;
+}
+
+#categoryButtons button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #00aaff;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#categoryButtons button:hover {
+  background: #0088cc;
+}
+
+#categoryButtons .active {
+  background: #ffaa00;
+}
+
+/* Negocios */
+#negocios {
+  margin: 20px;
+  text-align: center;
+}
+
 #cardsContainer {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 15px;
 }
+
+/* Tarjetas de negocios */
 .card {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  width: 200px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  background: #ffffffcc; /* blanco con transparencia */
+  border: 1px solid #ffd59e;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 15px;
+  width: 250px;
   text-align: center;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+  display: inline-block;
+  vertical-align: top;
+  transition: transform 0.2s ease-in-out;
 }
-.card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
+.card:hover {
+  transform: scale(1.05);
 }
 
-/* Popup */
-.popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.popup-content {
-  background: white;
-  padding: 20px;
+/* Botón de compra */
+.card button {
+  margin-top: 10px;
+  background: #00a896;
+  color: white;
+  border: none;
+  padding: 10px 15px;
   border-radius: 10px;
-  width: 400px;
-}
-.close {
-  float: right;
-  font-size: 20px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
-
-/* Carrito */
-#carrito {
-  padding: 20px;
-  background: #f9f9f9;
+.card button:hover {
+  background: #028090;
 }
