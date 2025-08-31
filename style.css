@@ -1,114 +1,171 @@
+/* ====== BASE ====== */
+:root{
+  /* Ajusta estos dos valores si cambias el tamaño del bloque noticias */
+  --noticias-width: 260px;
+  --noticias-gap: 10px;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #87CEFA, #FFDAB9);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #a8edea, #fed6e3);
+  background-attachment: fixed;
+  color: #333;
 }
 
 header {
-  background: #004466;
-  color: white;
-  padding: 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  color: #006994;
+  padding: 15px;
   text-align: center;
-}
-
-nav {
-  margin-top: 10px;
-}
-
-nav button {
-  margin: 5px;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 8px;
-  background: #FFD700;
-  cursor: pointer;
+  font-size: 28px;
   font-weight: bold;
-}
-nav button:hover {
-  background: #FFA500;
+  border-bottom: 3px solid #ffd59e;
 }
 
-/* Carrusel */
+h1 { margin: 0; color: #006688; }
+
+/* ====== CARRUSEL ====== */
+/* Ocupa todo el ancho disponible hasta antes del aside de noticias (derecha fija) */
 #carrusel {
-  width: 100%;
-  overflow: hidden;
-  text-align: center;
+  margin: 20px auto;
+  /* Deja libre el espacio del aside de noticias */
+  max-width: calc(100% - (var(--noticias-width) + var(--noticias-gap) * 2));
+  /* Alinea a la izquierda visualmente */
+  margin-left: 20px;
+  margin-right: calc(var(--noticias-width) + var(--noticias-gap) * 2);
+  position: relative;
 }
-.carrusel-contenedor img {
-  display: none;
-  width: 70%;
+
+.carousel-container {
+  position: relative;
+  overflow: hidden;
   border-radius: 15px;
 }
-.carrusel-contenedor img.activo {
-  display: inline-block;
-}
 
-/* Negocios */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-  padding: 20px;
-}
+.carousel-slide { display: none; }
 
-.tarjeta {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-  text-align: center;
-  padding: 10px;
-}
-.tarjeta img {
+/* Altura fija y SIN recortar imágenes */
+.carousel-slide img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: 340px;           /* <- altura única del banner */
+  object-fit: contain;     /* NO recorta, muestra completa (con barras) */
+  background: #111;        /* barras discretas cuando la proporción no coincide */
+  border-radius: 15px;
 }
-.tarjeta button {
-  margin-top: 8px;
-  padding: 6px 12px;
+
+.fade { animation: fadeEffect 0.6s; }
+@keyframes fadeEffect { from {opacity: 0.4;} to {opacity: 1;} }
+
+/* ====== NOTICIAS (no tocar) ====== */
+#noticias {
+  position: fixed;
+  top: 120px;
+  right: var(--noticias-gap);
+  width: var(--noticias-width);
+  height: 340px; /* Igualamos altura al carrusel para armonía */
+  overflow: hidden;
+  background: rgba(0, 102, 136, 0.85);
+  color: white;
+  border-radius: 15px;
+  padding: 10px;
+  z-index: 10;
+  box-sizing: border-box;
+}
+#newsContainer { position: relative; animation: scrollNews 20s linear infinite; }
+.news-item { margin-bottom: 15px; font-size: 14px; }
+@keyframes scrollNews { 0%{top:100%;} 100%{top:-100%;} }
+
+/* ====== CATEGORÍAS ====== */
+#categorias { margin: 20px; text-align: center; }
+#categoryButtons button {
+  margin: 5px;
+  padding: 10px 15px;
   border: none;
-  border-radius: 6px;
-  background: #004466;
+  border-radius: 10px;
+  background: #00aaff;
   color: white;
   cursor: pointer;
+  transition: 0.3s;
 }
-.tarjeta button:hover {
-  background: #0077aa;
-}
+#categoryButtons button:hover { background: #0088cc; }
+#categoryButtons .active { background: #ffaa00; color:#222; }
 
-/* Noticias */
-.grid-noticias {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+/* ====== NEGOCIOS ====== */
+#negocios { margin: 20px; text-align: center; }
+#cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 15px;
-  padding: 20px;
-}
-.noticia {
-  background: #fff8dc;
-  border-left: 6px solid #ff4500;
-  padding: 10px;
-  border-radius: 8px;
 }
 
-/* Popup */
-.popup {
-  display: none;
-  position: fixed;
-  z-index: 100;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
+.card {
+  background: #ffffffcc;
+  border: 1px solid #ffd59e;
+  border-radius: 15px;
+  padding: 15px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease-in-out;
 }
-.popup-contenido {
-  background: white;
-  margin: 10% auto;
-  padding: 20px;
-  width: 300px;
-  border-radius: 12px;
+.card:hover { transform: scale(1.05); }
+
+/* Imagen pequeña sin recortar */
+.card img {
+  width: 100%;
+  height: 120px;       /* tamaño chico */
+  object-fit: contain; /* sin recorte */
+  background: #f4f4f4;
+  border-radius: 10px;
 }
-.cerrar {
-  float: right;
-  font-size: 22px;
+
+.card button {
+  margin-top: 10px;
+  background: #00a896;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+.card button:hover { background: #028090; }
+
+/* ====== POPUPS (carrito e items) ====== */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.popup-content {
+  background: #fff;
+  color: #222;
+  padding: 20px;
+  border-radius: 15px;
+  width: 420px;
+  max-width: 90%;
+  box-sizing: border-box;
+}
+.close { float: right; font-size: 22px; cursor: pointer; }
+#itemsList > div { margin: 10px 0; }
+
+/* Responsivo sencillo */
+@media (max-width: 900px){
+  #carrusel{
+    margin-right: 20px;
+    max-width: calc(100% - 40px);
+  }
+  #noticias{
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 20px 20px;
+  }
 }
