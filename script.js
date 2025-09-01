@@ -181,15 +181,6 @@ if (sendBtn) {
   };
 }
 
-// WhatsApp
-document.getElementById("sendWhatsapp").onclick = function() {
-  if(cart.length===0){alert("Carrito vacío"); return;}
-  let msg="🛍️ Pedido desde el Portal:\n";
-  cart.forEach(i=>msg+=`- ${i.nombre}: $${i.precio}\n`);
-  msg+=`\nTotal: $${document.getElementById("cartTotal").textContent}`;
-  const phone="5211234567890";
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,"_blank");
-}
 
 // Noticias BBC (RSS2JSON)
 async function fetchNews() {
