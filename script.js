@@ -156,26 +156,29 @@ function updateCart() {
     };
   });
 
-  // Botón enviar a WhatsApp
-  const sendBtn = document.getElementById("sendWhatsapp");
-  if (sendBtn) {
-    sendBtn.onclick = function () {
-      if (cart.length === 0) {
-        alert("El carrito está vacío");
-        return;
-      }
+ // Botón enviar a WhatsApp
+const sendBtn = document.getElementById("sendWhatsapp");
+if (sendBtn) {
+  sendBtn.onclick = function () {
+    if (cart.length === 0) {
+      alert("El carrito está vacío");
+      return;
+    }
 
-      let message = "🛍️ Pedido:\n";
-      cart.forEach(item => {
-        message += `- ${item.nombre}: $${item.precio.toFixed(2)}\n`;
-      });
-      message += `\n💰 Total: $${total.toFixed(2)}`;
+    let message = "🛍️ Pedido:\n";
+    cart.forEach(item => {
+      message += `- ${item.nombre}: $${item.precio.toFixed(2)}\n`;
+    });
+    message += `\n💰 Total: $${total.toFixed(2)}`;
 
-      const phone = "521XXXXXXXXXX"; // 👉 tu número de WhatsApp
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
-    };
-  }
+    const phone = "521XXXXXXXXXX"; // 👉 tu número de WhatsApp
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+
+    // 🔹 Vaciar carrito después de enviar
+    cart = [];
+    updateCart();
+  };
 }
 
 // WhatsApp
