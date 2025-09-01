@@ -84,41 +84,98 @@ document.getElementById("closeItemsPopup").onclick = function() {
 }
 
 // Añadir al carrito desde popup
-document.getElementById("addToCartFromPopup").onclick = function() {
-  selectedItems.forEach(item => {
-    const checkbox = document.querySelector(`#itemsContainer input[type="checkbox"][id]`);
-    const checkboxes = document.querySelectorAll("#itemsContainer input[type='checkbox']");
-    checkboxes.forEach((cb, idx) => {
-      if(cb.checked) cart.push(selectedItems[idx]);
-    });
-  });
-  updateCart();
-  document.getElementById("itemsPopup").style.display = "none";
-  document.getElementById("cartPopup").style.display = "flex";
-}
+document.addEventListener("DOMContentLoaded", function() {
+  const addBtn = document.getElementById("addToCartFromPopup");
+  const closeItemsBtn = document.getElementById("closeItemsPopup");
+  const closeCartBtn = document.getElementById("closeCartPopup");
 
-// Carrito
-function updateCart() {
-  const cartItems = document.getElementById("cartItems");
-  cartItems.innerHTML = "";
-  let total = 0;
-  cart.forEach((item, idx) => {
-    total += item.precio;
-    const div = document.createElement("div");
-    div.innerHTML = `${item.nombre} - $${item.precio} <button onclick="removeFromCart(${idx})">❌</button>`;
-    cartItems.appendChild(div);
-  });
-  document.getElementById("cartTotal").textContent = total;
-}
+  // Botón "Añadir al Carrito" dentro del popup de artículos
+  if (addBtn) {
+    addBtn.onclick = function() {
+      const checkboxes = document.querySelectorAll("#itemsContainer input[type='checkbox']");
+      checkboxes.forEach((cb, idx) => {
+        if (cb.checked) cart.push(selectedItems[idx]);
+      });
 
-function removeFromCart(idx) {
-  cart.splice(idx, 1);
-  updateCart();
-}
+      updateCart();
+      document.getElementById("itemsPopup").style.display = "none";
+      document.getElementById("cartPopup").style.display = "flex";
+    };
+  }
+
+  // Cerrar popup de artículos
+  if (closeItemsBtn) {
+    closeItemsBtn.onclick = function() {
+      document.getElementById("itemsPopup").style.display = "none";
+    };
+  }
+
+  // Cerrar popup de carrito
+  if (closeCartBtn) {
+    closeCartBtn.onclick = function() {
+      document.getElementById("cartPopup").style.display = "none";
+    };
+  }
+});
 
 // Cerrar carrito
 document.getElementById("closeCartPopup").onclick = function() {
   document.getElementById("cartPopup").style.display = "none";
+}
+
+function updateCart() {
+  const cartItemsContainer = document.getElementById("cartItems");
+  const cartTotalElement = document.getElementById("cartTotal");
+
+  cartItemsContainer.innerHTML = ""; // limpiar antes de volver a pintar
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.classList.add("cart-item");
+
+    div.innerHTML = `
+      <span>${item.nombre} - $${item.precio.toFixed(2)}</span>
+      <button class="removeItem" data-index="${index}">❌</button>
+    `;
+
+    cartItemsContainer.appendChild(div);
+
+    total += item.precio;
+  });
+
+  cartTotalElement.textContent = total.toFixed(2);
+
+  // Botones eliminar
+  document.querySelectorAll(".removeItem").forEach(btn => {
+    btn.onclick = function () {
+      const idx = this.getAttribute("data-index");
+      cart.splice(idx, 1); // quitar del carrito
+      updateCart(); // refrescar carrito
+    };
+  });
+
+  // Botón enviar a WhatsApp
+  const sendBtn = document.getElementById("sendWhatsapp");
+  if (sendBtn) {
+    sendBtn.onclick = function () {
+      if (cart.length === 0) {
+        alert("El carrito está vacío");
+        return;
+      }
+
+      let message = "🛍️ Pedido:\n";
+      cart.forEach(item => {
+        message += `- ${item.nombre}: $${item.precio.toFixed(2)}\n`;
+      });
+      message += `\n💰 Total: $${total.toFixed(2)}`;
+
+      const phone = "521XXXXXXXXXX"; // 👉 tu número de WhatsApp
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    };
+  }
 }
 
 // WhatsApp
