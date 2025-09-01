@@ -155,6 +155,7 @@ function updateCart() {
       updateCart(); // refrescar carrito
     };
   });
+}
 
  // Botón enviar a WhatsApp
 const sendBtn = document.getElementById("sendWhatsapp");
